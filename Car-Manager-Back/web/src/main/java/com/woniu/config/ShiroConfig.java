@@ -53,7 +53,7 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/unauthenticated", "anon");
 
         // 【认证】靠 jwt-filter，【鉴权】靠注解。
-        filterChainDefinitionMap.put("/**", "jwtAuthentication");
+//        filterChainDefinitionMap.put("/**", "jwtAuthentication");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return shiroFilterFactoryBean;
     }

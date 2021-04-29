@@ -1,6 +1,6 @@
 <template>
-  <div class="login">
-    登入界面
+  <div>
+    
   </div>
 </template>
 
