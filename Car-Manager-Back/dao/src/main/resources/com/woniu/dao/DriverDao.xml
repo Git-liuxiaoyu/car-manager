@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.woniu.dao.DriverDao">
+
+    <select id="findDriverList" resultType="DriverPo">
+        select * from driver
+    </select>
+
+    <insert id="addDriver" parameterType="DriverPo">
+        insert into driver(driverNum,type ,status,employeeId) values(#{driverNum},#{type },#{status},#{employeeId})
+    </insert>
+
+    <delete id="delDriver" parameterType="Integer">
+        delete from driver where id=#{id}
+    </delete>
+
+    <update id="updateDriver" parameterType="DriverPo">
+        update driver
+    <set>
+        <if test="driverNum!=null and driverNum!=''" > driverNum = #{driverNum},</if>
+        <if test="type!=null and type!=''" > type = #{type},</if>
+        <if test="status!=null and status!=''" > status = #{status},</if>
+        <if test="employeeId!=null and employeeId!=''" > employeeId = #{employeeId},</if>
+    </set>
+            where id = #{id}
+    </update>
+</mapper>

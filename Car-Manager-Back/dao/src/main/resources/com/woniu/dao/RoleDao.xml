@@ -6,4 +6,9 @@
 	<select id="roles" resultType="Role">
         select * from role
     </select>
+
+
+<!--    <select id="findDriverList" resultType="Driver">-->
+<!--        select * from driver-->
+<!--    </select>-->
 </mapper>
