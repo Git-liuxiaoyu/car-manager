@@ -1,5 +1,5 @@
 {
-  "name": "car-manager",
+  "name": "car-manager-Front",
   "version": "1.0.0",
   "description": "A Vue.js project",
   "author": "ccc <ccc>",
@@ -10,6 +10,7 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "axios": "^0.21.1",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1"
   },
