@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.woniu.dao.CarDao">
+    <!--sql片段-->
+    <sql id="columns">
+        id,carNum,brandId,type,color,carrying,seatNum,oilConsume,initialMileage,
+        curingMileage,curingCycle,engineNum,serialNumber,oppositeCompanyId,price,
+        boughtDate,deptId,carStatus,remarks,status,images
+    </sql>
+    <!--添加-->
+    <insert id="add" parameterType="Car">
+        insert into car(
+        <include refid="columns"></include>
+        )
+        values(null,#{carNum},#{brandId},#{type},#{color},#{carrying},#{seatNum},#{oilConsume},#{initialMileage},
+        #{curingMileage},#{curingCycle},#{engineNum},#{serialNumber},#{oppositeCompanyId},#{price},
+        #{boughtDate},#{deptId},#{carStatus},#{remarks},#{status},#{images})
+    </insert>
+    <!-- 删除 -->
+    <delete id="delete" parameterType="Car">
+        delete  from car where id=#{id}
+    </delete>
+    <!--修改-->
+    <update id="update" parameterType="Car">
+        update car
+        <set>
+            <if test="carNum!=null">carNum=#{carNum},</if>
+            <if test="brandId!=null">brandId=#{brandId},</if>
+            <if test="type!=null">type=#{type},</if>
+            <if test="color!=null">color=#{color},</if>
+            <if test="carrying!=null">carrying=#{carrying},</if>
+            <if test="seatNum!=null">seatNum=#{seatNum},</if>
+            <if test="oilConsume!=null">oilConsume=#{oilConsume},</if>
+            <if test="initialMileage!=null">initialMileage=#{initialMileage},</if>
+            <if test="curingMileage!=null">curingMileage=#{curingMileage},</if>
+            <if test="curingCycle!=null">curingCycle=#{curingCycle},</if>
+            <if test="serialNumber!=null">serialNumber=#{serialNumber},</if>
+            <if test="oppositeCompanyId!=null">oppositeCompanyId=#{oppositeCompanyId},</if>
+            <if test="price!=null">price=#{price},</if>
+            <if test="boughtDate!=null">boughtDate=#{boughtDate},</if>
+            <if test="deptId!=null">deptId=#{deptId},</if>
+            <if test="carStatus!=null">carStatus=#{carStatus},</if>
+            <if test="remarks!=null">remarks=#{remarks},</if>
+            <if test="status!=null">status=#{status},</if>
+            <if test="images!=null">images=#{images},</if>
+        </set>
+        where id=#{id}
+    </update>
+    <!--动态分页查询-->
+    <select id="carList" resultType="Car">
+        select * from car
+    </select>
+    <!--根据id查-->
+    <select id="findById" resultType="Car" parameterType="Car">
+        select
+        <include refid="columns"></include>
+        from car where id=#{id}
+    </select>
+</mapper>

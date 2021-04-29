@@ -15,7 +15,7 @@ import java.util.List;
 public class RoleAdapter {
 
     @Autowired
-    private RoleDao RoleDao;
+    private RoleDao roleDao;
 
     @Autowired
     private RoleRedisDao roleRedisDao;
@@ -25,7 +25,7 @@ public class RoleAdapter {
         ObjectMapper objectMapper = new ObjectMapper();
         if(roleList.size() == 0){
             //从数据库查数据
-            roleList = RoleDao.roles();
+            roleList = roleDao.roles();
             //存入redis的缓存中
             roleRedisDao.addRedisUserList(roleList);
         }
