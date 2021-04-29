@@ -6,4 +6,7 @@
 	<select id="roles" resultType="Role">
         select * from role
     </select>
+    
+    
+    
 </mapper>
