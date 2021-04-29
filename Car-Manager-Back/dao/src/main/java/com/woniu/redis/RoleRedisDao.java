@@ -6,6 +6,7 @@ import com.woniu.po.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.BoundValueOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import java.util.List;
  * @Date: 2021/04/29/17:15
  * @Description:
  */
+@Component
 public class RoleRedisDao {
 
     @Autowired
