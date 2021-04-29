@@ -13,15 +13,19 @@ let router = new Router({
       path: '/login',
       name: 'login',
       component: () => import('@/components/login'),
-    }
+    },
+    {
+      path: '/home',
+      component: () => import('@/components/home/home'),
+    },
   ]
 })
 export default router;
-router.beforeEach((to, from, next) => {
-  if (to.path == '/login') {
-    next()
-  } else {
-    var token = localStorage.getItem("token");
-    token ? next() : next('/login')
-  }
-})
+// router.beforeEach((to, from, next) => {
+//   if (to.path == '/login') {
+//     next()
+//   } else {
+//     var token = localStorage.getItem("token");
+//     token ? next() : next('/login')
+//   }
+// })
