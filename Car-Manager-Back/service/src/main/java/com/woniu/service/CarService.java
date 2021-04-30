@@ -1,6 +1,6 @@
 package com.woniu.service;
 
-import com.woniu.po.Car;
+import com.woniu.po.CarPo;
 
 import java.util.List;
 
@@ -10,9 +10,9 @@ import java.util.List;
  */
 
 public interface CarService {
-    public List<Car> carList();
-    public int add(Car car);
-    public int update(Car car);
-    public int delete(Car car);
-    public Car findById(Car car);
+    public List<CarPo> carList();
+    public int add(CarPo carPo);
+    public int update(CarPo carPo);
+    public int delete(CarPo carPo);
+    public CarPo findById(CarPo carPo);
 }

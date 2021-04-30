@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.woniu.dao.YearCheckRecordDao">
+    <!--sql片段-->
+    <sql id="columns">
+        id,carId,checkNum,checkDate,cost,
+        oppositeCompanyId,nextCheckDate,driverId,remarks
+    </sql>
+    <!--添加-->
+    <insert id="add" parameterType="YearCheckRecordPo">
+        insert into yearcheck_record(
+        <include refid="columns"></include>
+        )
+        values(null,#{carId},#{checkNum},#{checkDate},#{cost},
+               #{oppositeCompanyId},#{nextCheckDate},#{driverId},#{remarks}
+
+    </insert>
+    <!-- 删除 -->
+    <delete id="delete" parameterType="YearCheckRecordPo">
+        delete  from yearCheck_record where id=#{id}
+    </delete>
+    <!--修改-->
+    <update id="update" parameterType="YearCheckRecordPo">
+        update yearCheckRecord
+        <set>
+            <if test="carId!=null">carId=#{carId},</if>
+            <if test="checkNum!=null">checkNum=#{checkNum},</if>
+            <if test="checkDate!=null">checkDate=#{checkDate},</if>
+            <if test="cost!=null">cost=#{cost},</if>
+            <if test="oppositeCompanyId!=null">oppositeCompanyId=#{oppositeCompanyId},</if>
+            <if test="nextCheckDate!=null">nextCheckDate=#{nextCheckDate},</if>
+            <if test="driverId!=null">driverId=#{driverId},</if>
+            <if test="remarks!=null">remarks=#{remarks},</if>
+        </set>
+        where id=#{id}
+    </update>
+    <!--动态分页查询-->
+    <select id="yearCheckRecordList" resultType="YearCheckRecordPo">
+        select * from yearcheck_record
+    </select>
+    <!--根据id查-->
+    <select id="findById" resultType="YearCheckRecordPo" parameterType="YearCheckRecordPo">
+        select
+        <include refid="columns"></include>
+        from yearcheck_record where id=#{id}
+    </select>
+</mapper>
