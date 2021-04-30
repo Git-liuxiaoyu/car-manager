@@ -10,7 +10,7 @@
         boughtDate,deptId,carStatus,remarks,status,images
     </sql>
     <!--添加-->
-    <insert id="add" parameterType="Car">
+    <insert id="add" parameterType="CarPo">
         insert into car(
         <include refid="columns"></include>
         )
@@ -19,11 +19,11 @@
         #{boughtDate},#{deptId},#{carStatus},#{remarks},#{status},#{images})
     </insert>
     <!-- 删除 -->
-    <delete id="delete" parameterType="Car">
+    <delete id="delete" parameterType="CarPo">
         delete  from car where id=#{id}
     </delete>
     <!--修改-->
-    <update id="update" parameterType="Car">
+    <update id="update" parameterType="CarPo">
         update car
         <set>
             <if test="carNum!=null">carNum=#{carNum},</if>
@@ -49,11 +49,11 @@
         where id=#{id}
     </update>
     <!--动态分页查询-->
-    <select id="carList" resultType="Car">
+    <select id="carList" resultType="CarPo">
         select * from car
     </select>
     <!--根据id查-->
-    <select id="findById" resultType="Car" parameterType="Car">
+    <select id="findById" resultType="CarPo" parameterType="CarPo">
         select
         <include refid="columns"></include>
         from car where id=#{id}

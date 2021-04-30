@@ -10,7 +10,7 @@ import java.util.Date;
  * @Date 2021/4/29 17:58
  */
 @Data
-public class Car {
+public class CarPo {
     private Integer id;
     private String carNum;
     private Integer brandId;
@@ -26,10 +26,11 @@ public class Car {
     private String serialNumber;
     private Integer oppositeCompanyId;
     private  BigDecimal price;
-    private Date boughtDate;
+    private String boughtDate;
     private Integer deptId;
     private Integer carStatus;
     private String remarks;
     private Integer status;
     private String images;
+
 }

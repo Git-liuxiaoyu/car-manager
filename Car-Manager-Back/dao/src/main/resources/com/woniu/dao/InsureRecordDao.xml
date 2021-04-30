@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.woniu.dao.InsureRecordDao">
+    <!--sql片段-->
+    <sql id="columns">
+        id,cardId,insureNum,beginDate,type,
+        cost,oppositeCompanyId,outDate,driverId,remarks
+    </sql>
+    <!--添加-->
+    <insert id="add" parameterType="InsureRecordPo">
+        insert into insure_record(
+        <include refid="columns"></include>
+        )
+        values(null,#{cardId},#{insureNum},#{beginDate},#{type},
+               #{cost},#{oppositeCompanyId},#{outDate},#{driverId},#{remarks})
+    </insert>
+    <!-- 删除 -->
+    <delete id="delete" parameterType="InsureRecordPo">
+        delete  from insure_record where id=#{id}
+    </delete>
+    <!--修改-->
+    <update id="update" parameterType="InsureRecordPo">
+        update insureRecord
+        <set>
+            <if test="cardId!=null">cardId=#{cardId},</if>
+            <if test="insureNum!=null">insureNum=#{insureNum},</if>
+            <if test="beginDate!=null">beginDate=#{beginDate},</if>
+            <if test="type!=null">type=#{type},</if>
+            <if test="cost!=null">cost=#{cost},</if>
+            <if test="oppositeCompanyId!=null">oppositeCompanyId=#{oppositeCompanyId},</if>
+            <if test="outDate!=null">outDate=#{outDate},</if>
+            <if test="driverId!=null">driverId=#{driverId},</if>
+            <if test="remarks!=null">remarks=#{remarks},</if>
+        </set>
+        where id=#{id}
+    </update>
+    <!--动态分页查询-->
+    <select id="insureRecordList" resultType="InsureRecordPo">
+        select * from insure_record
+    </select>
+    <!--根据id查-->
+    <select id="findById" resultType="InsureRecordPo" parameterType="InsureRecordPo">
+        select
+        <include refid="columns"></include>
+        from insure_record where id=#{id}
+    </select>
+</mapper>

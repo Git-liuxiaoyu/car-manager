@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.woniu.dao.OutimeRemindDao">
+    <!--sql片段-->
+    <sql id="columns">
+        id,cardId,outDate,type
+    </sql>
+    <!--添加-->
+    <insert id="add" parameterType="OutimeRemindPo">
+        insert into outime_remind(
+        <include refid="columns"></include>
+        )
+        values(null,#{cardId},#{outDate},#{type})
+    </insert>
+    <!-- 删除 -->
+    <delete id="delete" parameterType="OutimeRemindPo">
+        delete  from outime_remind where id=#{id}
+    </delete>
+    <!--修改-->
+    <update id="update" parameterType="OutimeRemindPo">
+        update outime_remind
+        <set>
+            <if test="cardId!=null">cardId=#{cardId},</if>
+            <if test="outDate!=null">outDate=#{outDate},</if>
+            <if test="type!=null">type=#{type},</if>
+        </set>
+        where id=#{id}
+    </update>
+    <!--动态分页查询-->
+    <select id="outimeRemindList" resultType="OutimeRemindPo">
+        select * from outime_remind
+    </select>
+    <!--根据id查-->
+    <select id="findById" resultType="OutimeRemindPo" parameterType="OutimeRemindPo">
+        select
+        <include refid="columns"></include>
+        from outime_remind where id=#{id}
+    </select>
+</mapper>
