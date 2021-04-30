@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.woniu.dao.OilRecordDao">
+
+    <select id="findList" resultType="OilRecordPo">
+        select * from oil_record
+    </select>
+    <!--新增出车记录-->
+    <insert id="add" parameterType="OilRecordPo">
+        insert into oil_record(carId,oppositeCompanyId,addTime,oilType,prePrice,thisOilVolume,lastOilVolume,price,thisMileage,lastMileage,remarks,driverId)
+        values(#{carId},#{oppositeCompanyId},#{addTime},#{oilType},#{prePrice},#{thisOilVolume},#{lastOilVolume},#{price},#{thisMileage},#{lastMileage},#{remarks},#{driverId})
+    </insert>
+
+    <!--    根据id查询-->
+    <select id="getById" resultType="OilRecordPo">
+        select * from departure_record where id = #{id}
+    </select>
+
+
+<!--修改出车列表-->
+    <update id="update" parameterType="OilRecordPo">
+        update oil_record
+    <set>
+        <if test="oppositeCompanyId!=null and oppositeCompanyId!=''" > oppositeCompanyId = #{oppositeCompanyId},</if>
+
+        <if test="oilType!=null and oilType!=''" > oilType = #{oilType},</if>
+
+        <if test="prePrice!=null and prePrice!=''" > prePrice = #{prePrice},</if>
+        <if test="thisOilVolume!=null and thisOilVolume!=''" > thisOilVolume = #{thisOilVolume},</if>
+
+        <if test="lastOilVolume!=null and lastOilVolume!=''" > lastOilVolume = #{lastOilVolume},</if>
+        <if test="price!=null and price!=''" > price = #{price},</if>
+        <if test="thisMileage!=null and thisMileage!=''" > thisMileage = #{thisMileage},</if>
+         <if test="lastMileage!=null and lastMileage!=''" >   lastMileage = #{lastMileage},</if>
+         <if test="remarks!=null and remarks!=''" >   remarks = #{remarks},</if>
+         <if test="driverId!=null and driverId!=''" >   driverId = #{driverId},</if>
+    </set>
+            where id = #{id}
+    </update>
+<!--删除出车信息-->
+        <delete id="delete" parameterType="Integer">
+            delete from oil_record where id=#{id}
+        </delete>
+</mapper>
