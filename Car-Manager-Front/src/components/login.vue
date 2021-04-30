@@ -15,24 +15,12 @@
 
           <div class="pwd">
             <el-col :span="18" :push="3">
-              <el-input placeholder="请输入内容" v-model="employee.password">
+              <el-input placeholder="请输入内容" v-model="employee.password" type="password">
                 <el-button slot="prepend" icon="el-icon-lock"></el-button>
               </el-input>
             </el-col>
           </div>
           <br/><br/><br/><br/>
-
-          <el-row :gutter="20">
-            <el-col :span="12" :push="3">
-              <el-input placeholder="请输入验证码" v-model="employee.captcha"></el-input>
-            </el-col>
-            <el-col :span="6" :push="3">
-              <div class="img">
-                <img src="" alt="">
-              </div>
-            </el-col>
-          </el-row>
-          <br/><br/>
           <el-col :span="6" :push="5">
             <div>
               <el-button type="primary" @click="login">登入</el-button>
@@ -69,12 +57,27 @@ export default {
     },
     login() {
       this.$axios.post("employee/login", this.employee).then(r => {
+        console.log(r)
         if (r.data.code == 200) {
-
+          //存进token
+          localStorage.setItem("token", r.data.msg);
+          //跳转路由
+          this.$router.push("/home");
+          this.$message.success("登入成功");
+        }else if(r.data.code == 101){
+          this.$message.error("用户不存在");
+        }else if (r.data.code == 102) {
+          this.$message.error("密码错误");
         }
       })
     }
-  }
+  },
+  // created() {
+  //   this.$axios.get("employee/captcha").then(r => {
+  //     .src =r.data;
+  //     console.log(r)
+  //   })
+  // },
 }
 </script>
 
@@ -101,7 +104,7 @@ background-size: 100 %;
 .subject {
   border-radius: 35px;
   width: 500px;
-  height: 450px;
+  height: 350px;
   border: 1px solid black;
   margin-top: 30%;
   text-align: center;

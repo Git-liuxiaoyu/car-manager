@@ -3,7 +3,7 @@
     <!-- 头部 -->
     <el-row class="l-head">
       <el-col :span="8" class="l-img">
-                <img src="../../assets/image/logo.png" class="logo"/>
+        <img src="../../assets/image/logo.png" class="logo"/>
       </el-col>
       <el-col :span="8" class="l-head-zj">
         <span class="span1">
@@ -11,8 +11,8 @@
         </span>
       </el-col>
       <el-col :span="8" class="l-head-youbian">
-        <span class="span2">
-          欢迎您&nbsp;&nbsp;&nbsp;
+        <span class="span2" v-text="">
+          欢迎您&nbsp;&nbsp;<span v-text="userNamer"></span>&nbsp;&nbsp;&nbsp;
           <el-tooltip placement="top">
                   <div slot="content">退出</div>
           <el-button type="danger" icon="el-icon-switch-button" circle @click.prevent="logout"></el-button>
@@ -20,31 +20,35 @@
         </span>
       </el-col>
     </el-row>
-    <!-- 中左 -->
-    <el-container>
-      <el-container>
-        <el-aside width="200px" class="aside">
-          <!-- default-active默认显示高亮 -->
-          <el-menu class="el-menu-vertical-demo" :router="true">
 
+
+    <el-container>
+
+      <el-container>
+        <!-- 中左 -->
+        <!-- default-active默认显示高亮 -->
+        <el-aside width="200px" class="main">
+          <el-menu class="el-menu-vertical-demo" :router="true" background-color="#edfff3" :unique-opened="true">
             <el-submenu :index="item.id+''" v-for="item in menu" :key="item.id">
               <template slot="title">
-                <i class="el-icon-location"></i>
+                <i class="el-icon-menu"></i>
                 <span>{{ item.name }}</span>
               </template>
               <el-menu-item-group>
-                <el-menu-item :index="son.link" v-for="son in item.children" :key="son.id">
-                  {{ son.name }}</el-menu-item>
+                <el-menu-item :index="son.link" v-for="son in item.children" :key="son.id">{{son.name}}</el-menu-item>
               </el-menu-item-group>
             </el-submenu>
-
           </el-menu>
         </el-aside>
+
+
         <!-- 中右 -->
         <el-main class="main">
           <router-view></router-view>
         </el-main>
+
       </el-container>
+
       <!-- 底部 -->
       <el-footer class="el-footer" height="60px">
         <h3 id="h2">2021 &copy;版权所有&nbsp;蜗牛学院</h3>
@@ -58,16 +62,18 @@ export default {
   data() {
     return {
       menu: [],
+      userNamer:''
     }
   },
   methods: {
+    add(){
+      alert(12)
+    },
     findPerms() {
-      var token = localStorage.getItem("token");
-      this.$axios.get("http://localhost/perms/menu", {
-        params: {},
-        headers: {Authorization: token}
-      }).then(r => {
+      this.$axios.get("employee/menu?token=" + localStorage.getItem("token")).then(r => {
         this.menu = r.data.data;
+        this.userNamer=this.menu[0].userName
+        console.log(this.menu)
       })
     },
     logout() {
@@ -97,12 +103,13 @@ export default {
 </script>
 
 <style scoped>
-.aside {
-  background-color: #fff9e6;
-}
+/*.aside {*/
+/*  background-color: #fff9e6;*/
+/*}*/
 
 .main {
   background-color: #edfff3;
+  border: 1px solid black;
 }
 
 .wrapper {

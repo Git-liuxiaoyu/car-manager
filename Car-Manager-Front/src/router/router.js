@@ -21,11 +21,11 @@ let router = new Router({
   ]
 })
 export default router;
-// router.beforeEach((to, from, next) => {
-//   if (to.path == '/login') {
-//     next()
-//   } else {
-//     var token = localStorage.getItem("token");
-//     token ? next() : next('/login')
-//   }
-// })
+router.beforeEach((to, from, next) => {
+  if (to.path == '/login') {
+    next()
+  } else {
+    var token = localStorage.getItem("token");
+    token ? next() : next('/login')
+  }
+})
