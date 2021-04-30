@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.woniu.dao.RepairRecordDao">
+
+    <select id="findList" resultType="RepairRecordPo">
+        select * from repair_record
+    </select>
+    <!--新增修理记录-->
+    <insert id="add" parameterType="RepairRecordPo">
+        insert into repair_record(carId,oppositeCompanyId,sendTime,preGetTime,reason,remarks,driverId)
+        values(#{carId},#{oppositeCompanyId},#{sendTime},#{preGetTime},#{reason},#{remarks},#{driverId})
+    </insert>
+
+
+
+<!--修改出车列表-->
+    <update id="update" parameterType="RepairRecordPo">
+        update repair_record
+    <set>
+        <if test="oppositeCompanyId!=null and oppositeCompanyId!=''" > oppositeCompanyId = #{oppositeCompanyId},</if>
+
+        <if test="sendTime!=null and sendTime!=''" > sendTime = #{sendTime},</if>
+
+        <if test="preGetTime!=null and preGetTime!=''" > preGetTime = #{preGetTime},</if>
+        <if test="reason!=null and reason!=''" > reason = #{reason},</if>
+
+        <if test="remarks!=null and remarks!=''" > remarks = #{remarks},</if>
+        <if test="driverId!=null and driverId!=''" > driverId = #{driverId},</if>
+
+    </set>
+            where id = #{id}
+    </update>
+<!--删除出车信息-->
+        <delete id="delete" parameterType="Integer">
+            delete from repair_record where id=#{id}
+        </delete>
+</mapper>
