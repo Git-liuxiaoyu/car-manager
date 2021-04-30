@@ -1,4 +1,4 @@
-package com.woniu.domin;
+package com.woniu.domain;
 
 import lombok.Data;
 

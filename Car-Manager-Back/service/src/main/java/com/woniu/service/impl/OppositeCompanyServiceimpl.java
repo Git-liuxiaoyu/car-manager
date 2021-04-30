@@ -1,7 +1,7 @@
 package com.woniu.service.impl;
 
 import com.woniu.adapter.OppositeCompanyAdapter;
-import com.woniu.domin.OppositeCompany;
+import com.woniu.domain.OppositeCompany;
 import com.woniu.po.OppositeCompanyPo;
 import com.woniu.service.OppositeCompanyService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -2,10 +2,8 @@ package com.woniu.adapter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woniu.dao.OppositeCompanyDao;
-import com.woniu.dao.RoleDao;
-import com.woniu.domin.OppositeCompany;
+import com.woniu.domain.OppositeCompany;
 import com.woniu.po.OppositeCompanyPo;
-import com.woniu.po.Role;
 import com.woniu.redis.OppositeCompanyRedisDao;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;

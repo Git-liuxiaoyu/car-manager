@@ -1,6 +1,6 @@
 package com.woniu.service;
 
-import com.woniu.domin.OppositeCompany;
+import com.woniu.domain.OppositeCompany;
 import com.woniu.po.OppositeCompanyPo;
 
 import java.util.List;
