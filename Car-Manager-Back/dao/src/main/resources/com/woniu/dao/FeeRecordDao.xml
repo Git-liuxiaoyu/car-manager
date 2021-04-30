@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.woniu.dao.FeeRecordDao">
+    
+    <!--查询取车记录列表-->
+    <select id="list" resultType="FeeRecordPo">
+        select * from fee_record
+    </select>
+    
+    <!--添加规费记录-->
+    <insert id="add" parameterType="FeeRecordPo">
+        insert into fee_record (carId,feeName,payTime,fee,oppositeCompanyId,driverId,remarks)
+        values (#{carId},#{feeName},#{payTime},#{fee},#{oppositeCompanyId},#{driverId},#{remarks})
+    </insert>
+    
+    
+    <!-- 多条件修改用户数据 -->
+    <update id="update" parameterType="FeeRecordPo">
+        update fee_record
+        <set>
+            <if test="carId !=null and carId!='' ">carId = #{carId},</if>
+            <if test="feeName !=null and feeName!='' ">feeName = #{feeName},</if>
+            <if test="payTime !=null and payTime!='' ">payTime = #{payTime},</if>
+            <if test="fee !=null and fee!='' ">fee = #{fee},</if>
+            <if test="oppositeCompanyId !=null and oppositeCompanyId!='' ">oppositeCompanyId = #{oppositeCompanyId},</if>
+            <if test="remarks !=null and remarks!='' ">remarks = #{remarks},</if>
+        </set>
+        where id = #{id}
+    </update>
+    
+    <!-- 根据id删除 -->
+    <delete id = "delete" parameterType="FeeRecordPo">
+        delete from fee_record where id = #{id}
+    </delete>
+    
+    <select id="findbyid" resultType="FeeRecordPo">
+        select * from fee_record where id = #{id}
+    </select>
+
+
+
+
+
+</mapper>

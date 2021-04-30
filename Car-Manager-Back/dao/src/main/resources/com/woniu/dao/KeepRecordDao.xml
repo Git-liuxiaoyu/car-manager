@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.woniu.dao.KeepRecordDao">
+    
+    <!--查询取车记录列表-->
+    <select id="list" resultType="KeepRecordPo">
+        select * from keep_record
+    </select>
+    
+    <!--添加规费记录-->
+    <insert id="add" parameterType="KeepRecordPo">
+        insert into keep_record (carId,type,keepDate,fee,oppositeCompanyId,thisKeepMileage,keepContext,nextKeepTime,nextKeepMileage,driverId,remarks)
+        values (#{carId},#{type},#{keepDate},#{fee},#{oppositeCompanyId},#{thisKeepMileage},#{keepContext},#{nextKeepTime},#{nextKeepMileage},#{driverId},#{remarks})
+    </insert>
+    
+    
+    <!-- 多条件修改用户数据 -->
+    <update id="update" parameterType="KeepRecordPo">
+        update keep_record
+        <set>
+            <if test="carId !=null and carId!='' ">carId = #{carId},</if>
+            <if test="type !=null and type!='' ">type = #{type},</if>
+            <if test="keepDate !=null and keepDate!='' ">keepDate = #{keepDate},</if>
+            <if test="fee !=null and fee!='' ">fee = #{fee},</if>
+            <if test="oppositeCompanyId !=null and oppositeCompanyId!='' ">oppositeCompanyId = #{oppositeCompanyId},</if>
+            <if test="thisKeepMileage !=null and thisKeepMileage!='' ">thisKeepMileage = #{thisKeepMileage},</if>
+            <if test="keepContext !=null and keepContext!='' ">keepContext = #{keepContext},</if>
+            <if test="nextKeepTime !=null and nextKeepTime!='' ">nextKeepTime = #{nextKeepTime},</if>
+            <if test="nextKeepMileage !=null and nextKeepMileage!='' ">nextKeepMileage = #{nextKeepMileage},</if>
+            <if test="driverId !=null and driverId!='' ">driverId = #{driverId},</if>
+            <if test="remarks !=null and remarks!='' ">remarks = #{remarks},</if>
+        </set>
+        where id = #{id}
+    </update>
+    
+    <!-- 根据id删除 -->
+    <delete id = "delete" parameterType="KeepRecordPo">
+        delete from keep_record where id = #{id}
+    </delete>
+    
+    <select id="findbyid" resultType="KeepRecordPo">
+        select * from keep_record where id = #{id}
+    </select>
+
+
+
+
+
+</mapper>

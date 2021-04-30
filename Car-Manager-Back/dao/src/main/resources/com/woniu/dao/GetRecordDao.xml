@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.woniu.dao.GetRecordDao">
+    
+    <!--查询取车记录列表-->
+    <select id="list" resultType="GetRecordPo">
+        SELECT * FROM get_record gr ,opposite_company oc where oc.id = gr.oppositeCompanyId
+    </select>
+    
+    <!--添加取车记录-->
+    <insert id="add" parameterType="GetRecordPo">
+        insert into get_record (carId,oppositeCompanyId,reapairType,sendTime,getTime,cost,repairItem,material,remarks)
+        values (#{carId},#{oppositeCompanyId},#{reapairType},#{sendTime},#{getTime},#{cost},#{repairItem},#{material},#{remarks})
+    </insert>
+    
+    
+    <!-- 多条件修改用户数据 -->
+    <update id="update" parameterType="GetRecordPo">
+        update get_record
+        <set>
+            <if test="carId !=null and carId!='' ">carId = #{carId},</if>
+            <if test="oppositeCompanyId !=null and oppositeCompanyId!='' ">oppositeCompanyId = #{oppositeCompanyId},</if>
+            <if test="reapairType !=null and reapairType!='' ">reapairType = #{reapairType},</if>
+            <if test="sendTime !=null and sendTime!='' ">sendTime = #{sendTime},</if>
+            <if test="getTime !=null and getTime!='' ">getTime = #{getTime},</if>
+            <if test="cost !=null and cost!='' ">cost = #{cost},</if>
+            <if test="repairItem !=null and repairItem!='' ">repairItem = #{repairItem},</if>
+            <if test="material !=null and material!='' ">material = #{material},</if>
+            <if test="remarks !=null and remarks!='' ">remarks = #{remarks},</if>
+        </set>
+        where id = #{id}
+    </update>
+    
+    <!-- 根据id删除 -->
+    <delete id = "delete" parameterType="GetRecordPo">
+        delete from get_record where id = #{id}
+    </delete>
+    
+    <select id="findbyid" resultType="GetRecordPo">
+        select * from get_record where id = #{id}
+        
+    </select>
+
+
+
+
+
+</mapper>
