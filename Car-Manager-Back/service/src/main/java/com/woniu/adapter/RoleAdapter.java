@@ -2,7 +2,7 @@ package com.woniu.adapter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woniu.dao.RoleDao;
-import com.woniu.po.Role;
+import com.woniu.po.RolePo;
 import com.woniu.redis.RoleRedisDao;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,22 +20,22 @@ public class RoleAdapter {
     @Autowired
     private RoleRedisDao roleRedisDao;
 
-    public List<Role> findRoleLists(){
-        List<Role> roleList = roleRedisDao.list();
+    public List<RolePo> findRoleLists(){
+        List<RolePo> rolePoList = roleRedisDao.list();
         ObjectMapper objectMapper = new ObjectMapper();
-        if(roleList.size() == 0){
+        if(rolePoList.size() == 0){
             //从数据库查数据
-            roleList = roleDao.roles();
+            rolePoList = roleDao.roles();
             //存入redis的缓存中
-            roleRedisDao.addRedisUserList(roleList);
+            roleRedisDao.addRedisUserList(rolePoList);
         }
-        //把dao的 RoleList RolePo --- 转成  List<Role>
-        List<Role> Roles = new ArrayList<Role>();
-        for(Role Role : roleList) {
-            Role item = new Role();
-            BeanUtils.copyProperties(Role, item);
-            Roles.add(item);
+        //把dao的 RoleList RolePo --- 转成  List<RolePo>
+        List<RolePo> rolePos = new ArrayList<RolePo>();
+        for(RolePo RolePo : rolePoList) {
+            RolePo item = new RolePo();
+            BeanUtils.copyProperties(RolePo, item);
+            rolePos.add(item);
         }
-        return Roles ;
+        return rolePos;
     }
 }

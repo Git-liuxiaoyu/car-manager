@@ -49,8 +49,9 @@ public class ShiroConfig {
          * 拦截规则
          */
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<String, String>();
-        filterChainDefinitionMap.put("/login", "anon");
+        filterChainDefinitionMap.put("/employee/login", "anon");
         filterChainDefinitionMap.put("/unauthenticated", "anon");
+        filterChainDefinitionMap.put("/**", "jwtAuthentication");
 
         // 【认证】靠 jwt-filter，【鉴权】靠注解。
 //        filterChainDefinitionMap.put("/**", "jwtAuthentication");

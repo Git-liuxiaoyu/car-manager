@@ -23,8 +23,9 @@ public class ResponseResult<T> {
     public static final ResponseResult<Void> NOTLOGINED = new ResponseResult<>(401, "未登录");
     public static final ResponseResult<Void> FORBIDDEN = new ResponseResult<>(403, "无权限");
     public static final ResponseResult<Void> FAIL = new ResponseResult<>(500, "操作失败");
-    public static final ResponseResult<Void> ADNE = new ResponseResult<>(101, "账号不存在");
+    public static final ResponseResult<Void> ADNE = new ResponseResult<>(101, "用户不存在");
     public static final ResponseResult<Void> WP = new ResponseResult<>(102, "密码错误");
+    public static final ResponseResult<Void> YZM = new ResponseResult<>(103, "验证码错误");
 
     public int getCode() {
         return code;

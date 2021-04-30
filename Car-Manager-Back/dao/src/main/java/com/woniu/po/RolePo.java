@@ -10,7 +10,7 @@ import lombok.Data;
  * @Description:
  */
 @Data
-public class Role {
+public class RolePo {
     private Integer id;
     private String name;
 }

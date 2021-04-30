@@ -1,0 +1,67 @@
+package com.woniu.controller;
+
+import com.woniu.jwt.JwtTokenUtil;
+import com.woniu.po.EmployeePo;
+import com.woniu.po.MenuPo;
+import com.woniu.service.EmployeeService;
+import com.woniu.util.ResponseResult;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.List;
+
+
+@RestController
+@CrossOrigin
+@RequestMapping("/employee")
+public class EmployeeController {
+
+    @Autowired
+    private EmployeeService employeeService;
+
+    @RequestMapping("/login")
+    public ResponseResult login(@RequestBody EmployeePo employee) throws Exception {
+        //查询账号密码
+        EmployeePo e = employeeService.getAccount(employee);
+        //从seesion中间取出验证码
+        if (e == null) {
+            return ResponseResult.ADNE;//账号不存在
+        } else if (!e.getPassword().equals(employee.getPassword())) {
+            return ResponseResult.WP;//密码不存在
+        } else {
+            String token = JwtTokenUtil.createSign(e.getName());
+            return new ResponseResult(200, token);//创建一个token，返回给客户端
+        }
+    }
+
+    @RequestMapping("/menu")
+    public ResponseResult<List<MenuPo>> menu(String token) {
+        //获取用户名
+        String name = JwtTokenUtil.getUserId(token);
+
+        List<MenuPo> mens = employeeService.mens(name);
+
+        List<MenuPo> menuPos = new ArrayList<>();//定义一个父列表的集合
+
+        for (MenuPo p : mens) {
+            if (p.getParentId() == null) {
+                menuPos.add(p);//满足需求的存进父集合列表
+            }
+        }
+
+        for(MenuPo p:menuPos){
+            List<MenuPo> er = new ArrayList<>();//放儿子的集合
+            for(MenuPo item : mens){
+                if (item.getParentId() == p.getId()) {//如果循环出来的Parentid等于我们的父列表的id
+                    er.add(item);
+                }
+            }
+            p.setChildren(er);
+        }
+        return new ResponseResult<List<MenuPo>>(menuPos);
+    }
+}

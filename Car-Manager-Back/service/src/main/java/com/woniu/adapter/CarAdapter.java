@@ -67,7 +67,7 @@ public class CarAdapter {
             //存入redis的缓存中
             carRedisDao.addRedisCarList(carList);
         }
-        //把dao的 RoleList RolePo --- 转成  List<Role>
+        //把dao的 RoleList RolePo --- 转成  List<RolePo>
         List<Car> cars = new ArrayList<Car>();
         for(Car car : carList) {
             Car item = new Car();

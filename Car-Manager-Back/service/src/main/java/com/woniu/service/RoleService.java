@@ -1,10 +1,10 @@
 package com.woniu.service;
 
 
-import com.woniu.po.Role;
+import com.woniu.po.RolePo;
 
 import java.util.List;
 
 public interface RoleService {
-    public List<Role> roles();
+    public List<RolePo> roles();
 }

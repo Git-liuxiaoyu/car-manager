@@ -1,10 +1,8 @@
 package com.woniu.service.impl;
 
 import com.woniu.adapter.RoleAdapter;
-import com.woniu.dao.RoleDao;
-import com.woniu.po.Role;
+import com.woniu.po.RolePo;
 import com.woniu.service.RoleService;
-import org.apache.coyote.Adapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +20,7 @@ public class RoleServiceImpl implements RoleService {
 
 
     @Override
-    public List<Role> roles() {
+    public List<RolePo> roles() {
 
         return roleAdapter.findRoleLists();
     }

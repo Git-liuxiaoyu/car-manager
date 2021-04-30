@@ -34,7 +34,7 @@ public class OppositeCompanyAdapter {
             //存入redis的缓存中
             oppositeCompanyRedisDao.addRedisUserList(OppositeList);
         }
-        //把dao的 RoleList RolePo --- 转成  List<Role>
+        //把dao的 RoleList RolePo --- 转成  List<RolePo>
         List<OppositeCompany> Roles = new ArrayList<OppositeCompany>();
         for(OppositeCompanyPo ocpo : OppositeList) {
             OppositeCompany item = new OppositeCompany();

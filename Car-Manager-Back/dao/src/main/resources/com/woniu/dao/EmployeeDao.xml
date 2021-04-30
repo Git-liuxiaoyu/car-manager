@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.woniu.dao.EmployeeDao">
+	<select id="list" resultType="EmployeePo">
+        select * from employee
+    </select>
+
+    <select id="getAccount" resultType="EmployeePo">
+        select * from employee where account=#{account}
+    </select>
+
+    <select id="mens" resultType="MenuPo">
+        select m.parentid,m.id,m.name,e.name userName from role r,role_menu rm,menu m,employee e,employee_role er
+        WHERE e.id=er.employeeId and er.roleId=r.id
+          and r.id=rm.roleId and rm.menuId=m.id and e.`name`=#{name} order by m.id
+    </select>
+</mapper>

@@ -29,7 +29,7 @@ public class DriverAdapter {
             //存入redis的缓存中
             driverRedisDao.addRedisDriverList(driverList);
         }
-        //把dao的 RoleList RolePo --- 转成  List<Role>
+        //把dao的 RoleList RolePo --- 转成  List<RolePo>
         List<Driver> drivers = new ArrayList<Driver>();
         for(DriverPo driver : driverList) {
             Driver item = new Driver();

@@ -1,6 +1,6 @@
 package com.woniu.dao;
 
-import com.woniu.po.Role;
+import com.woniu.po.RolePo;
 
 import java.util.List;
 
@@ -12,5 +12,5 @@ import java.util.List;
  * @Description:
  */
 public interface RoleDao {
-    public List<Role> roles();
+    public List<RolePo> roles();
 }

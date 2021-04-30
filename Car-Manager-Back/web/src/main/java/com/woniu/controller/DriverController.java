@@ -20,7 +20,7 @@ public class DriverController {
 
     @RequestMapping("/list")
     public List<Driver> list(){
-//        List<Role> roles = roleService.roles();
+//        List<RolePo> roles = roleService.roles();
         List<Driver> drivers = driverService.driverList();
 //        List<DriverPo> driverPos = driverService.driverList();
         return drivers;
@@ -29,7 +29,7 @@ public class DriverController {
 
     @RequestMapping("/addDriver")
     public ResponseResult add(){
-//        List<Role> roles = roleService.roles();
+//        List<RolePo> roles = roleService.roles();
 //        List<Driver> drivers = driverService.driverList();
         Driver driver = new Driver();
         driver.setDriverNum("123");
@@ -43,7 +43,7 @@ public class DriverController {
 
     @RequestMapping("/updated")
     public ResponseResult updated(){
-//        List<Role> roles = roleService.roles();
+//        List<RolePo> roles = roleService.roles();
 //        List<Driver> drivers = driverService.driverList();
         Driver driver = new Driver();
         driver.setId(1);
