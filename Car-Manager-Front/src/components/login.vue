@@ -64,20 +64,14 @@ export default {
           //跳转路由
           this.$router.push("/home");
           this.$message.success("登入成功");
-        }else if(r.data.code == 101){
+        } else if (r.data.code == 101) {
           this.$message.error("用户不存在");
-        }else if (r.data.code == 102) {
+        } else if (r.data.code == 102) {
           this.$message.error("密码错误");
         }
       })
     }
   },
-  // created() {
-  //   this.$axios.get("employee/captcha").then(r => {
-  //     .src =r.data;
-  //     console.log(r)
-  //   })
-  // },
 }
 </script>
 

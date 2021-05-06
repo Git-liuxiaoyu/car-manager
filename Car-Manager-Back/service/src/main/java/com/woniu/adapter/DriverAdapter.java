@@ -3,7 +3,9 @@ package com.woniu.adapter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woniu.dao.DriverDao;
 import com.woniu.domain.Driver;
+import com.woniu.domain.Employee;
 import com.woniu.po.DriverPo;
+import com.woniu.po.EmployeePo;
 import com.woniu.redis.DriverRedisDao;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +35,10 @@ public class DriverAdapter {
         List<Driver> drivers = new ArrayList<Driver>();
         for(DriverPo driver : driverList) {
             Driver item = new Driver();
+            Employee employee = new Employee();
+            BeanUtils.copyProperties(driver.getEmployeePo(), employee);
             BeanUtils.copyProperties(driver, item);
+            item.setEmployee(employee);
             drivers.add(item);
         }
         return drivers;
@@ -84,4 +89,13 @@ public class DriverAdapter {
         }
         return 1;
     }
+
+    public EmployeePo getEmployee(String name){
+        return driverDao.getEmployee(name);
+    }
+
+    public int updateRole(Integer employeeId){
+        return driverDao.updateRole(employeeId);
+    }
+
 }

@@ -22,7 +22,8 @@ let router = new Router({
         {path: '/roleManager', component: () => import('@/components/role/roleManager')},
         {path: '/homePage', component: () => import('@/components/hemo')},
         {path: '/car', component: () => import('@/components/baseSetting/car/car')},
-        {path: '/opposite', component: () => import('@/components/baseSetting/oppositeCompany.vue')},
+        {path: '/opposite', component: () => import('@/components/baseSetting/opposite/oppositeCompany')},
+        {path: '/driver', component: () => import('@/components/baseSetting/driver/driver')},
       ]
     },
 

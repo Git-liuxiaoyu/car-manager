@@ -1,6 +1,8 @@
 package com.woniu.dao;
 
 import com.woniu.po.DriverPo;
+import com.woniu.po.EmployeePo;
+
 import java.util.List;
 
 public interface DriverDao {
@@ -15,4 +17,10 @@ public interface DriverDao {
 //
     // 删除驾驶员信息
     int delDriver(Integer id);
+
+    //获得员工信息
+    EmployeePo getEmployee(String name);
+
+    int updateRole(Integer employeeId);
+
 }
