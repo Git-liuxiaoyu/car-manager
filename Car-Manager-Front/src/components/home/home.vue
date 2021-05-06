@@ -11,7 +11,7 @@
         </span>
       </el-col>
       <el-col :span="8" class="l-head-youbian">
-        <span class="span2" v-text="">
+        <span class="span2">
           欢迎您&nbsp;&nbsp;<span v-text="userNamer"></span>&nbsp;&nbsp;&nbsp;
           <el-tooltip placement="top">
                   <div slot="content">退出</div>
@@ -28,14 +28,19 @@
         <!-- 中左 -->
         <!-- default-active默认显示高亮 -->
         <el-aside width="200px" class="main">
-          <el-menu class="el-menu-vertical-demo" :router="true" background-color="#edfff3" :unique-opened="true">
+          <el-menu class="el-menu-vertical-demo" :router="true" background-color="#edfff3" :unique-opened="true"
+                   default-active="0">
+            <el-menu-item index="0">
+              <i class="el-icon-s-home"></i> 
+              <span slot="title">首页</span>
+            </el-menu-item>
             <el-submenu :index="item.id+''" v-for="item in menu" :key="item.id">
               <template slot="title">
                 <i class="el-icon-menu"></i>
                 <span>{{ item.name }}</span>
               </template>
               <el-menu-item-group>
-                <el-menu-item :index="son.link" v-for="son in item.children" :key="son.id">{{son.name}}</el-menu-item>
+                <el-menu-item :index="son.href" v-for="son in item.children" :key="son.id">{{son.name}}</el-menu-item>
               </el-menu-item-group>
             </el-submenu>
           </el-menu>

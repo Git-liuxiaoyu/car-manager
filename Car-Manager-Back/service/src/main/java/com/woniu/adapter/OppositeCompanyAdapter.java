@@ -89,4 +89,18 @@ public class OppositeCompanyAdapter {
         //修改redis的值
         oppositeCompanyRedisDao.addRedisUserList(list);
     }
+
+
+    /**
+     * 根据id查询往来单位
+     * @param ocpo
+     * @return
+     */
+    public OppositeCompanyPo findbyid(OppositeCompanyPo ocpo) {
+        OppositeCompanyPo findbyid = oppositeCompanyDao.findbyid(ocpo);
+
+
+
+        return findbyid;
+    }
 }

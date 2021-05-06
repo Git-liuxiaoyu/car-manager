@@ -53,4 +53,9 @@ public class OppositeCompanyServiceimpl implements OppositeCompanyService {
     public int delete(OppositeCompanyPo ocpo) {
         return oppositeCompanyAdapter.delete(ocpo);
     }
+
+    @Override
+    public OppositeCompanyPo findbyid(OppositeCompanyPo ocpo) {
+        return oppositeCompanyAdapter.findbyid(ocpo);
+    }
 }

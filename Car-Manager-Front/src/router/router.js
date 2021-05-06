@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
+
+
 Vue.use(Router)
 
 let router = new Router({
@@ -16,8 +18,14 @@ let router = new Router({
     },
     {
       path: '/home',
-      component: () => import('@/components/home/home'),
+      component: () => import('@/components/home/home'),children:[
+        {
+          path:'/opposite',
+          component:()=>import('@/components/baseSetting/oppositeCompany.vue')
+        },
+      ]
     },
+    
   ]
 })
 export default router;
