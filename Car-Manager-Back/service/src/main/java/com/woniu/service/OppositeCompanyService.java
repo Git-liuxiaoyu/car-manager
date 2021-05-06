@@ -21,4 +21,12 @@ public interface OppositeCompanyService {
 
     //删除
     int delete(OppositeCompanyPo ocpo);
+
+
+    /**
+     * 根据id查询详情
+     * @param ocpo
+     * @return
+     */
+    OppositeCompanyPo findbyid(OppositeCompanyPo ocpo);
 }

@@ -31,6 +31,7 @@
                    default-active="homePage">
             <el-menu-item index="homePage">
               <i class="el-icon-s-home"></i>
+
               <span slot="title">首页</span>
             </el-menu-item>
             <el-submenu :index="item.id+''" v-for="item in menu" :key="item.id">

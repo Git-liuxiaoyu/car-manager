@@ -35,6 +35,12 @@ public interface OppositeCompanyDao {
      */
     int delete(OppositeCompanyPo ocpo);
 
+    /**
+     * 根据id查询详情
+     * @param ocpo
+     * @return
+     */
+    OppositeCompanyPo findbyid(OppositeCompanyPo ocpo);
 
 
 }
