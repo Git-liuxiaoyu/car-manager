@@ -17,11 +17,15 @@ import java.util.List;
 public interface EmployeeDao {
 
     //员工表查询
-    List<EmployeePo> list(EmployeePo employeePo);
+    List<EmployeePo> list(String searchText);
 
     //根据账号密码查询
     EmployeePo  getAccount(EmployeePo employeePo);
 
     //查询用户名的权限
     List<MenuPo> mens(String name);
+
+    int count(String searchText);
+
+    void del(Integer id);
 }

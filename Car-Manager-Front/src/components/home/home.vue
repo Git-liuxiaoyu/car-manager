@@ -11,7 +11,7 @@
         </span>
       </el-col>
       <el-col :span="8" class="l-head-youbian">
-        <span class="span2" v-text="">
+        <span class="span2">
           欢迎您&nbsp;&nbsp;<span v-text="userNamer"></span>&nbsp;&nbsp;&nbsp;
           <el-tooltip placement="top">
                   <div slot="content">退出</div>
@@ -28,19 +28,23 @@
         <!-- 中左 -->
         <!-- default-active默认显示高亮 -->
         <el-aside width="200px" class="main">
-          <el-menu class="el-menu-vertical-demo" :router="true" background-color="#edfff3" :unique-opened="true">
+          <el-menu class="el-menu-vertical-demo" :router="true" background-color="#edfff3" :unique-opened="true"
+                   default-active="homePage">
+            <el-menu-item index="homePage">
+              <i class="el-icon-s-home"></i>
+              <span slot="title">首页</span>
+            </el-menu-item>
             <el-submenu :index="item.id+''" v-for="item in menu" :key="item.id">
               <template slot="title">
                 <i class="el-icon-menu"></i>
                 <span>{{ item.name }}</span>
               </template>
               <el-menu-item-group>
-                <el-menu-item :index="son.link" v-for="son in item.children" :key="son.id">{{son.name}}</el-menu-item>
+                <el-menu-item :index="son.href" v-for="son in item.children" :key="son.id">{{son.name}}</el-menu-item>
               </el-menu-item-group>
             </el-submenu>
           </el-menu>
         </el-aside>
-
 
         <!-- 中右 -->
         <el-main class="main">
@@ -49,10 +53,10 @@
 
       </el-container>
 
-      <!-- 底部 -->
-      <el-footer class="el-footer" height="60px">
-        <h3 id="h2">2021 &copy;版权所有&nbsp;蜗牛学院</h3>
-      </el-footer>
+<!--      &lt;!&ndash; 底部 &ndash;&gt;-->
+<!--      <el-footer class="el-footer" height="60px">-->
+<!--        <h3 id="h2">2021 &copy;版权所有&nbsp;蜗牛学院</h3>-->
+<!--      </el-footer>-->
     </el-container>
   </div>
 </template>

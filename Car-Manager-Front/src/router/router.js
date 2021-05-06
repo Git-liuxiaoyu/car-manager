@@ -17,6 +17,10 @@ let router = new Router({
     {
       path: '/home',
       component: () => import('@/components/home/home'),
+      children: [
+        {path: '/roleManager', component: () => import('@/components/role/roleManager')},
+        {path: '/homePage', component: () => import('@/components/hemo')},
+      ]
     },
   ]
 })

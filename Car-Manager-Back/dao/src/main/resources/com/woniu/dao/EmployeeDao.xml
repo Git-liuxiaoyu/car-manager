@@ -5,6 +5,11 @@
 <mapper namespace="com.woniu.dao.EmployeeDao">
 	<select id="list" resultType="EmployeePo">
         select * from employee
+        <where>
+            <if test="searchText!=null and searchText!='' ">
+                name like concat('%',#{searchText},'%')
+            </if>
+        </where>
     </select>
 
     <select id="getAccount" resultType="EmployeePo">
@@ -12,8 +17,21 @@
     </select>
 
     <select id="mens" resultType="MenuPo">
-        select m.parentid,m.id,m.name,e.name userName from role r,role_menu rm,menu m,employee e,employee_role er
+        select m.href,m.parentid,m.id,m.name,e.name userName from role r,role_menu rm,menu m,employee e,employee_role er
         WHERE e.id=er.employeeId and er.roleId=r.id
           and r.id=rm.roleId and rm.menuId=m.id and e.`name`=#{name} order by m.id
     </select>
+
+    <select id="count" parameterType="int" resultType="int">
+        select count(0) from employee
+        <where>
+            <if test="searchText!=null and searchText!='' ">
+                name like concat('%',#{searchText},'%')
+            </if>
+        </where>
+    </select>
+
+    <delete id="del" >
+        delete from employee where id=#{id}
+    </delete>
 </mapper>

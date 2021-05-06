@@ -1,11 +1,16 @@
 package com.woniu.controller;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.woniu.domain.Employee;
 import com.woniu.jwt.JwtTokenUtil;
 import com.woniu.po.EmployeePo;
 import com.woniu.po.MenuPo;
 import com.woniu.service.EmployeeService;
 import com.woniu.util.ResponseResult;
+import org.apache.catalina.Manager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,7 +32,6 @@ public class EmployeeController {
     public ResponseResult login(@RequestBody EmployeePo employee) throws Exception {
         //查询账号密码
         EmployeePo e = employeeService.getAccount(employee);
-        //从seesion中间取出验证码
         if (e == null) {
             return ResponseResult.ADNE;//账号不存在
         } else if (!e.getPassword().equals(employee.getPassword())) {
@@ -63,5 +67,28 @@ public class EmployeeController {
             p.setChildren(er);
         }
         return new ResponseResult<List<MenuPo>>(menuPos);
+    }
+
+    @RequestMapping("/list")
+    public ResponseResult<PageInfo<Employee>> employeeList(Integer p, String searchText,Integer size) {
+        int pageIndex=1;
+        int pageSize=5;
+        if(p>=1){
+            pageIndex=p;
+        }
+        if(pageSize>=5){
+            pageSize=size;
+        }
+        Integer total=employeeService.count(searchText);
+        PageHelper.startPage(pageIndex,pageSize);
+        List<Employee> employeeList = employeeService.findAll(searchText,pageIndex,pageSize);
+        PageInfo<Employee> pageInfo = new PageInfo<>(employeeList);
+        pageInfo.setTotal(total);
+        return new ResponseResult<>(pageInfo);
+    }
+
+    @RequestMapping("/del")
+    public void employeeDel(Integer id){
+        employeeService.delById(id);
     }
 }

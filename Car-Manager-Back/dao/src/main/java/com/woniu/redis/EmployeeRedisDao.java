@@ -12,6 +12,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
@@ -26,28 +27,47 @@ public class EmployeeRedisDao {
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
 
-    public List<EmployeePo> list() {
+    public List<EmployeePo> list(int pageIndex, String searchText,int pageSize) {
         List<EmployeePo> employeeList = new ArrayList<>();
-        BoundValueOperations<String, String> boundValueOps = redisTemplate.boundValueOps("employeeList");
+
+        String key = "employeeList" + pageIndex+pageSize;
+        if (searchText != null && !searchText.equals("")) {
+            key += searchText;
+        }
+
+        BoundValueOperations<String, String> boundValueOps = redisTemplate.boundValueOps(key);
         String dataStr = boundValueOps.get();
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             if (!StringUtils.isEmpty(dataStr)) {
                 System.out.println("从redis缓存中取数据");
-                employeeList = objectMapper.readValue(dataStr, new TypeReference<List<EmployeePo>>() { });
+                employeeList = objectMapper.readValue(dataStr, new TypeReference<List<EmployeePo>>() {
+                });
             }
-        } catch (Exception ex) {  }
+        } catch (Exception ex) {
+        }
         return employeeList;
     }
 
-    //更新redis
-    public void addRedisEmployeeList(List<EmployeePo> lists) {
+    //将查询的数据存入redis中
+    public void addRedisEmployeeList(List<EmployeePo> employeeList, int pageIndex, String searchText,int pageSize) {
         ObjectMapper objectMapper = new ObjectMapper();
-        BoundValueOperations<String, String> boundValueOps = redisTemplate.boundValueOps("employeeList");
+        String key = "employeeList" + pageIndex+pageSize;
+        if (searchText != null && !searchText.equals("")) {
+            key += searchText;
+        }
+        BoundValueOperations<String, String> boundValueOps = redisTemplate.boundValueOps(key);
         try {
-            String temp = objectMapper.writeValueAsString(lists);
+            String temp = objectMapper.writeValueAsString(employeeList);
             //3、然后把查到的结果存到redis里面
             boundValueOps.set(temp);
-        } catch (Exception exception) {  }
+        } catch (Exception exception) {
+        }
+    }
+
+    //清除redis的数据
+    public void updateRedis(){
+        Set<String> keys=redisTemplate.keys("employeeList*");
+        redisTemplate.delete(keys);
     }
 }

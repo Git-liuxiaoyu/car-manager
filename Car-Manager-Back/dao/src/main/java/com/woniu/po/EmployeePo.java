@@ -1,5 +1,6 @@
 package com.woniu.po;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 
 import java.util.Date;
@@ -23,8 +24,10 @@ public class EmployeePo {
     private String telephone;
     private String deptId;
     private String positionId;
+    @JSONField(format = "yyyy-MM-dd")
     private Date birthday;
     private String idCard;
+    @JSONField(format = "yyyy-MM-dd")
     private Date entryDate;
     private String address;
     private Integer status;

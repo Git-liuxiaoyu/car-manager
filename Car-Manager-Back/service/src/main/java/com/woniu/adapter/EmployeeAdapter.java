@@ -21,17 +21,16 @@ public class EmployeeAdapter {
     @Autowired
     private EmployeeRedisDao employeeRedisDao;
 
-    public List<Employee> findEmployeeLists(Employee employee) {
+
+    public List<Employee> findEmployeeLists(String searchText, int pageIndex,int pageSize) {
         //查询的list
-        List<EmployeePo> employeeList = employeeRedisDao.list();
+        List<EmployeePo> employeeList = employeeRedisDao.list(pageIndex, searchText,pageSize);
+
         if (employeeList.size() == 0) {
-            //对象转换
-            EmployeePo item = new EmployeePo();
-            BeanUtils.copyProperties(employee, item);
             //从数据库查数据
-            employeeList = employeeDao.list(item);
+            employeeList = employeeDao.list(searchText);
             //存入redis的缓存中
-            employeeRedisDao.addRedisEmployeeList(employeeList);
+            employeeRedisDao.addRedisEmployeeList(employeeList, pageIndex, searchText,pageSize);
         }
         //把dao的 RoleList RolePo --- 转成  List<RolePo>
         List<Employee> employees = new ArrayList<>();
@@ -41,5 +40,16 @@ public class EmployeeAdapter {
             employees.add(item);
         }
         return employees;
+    }
+
+    //查询总记录数
+    public int count(String searchText) {
+        return employeeDao.count(searchText);
+    }
+
+    //删除员工
+    public void del(Integer id) {
+        employeeDao.del(id);
+        employeeRedisDao.updateRedis();
     }
 }

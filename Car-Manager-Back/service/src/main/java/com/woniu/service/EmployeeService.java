@@ -12,4 +12,10 @@ public interface EmployeeService {
 
     //查询用户名的权限
     List<MenuPo> mens(String name);
+
+    List<Employee> findAll(String searchText,int pageIndex,int pageSize);
+
+    int count(String searchText);
+
+    void delById(Integer id);
 }

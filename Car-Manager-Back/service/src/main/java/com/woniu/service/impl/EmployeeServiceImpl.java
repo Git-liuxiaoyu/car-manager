@@ -2,6 +2,7 @@ package com.woniu.service.impl;
 
 import com.woniu.adapter.EmployeeAdapter;
 import com.woniu.dao.EmployeeDao;
+import com.woniu.domain.Employee;
 import com.woniu.po.EmployeePo;
 import com.woniu.po.MenuPo;
 import com.woniu.service.EmployeeService;
@@ -37,5 +38,22 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public List<MenuPo> mens(String name) {
         return employeeDao.mens(name);
+    }
+
+    //分页查询员工列表
+    @Override
+    public List<Employee> findAll(String searchText,int pageIndex,int pageSize) {
+
+        return employeeAdapter.findEmployeeLists(searchText,pageIndex,pageSize);
+    }
+
+    @Override
+    public int count(String searchText) {
+        return employeeAdapter.count(searchText);
+    }
+
+    @Override
+    public void delById(Integer id) {
+        employeeAdapter.del(id);
     }
 }
