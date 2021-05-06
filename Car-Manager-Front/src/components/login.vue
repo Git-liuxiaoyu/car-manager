@@ -98,7 +98,6 @@ export default {
   to {
     -webkit-filter: hue-rotate(360deg);
   }
-background-size: 100 %;
 }
 
 .subject {
