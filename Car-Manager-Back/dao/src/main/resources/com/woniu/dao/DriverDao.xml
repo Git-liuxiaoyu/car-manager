@@ -4,12 +4,31 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.woniu.dao.DriverDao">
 
-    <select id="findDriverList" resultType="DriverPo">
-        select * from driver
+    <resultMap type="DriverPo" id="driverPoResultMap">
+        <id column="id" property="id" />
+        <result column="driverNum" property="driverNum" />
+        <result column="type" property="type" />
+        <result column="status" property="status" />
+        <association property="employeePo" javaType="EmployeePo">
+            <id column="employeeId" property="id"/>
+            <result column="name" property="name"/>
+            <result column="deptId" property="deptId"/>
+            <result column="gender" property="gender"/>
+            <result column="telephone" property="telephone"/>
+            <result column="entryDate" property="entryDate"/>
+            <result column="address" property="address"/>
+            <result column="birthday" property="birthday"/>
+            <result column="idCard" property="idCard"/>
+        </association>
+
+    </resultMap>
+    <select id="findDriverList" resultMap="driverPoResultMap" >
+        --         select * from driver
+        select d.*,e.name, e.deptId,e.gender,e.telephone,e.entryDate,e.address,e.birthday,e.idCard from driver d , employee e,employee_role er where d.employeeId=e.id and er.employeeId=e.id and er.roleId=3
     </select>
 
     <insert id="addDriver" parameterType="DriverPo">
-        insert into driver(driverNum,type ,status,employeeId) values(#{driverNum},#{type },#{status},#{employeeId})
+        insert into driver(driverNum,type ,status,employeeId,remarks) values(#{driverNum},#{type },#{status},#{employeeId},#{remarks})
     </insert>
 
     <delete id="delDriver" parameterType="Integer">
@@ -25,5 +44,13 @@
         <if test="employeeId!=null and employeeId!=''" > employeeId = #{employeeId},</if>
     </set>
             where id = #{id}
+    </update>
+
+   <select id="getEmployee" resultType="EmployeePo">
+       select * from employee e,employee_role er where e.id=er.employeeId and e.name=#{name} and er.roleId!=3
+   </select>
+
+    <update id="updateRole" >
+        update employee_role set roleId=3 where employeeId=#{employeeId}
     </update>
 </mapper>

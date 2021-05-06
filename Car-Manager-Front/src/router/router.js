@@ -17,6 +17,9 @@ let router = new Router({
     {
       path: '/home',
       component: () => import('@/components/home/home'),
+      children: [
+        {path: '/driver', component: () => import('@/components/baseSetting/driver')},
+      ]
     },
   ]
 })

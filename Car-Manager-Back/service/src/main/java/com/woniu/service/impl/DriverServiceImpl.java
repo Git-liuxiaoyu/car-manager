@@ -2,6 +2,7 @@ package com.woniu.service.impl;
 
 import com.woniu.adapter.DriverAdapter;
 import com.woniu.domain.Driver;
+import com.woniu.po.EmployeePo;
 import com.woniu.service.DriverService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,6 +39,16 @@ public class DriverServiceImpl implements DriverService {
     @Override
     public int delDriver(Integer id) {
         return driverAdapter.delDriver(id);
+    }
+
+    @Override
+    public EmployeePo getEmployee(String name) {
+        return driverAdapter.getEmployee(name);
+    }
+
+    @Override
+    public int updateRole(Integer employeeId) {
+        return driverAdapter.updateRole(employeeId);
     }
 
 //    @Override
