@@ -38,7 +38,7 @@ public class ShiroConfig {
         //登录失败 跳转请求
         shiroFilterFactoryBean.setLoginUrl("/unauthenticated");
         //授权失败  跳转的请求
-        //shiroFilterFactoryBean.setUnauthorizedUrl("/user/unauthorized");
+        shiroFilterFactoryBean.setUnauthorizedUrl("/user/unauthorized");
 
         Map<String, Filter> filters = shiroFilterFactoryBean.getFilters();
         filters.put("anon", new AnonymousFilter());

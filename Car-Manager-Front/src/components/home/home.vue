@@ -11,8 +11,7 @@
         </span>
       </el-col>
       <el-col :span="8" class="l-head-youbian">
-        <span class="span2">
-          欢迎您&nbsp;&nbsp;<span v-text="userNamer"></span>&nbsp;&nbsp;&nbsp;
+        <span class="span2">欢迎您&nbsp;&nbsp;<span v-text="userNamer"></span>&nbsp;&nbsp;&nbsp;
           <el-tooltip placement="top">
                   <div slot="content">退出</div>
           <el-button type="danger" icon="el-icon-switch-button" circle @click.prevent="logout"></el-button>
@@ -53,10 +52,10 @@
 
       </el-container>
 
-<!--      &lt;!&ndash; 底部 &ndash;&gt;-->
-<!--      <el-footer class="el-footer" height="60px">-->
-<!--        <h3 id="h2">2021 &copy;版权所有&nbsp;蜗牛学院</h3>-->
-<!--      </el-footer>-->
+      <!--      &lt;!&ndash; 底部 &ndash;&gt;-->
+      <!--      <el-footer class="el-footer" height="60px">-->
+      <!--        <h3 id="h2">2021 &copy;版权所有&nbsp;蜗牛学院</h3>-->
+      <!--      </el-footer>-->
     </el-container>
   </div>
 </template>
@@ -66,17 +65,17 @@ export default {
   data() {
     return {
       menu: [],
-      userNamer:''
+      userNamer: ''
     }
   },
   methods: {
-    add(){
+    add() {
       alert(12)
     },
     findPerms() {
       this.$axios.get("employee/menu?token=" + localStorage.getItem("token")).then(r => {
         this.menu = r.data.data;
-        this.userNamer=this.menu[0].userName
+        this.userNamer = this.menu[0].userName
         console.log(this.menu)
       })
     },

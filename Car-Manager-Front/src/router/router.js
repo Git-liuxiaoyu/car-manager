@@ -20,6 +20,7 @@ let router = new Router({
       children: [
         {path: '/roleManager', component: () => import('@/components/role/roleManager')},
         {path: '/homePage', component: () => import('@/components/hemo')},
+        {path: '/car', component: () => import('@/components/baseSetting/car/car')},
       ]
     },
   ]
