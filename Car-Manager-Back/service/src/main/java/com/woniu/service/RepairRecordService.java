@@ -10,15 +10,16 @@ import java.util.List;
 public interface RepairRecordService {
 
     //查询维修信息
-    List<RepairRecord> findList();
+    List<RepairRecord> list(String searchText,int pageIndex,int pageSize);
 
     //添加维修信息
-    int add(RepairRecord repairRecord);
+    void add(RepairRecord repairRecord);
     //
     //修改维修信息
-    int update(RepairRecord repairRecord);
-    //
+    void update(RepairRecord repairRecord);
+
+    int count(String searchText);
     // 删除维修信息
-    int delete(Integer id);
+    void delete(Integer id);
 
 }

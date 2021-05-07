@@ -1,12 +1,16 @@
 package com.woniu.controller;
 
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.woniu.domain.RepairRecord;
 import com.woniu.domain.RepairRecord;
 import com.woniu.service.RepairRecordService;
 import com.woniu.service.RepairRecordService;
 import com.woniu.util.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,61 +19,45 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/repairRecord")
+@CrossOrigin
 public class RepairRecordController {
 
     @Autowired
     private RepairRecordService repairRecordService;
 
-
     @RequestMapping("/list")
-    public List<RepairRecord> list(){
-
-        List<RepairRecord> repairRecordList = repairRecordService.findList();
-
-        return repairRecordList;
-
+    public ResponseResult<PageInfo<RepairRecord>> list(Integer p, String searchText, Integer size) {
+        int pageIndex=1;
+        int pageSize=5;
+        if(p>=1){
+            pageIndex=p;
+        }
+        if(pageSize>=5){
+            pageSize=size;
+        }
+        Integer total=repairRecordService.count(searchText);
+        PageHelper.startPage(pageIndex,pageSize);
+        List<RepairRecord> repairRecordList = repairRecordService.list(searchText,pageIndex,pageSize);
+        PageInfo<RepairRecord> pageInfo = new PageInfo<>(repairRecordList);
+        pageInfo.setTotal(total);
+        return new ResponseResult<>(pageInfo);
     }
 
     @RequestMapping("/add")
-    public ResponseResult add(){
-//        List<Role> roles = roleService.roles();
-//        List<Driver> drivers = driverService.driverList();
-        RepairRecord repairRecord = new RepairRecord();
-        repairRecord.setDriverId(1);
-        repairRecord.setCarId(1);
-        repairRecord.setOppositeCompanyId(1);
-        repairRecord.setSendTime("2021-4-5 12:00:00");
-        repairRecord.setPreGetTime("2021-4-10 12:00:00");
-        repairRecord.setReason("车灯损坏");
+    public ResponseResult add(@RequestBody RepairRecord repairRecord){
         repairRecordService.add(repairRecord);
         return ResponseResult.SUCCESS;
-
     }
 
     @RequestMapping("/update")
-    public ResponseResult updated(){
-//        List<Role> roles = roleService.roles();
-//        List<Driver> drivers = driverService.driverList();
-        RepairRecord repairRecord = new RepairRecord();
-        repairRecord.setDriverId(1);
-        repairRecord.setOppositeCompanyId(1);
-        repairRecord.setSendTime("2021-4-5 12:00:00");
-        repairRecord.setPreGetTime("2021-4-10 12:00:00");
-        repairRecord.setReason("车尾损坏");
-        repairRecord.setRemarks("无");
-        repairRecord.setId(1);
+    public ResponseResult updated(@RequestBody RepairRecord repairRecord){
         repairRecordService.update(repairRecord);
         return ResponseResult.SUCCESS;
-
     }
-
-    @RequestMapping("delete")
-    public ResponseResult delete(){
-
-        repairRecordService.delete(1);
+    @RequestMapping("/delete")
+    public ResponseResult delete(Integer id){
+        repairRecordService.delete(id);
         return ResponseResult.SUCCESS;
     }
-
-
 
 }

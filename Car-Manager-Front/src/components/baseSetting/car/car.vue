@@ -8,8 +8,8 @@
     <br/>
     <el-row :gutter="20">
       <el-col :span="6">
-        <el-input placeholder="请输入车牌号码" v-model="name" class="input-with-select">
-          <el-button slot="append" icon="el-icon-search"></el-button>
+        <el-input placeholder="请输入车牌号码" v-model="searchText" class="input-with-select">
+          <el-button slot="append" icon="el-icon-search" @click="loadCars"></el-button>
         </el-input>
       </el-col>
       <el-col :span="18">
@@ -70,11 +70,15 @@
     <br/>
 
     <el-row>
-      <el-col :span="10" :push="6">
+      <el-col :span="10" :push="8">
         <el-pagination
-          background
-          layout="prev, pager, next"
-          :total="1000">
+          @size-change="handleSizeChange"
+          @current-change="changeCurrentPage"
+          :current-page="p"
+          :page-sizes="[5, 10, 15, 20]"
+          :page-size="size"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="total">
         </el-pagination>
       </el-col>
     </el-row>
@@ -516,8 +520,9 @@ export default {
   data() {
     return {
       totalCount: 0,
-      pageIndex: 1,
+      p: 1,
       searchText: "",
+      size:5,
       carData: [
         {
           id: "",
@@ -529,7 +534,6 @@ export default {
           deptId: "",
           carStatus: "",
           status: "",
-          carNum: ""
         }
       ],
       car: {},
@@ -599,37 +603,26 @@ export default {
   },
   methods: {
     //携带token 自定义请求头
-    loadCars(seacheText = "", pageIndex = 1) {
-      this.searchText = seacheText;
-      this.pageIndex = pageIndex;
-      this.$axios
-        .get("car/list", {
-          params: {
-            pageIndex: this.pageIndex,
-            pageSize: 5,
-            searchText: this.searchText
-          }
-        })
-        .then(res => {
-          console.log(res);
-          //获取分页数据
-          this.carData = res.data.data;
-          //   //获取当前页
-          //   this.pageIndex = res.data.data;
-          //   //获取总记录数
-          //   this.totalCount = res.data.data;
-        });
+    loadCars() {
+      this.$axios.get("car/list", {params: {p: this.p, searchText: this.searchText, size: this.size}}).then(r => {
+        this.carData = r.data.data.list
+        this.total = r.data.data.total
+      })
     },
     //修改当前页码 触发的事件方法
     changeCurrentPage(curpage) {
-      this.pageIndex = curpage;
-      this.loadCars(this.searchText, this.pageIndex);
+      this.p = curpage;
+      this.loadCars();
+    },
+    handleSizeChange(val) {
+      this.size = val;
+      this.loadCars();
     },
 
     //根据车牌号码去查询  而且要分页
     startQuery() {
-      this.pageIndex = 1;
-      this.loadCars(this.searchText, this.pageIndex);
+      this.p = 1;
+      this.loadCars();
     },
 
     //打开车辆对话框 添加车辆的
@@ -648,7 +641,7 @@ export default {
           });
           this.addDialogFormVisible = false;
           //重新加载页面
-          this.loadCars("", 1);
+          this.loadCars();
         }
       });
     },
@@ -721,33 +714,27 @@ export default {
           });
           this.dialogEditCarVisible = false;
           //重新加载页面
-          this.loadCars("", 1);
+          this.loadCars();
         }
       });
     },
     //删除车辆
     delCar(id) {
-      this.$axios.post("car/delete?id=" + id).then(res => {
-        if (res.data.code == 200) {
-          this.$message({
-            type: "success",
-            message: "删除成功",
-            duration: 800
-          });
+     this.$confirm("此操作将删除该车辆,是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(res => {
+        this.$axios.post("car/delete?id=" + id).then(r => {
+          this.p=1,
           //重新加载页面
-          this.loadCars("", 1);
-        }
-        if (res.data.code == 403) {
-          this.$message({
-            type: "warning",
-            message: "权限不足",
-            duration: 800
-          });
-          //重新加载页面
-          this.loadCars("", 1);
-        }
-      });
-    }
+          this.loadCars();
+          this.$message.success("删除成功");
+        })
+      }).catch(res => {
+        this.$message.info("取消删除");
+      })
+    },
   },
   created() {
     this.loadCars();

@@ -1,6 +1,6 @@
 package com.woniu.adapter;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.woniu.dao.CarDao;
 import com.woniu.domain.Car;
 import com.woniu.po.CarPo;
@@ -20,59 +20,77 @@ import java.util.List;
 public class CarAdapter {
     @Autowired
     private CarDao carDao;
+
     @Autowired
     private CarRedisDao carRedisDao;
-
-    // 添加
-    public int add(CarPo carPo){
-        // 向数据库里添加car
-        int n = carDao.add(carPo);
-        // 从数据里查出所有car
-        List<CarPo> carList = carDao.carList();
-        //存入redis的缓存中
-        carRedisDao.addRedisCarList(carList);
-        return n;
-    }
-    // 修改
-    public int update(CarPo carPo){
-        int n = carDao.update(carPo);
-        // 从数据里查出所有car
-        List<CarPo> carList = carDao.carList();
-        //存入redis的缓存中
-        carRedisDao.addRedisCarList(carList);
-        return n;
-    }
-    // 删除
-    public int delete(CarPo car){
-        int n = carDao.delete(car);
-        // 从数据里查出所有car
-        List<CarPo> carList = carDao.carList();
-        //存入redis的缓存中
-        carRedisDao.addRedisCarList(carList);
-        return n;
-    }
-    // 根据id查
-    public CarPo findById(CarPo car){
-        return carDao.findById(car);
-    }
-    // 查询
-    public List<CarPo> findCarList(){
-        List<CarPo> carList = carRedisDao.list();
-        ObjectMapper objectMapper = new ObjectMapper();
-        if(carList.size() == 0){
-            //从数据库查数据
-            carList = carDao.carList();
-            //存入redis的缓存中
-            carRedisDao.addRedisCarList(carList);
-        }
-
-        //把dao的 RoleList RolePo --- 转成  List<Role>
-        List<CarPo> cars = new ArrayList<CarPo>();
-        for(CarPo carPo : carList) {
-            CarPo item = new CarPo();
-            BeanUtils.copyProperties(carPo, item);
+    public List<Car> getAll(){
+        List<CarPo> carList = carDao.getAll();
+        List<Car> cars = new ArrayList<>();
+        for (CarPo e : carList) {
+            Car item = new Car();
+            BeanUtils.copyProperties(e, item);
             cars.add(item);
         }
-        return cars ;
+        return cars;
     }
+    public List<Car> list(String searchText, int pageIndex,int pageSize) {
+        //查询的list
+        List<CarPo> carList = carRedisDao.list(pageIndex, searchText,pageSize);
+
+        if (carList.size() == 0) {
+            //从数据库查数据
+            carList = carDao.list(searchText);
+            //存入redis的缓存中
+            carRedisDao.addRedisCarList(carList, pageIndex, searchText,pageSize);
+        }
+        //把dao的 RoleList RolePo --- 转成  List<RolePo>
+        List<Car> cars = new ArrayList<>();
+        for (CarPo e : carList) {
+            Car item = new Car();
+            BeanUtils.copyProperties(e, item);
+            cars.add(item);
+        }
+        return cars;
+    }
+
+    //查询总记录数
+    public int count(String searchText) {
+        return carDao.count(searchText);
+    }
+
+    /**
+     * 删除加油信息
+     * @param id
+     * @return
+     */
+    public void delete(Integer id) {
+        carDao.delete(id);
+        carRedisDao.updateRedis();
+    }
+
+
+    /**
+     * 添加驾驶员档案
+     * @param car
+     * @return
+     */
+    public void add(Car car){
+        CarPo item = new CarPo();
+        BeanUtils.copyProperties(car, item);
+        carDao.add(item);
+        carRedisDao.updateRedis();
+    }
+    /**
+     * 修改加油信息
+     * @param car
+     * @return
+     */
+    public void update(Car car){
+
+        CarPo item = new CarPo();
+        BeanUtils.copyProperties(car, item);
+        carDao.update(item);
+        carRedisDao.updateRedis();
+    }
+
 }

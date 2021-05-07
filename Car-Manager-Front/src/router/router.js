@@ -25,6 +25,7 @@ let router = new Router({
         {path: '/opposite', component: () => import('@/components/baseSetting/opposite/oppositeCompany')},
         {path: '/driver', component: () => import('@/components/baseSetting/driver/driver')},
         {path: '/dictionary', component: () => import('@/components/baseSetting/dictionary/dictionary.vue')},
+        {path: '/repairRecord', component: () => import('@/components/dailyProcess/repairRecord/repairRecord')},
       ]
     },
 

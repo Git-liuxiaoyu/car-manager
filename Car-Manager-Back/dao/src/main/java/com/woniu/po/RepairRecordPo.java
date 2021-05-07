@@ -2,6 +2,8 @@ package com.woniu.po;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 @Data
 public class RepairRecordPo {
 
@@ -13,4 +15,10 @@ public class RepairRecordPo {
      private String reason;
      private String remarks;
      private Integer driverId;
+     private String getTime;
+     private BigDecimal repairFee;
+     private Integer repairType;
+     private String repairItem;
+     private String useGoods;
+     private String carNum;
 }
