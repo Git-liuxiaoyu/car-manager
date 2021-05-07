@@ -26,7 +26,7 @@ let router = new Router({
         {path: '/driver', component: () => import('@/components/baseSetting/driver/driver')},
         {path: '/dictionary', component: () => import('@/components/baseSetting/dictionary/dictionary.vue')},
         {path: '/repairRecord', component: () => import('@/components/dailyProcess/repairRecord/repairRecord')},
-        {path: '/oilrecord', component: () => import('@/components/baseSetting/oilrecord/oilrecord')},
+        {path: '/oilrecord', component: () => import('@/components/dailyProcess/oilrecord/oilrecord')},
         {path: '/fee', component: () => import('@/components/dailyProcess/fee/fee')},
       ]
     },
