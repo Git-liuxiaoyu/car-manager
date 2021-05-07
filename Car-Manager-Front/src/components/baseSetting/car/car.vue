@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-breadcrumb separator="/">
-      <el-breadcrumb-item :to="{ path: 'homePage' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: 'index' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>基础设置</el-breadcrumb-item>
       <el-breadcrumb-item>车辆档案</el-breadcrumb-item>
     </el-breadcrumb>
@@ -40,13 +40,13 @@
         </el-table-column>
         <el-table-column fixed prop="deptId" label="部门" width="100">
 
-        </el-table-column>    
+        </el-table-column>
         <el-table-column fixed prop="carStatus" label="车辆状态" width="100">
 
-        </el-table-column>  
+        </el-table-column>
         <el-table-column fixed prop="status" label="是否启用" width="100">
 
-        </el-table-column>  
+        </el-table-column>
         <el-table-column  label="操作" >
             <!-- element ui  table表格的自定义列 -->
             <template slot-scope="scope">
@@ -56,15 +56,15 @@
                 ></el-button>
                 <el-button type="primary" icon="el-icon-share" circle plain
                     @click="ManageCarImgDialog(scope.row)"
-                ></el-button>   
+                ></el-button>
                 <el-button type="primary" icon="el-icon-view" circle plain
                     @click="showCarView(scope.row)"
-                ></el-button>            
+                ></el-button>
                 <el-button type="danger" icon="el-icon-delete" circle plain
                     @click="delCar(scope.row.id)"
                 ></el-button>
             </template>
-        </el-table-column>                   
+        </el-table-column>
       </el-table>
     </template>
     <br/>
@@ -78,11 +78,11 @@
         </el-pagination>
       </el-col>
     </el-row>
-     <!-- 添加车辆 对话框 
+     <!-- 添加车辆 对话框
     :visible 是否显示对话框，如果 dialogFormVisible：true 就显示  否则就不显示
     rules 就是表单每项的数据校验  ref  就是将来可以通过 this.$ref.addCar
     el-form-item :就是el-form表单里面的每项-->
-    <el-dialog title="添加车辆" :visible.sync="addDialogFormVisible" 
+    <el-dialog title="添加车辆" :visible.sync="addDialogFormVisible"
         ref = "addCar" center width="80%">
         <el-form :model="insertCar" label-width="150px">
             <el-row :gutter="20">
@@ -104,7 +104,7 @@
                      </el-form-item>
                 </el-col>
                 <el-col :span="6">
-                    <el-form-item label="型号：" prop="type">  
+                    <el-form-item label="型号：" prop="type">
                         <el-select v-model="value" placeholder="请选择">
                             <el-option
                             v-for="item in options"
@@ -233,7 +233,7 @@
                  </el-form-item>
             </el-col>
             </el-row>
-        </el-form> 
+        </el-form>
         <div slot="footer" class="dialog-footer">
             <el-button @click="addDialogFormVisible = false">取 消</el-button>
             <el-button type="primary" @click="addCar()">确 定</el-button>
@@ -261,7 +261,7 @@
                     </el-form-item>
                 </el-col>
                 <el-col :span="6">
-                    <el-form-item label="型号：" prop="type">  
+                    <el-form-item label="型号：" prop="type">
                         <el-select v-model="value" placeholder="请选择">
                             <el-option
                             v-for="item in options"
@@ -380,9 +380,9 @@
                         <el-radio v-model="radio" label="1">启用</el-radio>
                         <el-radio v-model="radio" label="2">禁用</el-radio>
                     </el-form-item>
-                </el-col>       
+                </el-col>
             </el-row>
-        </el-form> 
+        </el-form>
         <div slot="footer" class="dialog-footer">
         <el-button @click="dialogEditCarVisible = false">取 消</el-button>
         <el-button type="primary" @click="updateCar">确 定</el-button>
@@ -406,7 +406,7 @@
             <el-form-item label="描述：" prop="status">
                 <el-input v-model="editCar.remarks"></el-input>
             </el-form-item>
-        </el-form> 
+        </el-form>
         <div slot="footer" class="dialog-footer">
         <el-button @click="manageCarImgVisible = false">取 消</el-button>
         <el-button type="primary" @click="updateCar">确 定</el-button>
@@ -427,7 +427,7 @@
                     </el-form-item>
                 </el-col>
                 <el-col :span="6">
-                    <el-form-item label="型号：" prop="type">  
+                    <el-form-item label="型号：" prop="type">
                        {{viewCar.type}}
                     </el-form-item>
                 </el-col>
@@ -505,9 +505,9 @@
                     <el-form-item label="状态：" prop="status">
                         {{viewCar.status}}
 					</el-form-item>
-                </el-col>       
+                </el-col>
             </el-row>
-        </el-form> 
+        </el-form>
     </el-dialog>
   </div>
 </template>

@@ -19,11 +19,12 @@ let router = new Router({
       path: '/home',
       component: () => import('@/components/home/home'),
       children: [
-        {path: '/roleManager', component: () => import('@/components/role/roleManager')},
-        {path: '/homePage', component: () => import('@/components/hemo')},
+        {path: '/roleManager', component: () => import('@/components/role/roleManager.vue')},
+        {path: '/index', component: () => import('@/components/index')},
         {path: '/car', component: () => import('@/components/baseSetting/car/car')},
         {path: '/opposite', component: () => import('@/components/baseSetting/opposite/oppositeCompany')},
         {path: '/driver', component: () => import('@/components/baseSetting/driver/driver')},
+        {path: '/dictionary', component: () => import('@/components/baseSetting/dictionary/dictionary.vue')},
       ]
     },
 

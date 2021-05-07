@@ -1,7 +1,7 @@
         <template>
             <div>
               <el-breadcrumb separator="/">
-                <el-breadcrumb-item :to="{ path: 'homePage' }">首页</el-breadcrumb-item>
+                <el-breadcrumb-item :to="{ path: 'index' }">首页</el-breadcrumb-item>
                 <el-breadcrumb-item>基础设置</el-breadcrumb-item>
                 <el-breadcrumb-item>驾驶员档案</el-breadcrumb-item>
               </el-breadcrumb>
@@ -31,18 +31,18 @@
                   <el-table-column  prop="employee.telephone" label="电话" width="100" ></el-table-column>
                   <el-table-column  prop="employee.entryDate" label="入职时间" width="180" ></el-table-column>
                   <el-table-column  prop="driverNum" label="驾照号码" width="180" ></el-table-column>
-                  <el-table-column  prop="type" label="驾照类型" width="100" ></el-table-column>  
+                  <el-table-column  prop="type" label="驾照类型" width="100" ></el-table-column>
                   <el-table-column  prop="status" label="是否启用" width="100" >
-                      <template slot-scope="scope">{{ scope.row.status=='1'?'启用':'禁用'}}</template>    
-                  </el-table-column> 
+                      <template slot-scope="scope">{{ scope.row.status=='1'?'启用':'禁用'}}</template>
+                  </el-table-column>
                   <el-table-column   label="操作" width="150" >
-                    
+
                       <template slot-scope="scoped">
                           <el-button type="primary" circle plain
                           @click="showDriverDialog(scoped.row)"
                           >查看详细</el-button>
                       </template>
-                  </el-table-column>               
+                  </el-table-column>
                 </el-table>
               </template>
 
@@ -57,14 +57,14 @@
                   </el-pagination>
                 </el-col>
               </el-row>
-         
+
               <!-- 新增 -->
-              <el-dialog title="添加驾驶员" :visible.sync="addDialogFormVisible" 
+              <el-dialog title="添加驾驶员" :visible.sync="addDialogFormVisible"
                 :rules='rules' label-width="100px" ref = "toAddDriver">
                   <el-form :model="driver">
                     <el-form-item label="姓名" prop="employee.name" >
                          <el-input v-model="driver.employee.name" @blur="dname($event)"></el-input>
-                    </el-form-item> 
+                    </el-form-item>
 
                      <el-form-item label="部门" prop="deptId">
                       <el-input v-model="driver.employee.deptId" readonly="true"></el-input>
@@ -83,7 +83,7 @@
                       </el-form-item>
                        <el-form-item label="地址" prop="address">
                       <el-input v-model="driver.employee.address" readonly="true"></el-input>
-                      </el-form-item> 
+                      </el-form-item>
                       <el-form-item label="驾照号码" prop="driverNum">
                       <el-input v-model="driver.driverNum" ></el-input>
                       </el-form-item>
@@ -95,8 +95,8 @@
                       </el-form-item>
                       <el-form-item label="状态" prop="status">
                       <el-switch v-model="driver.status"></el-switch>
-                      </el-form-item>   
-                  </el-form> 
+                      </el-form-item>
+                  </el-form>
                   <div slot="footer" class="dialog-footer">
                       <el-button @click="addDialogFormVisible = false">取 消</el-button>
                       <el-button type="primary" @click="toAddDriver()">确 定</el-button>
@@ -186,7 +186,7 @@ export default {
         }
     },
     methods:{
-        
+
         loadDriver(){
              this.$axios.get("driver/list").then(r=>{
                 console.log(r)
@@ -255,7 +255,7 @@ export default {
        this.loadDriver();
 
     }
-    
+
 }
 </script>
 

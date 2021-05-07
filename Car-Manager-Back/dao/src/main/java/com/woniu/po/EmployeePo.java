@@ -22,12 +22,10 @@ public class EmployeePo {
     private Integer age;
     private Integer gender;
     private String telephone;
-    private String deptId;
-    private String positionId;
-    @JSONField(format = "yyyy-MM-dd")
+    private Integer deptId;
+    private Integer positionId;
     private Date birthday;
     private String idCard;
-    @JSONField(format = "yyyy-MM-dd")
     private Date entryDate;
     private String address;
     private Integer status;

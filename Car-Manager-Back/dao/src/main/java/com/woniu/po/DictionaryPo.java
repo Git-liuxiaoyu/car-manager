@@ -2,6 +2,8 @@ package com.woniu.po;
 
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * 字典类
  */
@@ -12,7 +14,5 @@ public class DictionaryPo {
     private String text;//元素描述
     private Integer level;//元素级别
     private Integer isDisable;//是否启用
-
-
-
+    private List<DictionaryPo> children;
 }

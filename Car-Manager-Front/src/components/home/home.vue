@@ -28,8 +28,8 @@
         <!-- default-active默认显示高亮 -->
         <el-aside width="200px" class="main">
           <el-menu class="el-menu-vertical-demo" :router="true" background-color="#edfff3" :unique-opened="true"
-                   default-active="homePage">
-            <el-menu-item index="homePage">
+                   default-active="index">
+            <el-menu-item index="index">
               <i class="el-icon-s-home"></i>
               <span slot="title">首页</span>
             </el-menu-item>
@@ -39,7 +39,7 @@
                 <span>{{ item.name }}</span>
               </template>
               <el-menu-item-group>
-                <el-menu-item :index="son.href" v-for="son in item.children" :key="son.id">{{son.name}}</el-menu-item>
+                <el-menu-item :index="son.href" v-for="son in item.children" :key="son.id">{{ son.name }}</el-menu-item>
               </el-menu-item-group>
             </el-submenu>
           </el-menu>
@@ -52,10 +52,10 @@
 
       </el-container>
 
-      <!--      &lt;!&ndash; 底部 &ndash;&gt;-->
-      <!--      <el-footer class="el-footer" height="60px">-->
-      <!--        <h3 id="h2">2021 &copy;版权所有&nbsp;蜗牛学院</h3>-->
-      <!--      </el-footer>-->
+      <!--            &lt;!&ndash; 底部 &ndash;&gt;-->
+      <!--            <el-footer class="el-footer" height="60px">-->
+      <!--              <h3 id="h2">2021 &copy;版权所有&nbsp;蜗牛学院</h3>-->
+      <!--            </el-footer>-->
     </el-container>
   </div>
 </template>
@@ -76,7 +76,6 @@ export default {
       this.$axios.get("employee/menu?token=" + localStorage.getItem("token")).then(r => {
         this.menu = r.data.data;
         this.userNamer = this.menu[0].userName
-        console.log(this.menu)
       })
     },
     logout() {

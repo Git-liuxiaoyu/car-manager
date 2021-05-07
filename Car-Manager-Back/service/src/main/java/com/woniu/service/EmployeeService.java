@@ -18,4 +18,8 @@ public interface EmployeeService {
     int count(String searchText);
 
     void delById(Integer id);
+
+    void add(Employee employee);
+
+    void update(Employee updateEmployee);
 }

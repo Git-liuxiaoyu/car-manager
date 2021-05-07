@@ -28,4 +28,8 @@ public interface EmployeeDao {
     int count(String searchText);
 
     void del(Integer id);
+
+    void add(EmployeePo employeePo);
+
+    void update(EmployeePo employeePo);
 }

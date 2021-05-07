@@ -11,6 +11,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 字典redis
@@ -20,10 +21,13 @@ public class DictionaryRedisDao {
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
 
-    public List<DictionaryPo> list(int parentid) {
-
+    public List<DictionaryPo> list(String searchText, int pageIndex, int pageSize) {
         List<DictionaryPo>  DictionaryList= new ArrayList<>();
-        BoundValueOperations<String, String> boundValueOps = redisTemplate.boundValueOps("dictionlist"+parentid);
+        String key = "dictionlist" + pageIndex+pageSize;
+        if (searchText != null && !searchText.equals("")) {
+            key += searchText;
+        }
+        BoundValueOperations<String, String> boundValueOps = redisTemplate.boundValueOps(key);
         String dataStr = boundValueOps.get();
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -37,15 +41,23 @@ public class DictionaryRedisDao {
     }
 
     //更新redis
-    public void addRedisDriverList(List<DictionaryPo> driverList,int parentid) {
-
+    public void addRedisDriverList(List<DictionaryPo> driverList,String searchText, int pageIndex, int pageSize) {
         ObjectMapper objectMapper = new ObjectMapper();
-        BoundValueOperations<String, String> boundValueOps = redisTemplate.boundValueOps("dictionlist"+parentid);
+        String key = "dictionlist" + pageIndex+pageSize;
+        if (searchText != null && !searchText.equals("")) {
+            key += searchText;
+        }
+        BoundValueOperations<String, String> boundValueOps = redisTemplate.boundValueOps(key);
         try {
             String temp = objectMapper.writeValueAsString(driverList);
             //3、然后把查到的结果存到redis里面
             boundValueOps.set(temp);
         } catch (Exception exception) {  }
     }
-    
+
+    //清除redis的数据
+    public void updateRedis(){
+        Set<String> keys=redisTemplate.keys("dictionlist*");
+        redisTemplate.delete(keys);
+    }
 }

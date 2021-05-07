@@ -9,8 +9,21 @@ public interface DictionaryService {
 
     /**
      * 根据parentid查询类别
-     * @param dictionaryPo
+     * @param
      * @return
      */
-    List<Dictionary> types(DictionaryPo dictionaryPo);
+
+    Integer count(String searchText);
+
+    List<Dictionary> findAll(String searchText, int pageIndex, int pageSize);
+
+    List<DictionaryPo> list();
+
+    void add(Dictionary dictionary);
+
+    List<Dictionary> listGetByParentId(Integer id);
+
+    void delete(Integer id);
+
+    void update(Dictionary dictionary);
 }

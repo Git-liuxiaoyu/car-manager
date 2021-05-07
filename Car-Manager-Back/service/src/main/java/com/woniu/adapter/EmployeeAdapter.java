@@ -52,4 +52,18 @@ public class EmployeeAdapter {
         employeeDao.del(id);
         employeeRedisDao.updateRedis();
     }
+
+    public void add(Employee employee) {
+        EmployeePo employeePo = new EmployeePo();
+        BeanUtils.copyProperties(employee, employeePo);
+        employeeDao.add(employeePo);
+        employeeRedisDao.updateRedis();
+    }
+
+    public void update(Employee updateEmployee) {
+        EmployeePo employeePo = new EmployeePo();
+        BeanUtils.copyProperties(updateEmployee, employeePo);
+        employeeDao.update(employeePo);
+        employeeRedisDao.updateRedis();
+    }
 }

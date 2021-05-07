@@ -20,8 +20,8 @@ public class Employee {
     private Integer age;
     private Integer gender;
     private String telephone;
-    private String deptId;
-    private String positionId;
+    private Integer deptId;
+    private Integer positionId;
     private Date birthday;
     private String idCard;
     private Date entryDate;

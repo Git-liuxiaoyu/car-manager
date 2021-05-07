@@ -61,26 +61,7 @@ public class OppositeCompanyController {
      */
     @RequestMapping("findbyid")
     public ResponseResult<OppositeCompanyPo> findbyid(Integer id, Integer type) {
-
-
-        OppositeCompanyPo ocpo = new OppositeCompanyPo();
-        ocpo.setId(id);
-        OppositeCompanyPo po = oppositeCompanyService.findbyid(ocpo);
-        //查询字典里单位类型
-        DictionaryPo dipo = new DictionaryPo();
-        dipo.setParentId(30);
-        List<Dictionary> types = dictionaryService.types(dipo);
-        for (int i = 0; i < types.size(); i++) {
-            if (types.get(i).getId() == type) {
-                po.setTypename(types.get(i).getText());
-            }
-        }
-        if (po != null) {
-            return new ResponseResult<OppositeCompanyPo>(po);
-        } else {
-            return new ResponseResult(500, "失败");
-        }
-
+       return null;
     }
 
 

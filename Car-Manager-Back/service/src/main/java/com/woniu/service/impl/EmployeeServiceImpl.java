@@ -56,4 +56,14 @@ public class EmployeeServiceImpl implements EmployeeService {
     public void delById(Integer id) {
         employeeAdapter.del(id);
     }
+
+    @Override
+    public void add(Employee employee) {
+        employeeAdapter.add(employee);
+    }
+
+    @Override
+    public void update(Employee updateEmployee) {
+        employeeAdapter.update(updateEmployee);
+    }
 }

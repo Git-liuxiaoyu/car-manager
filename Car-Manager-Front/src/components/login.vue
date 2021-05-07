@@ -57,7 +57,6 @@ export default {
     },
     login() {
       this.$axios.post("employee/login", this.employee).then(r => {
-        console.log(r)
         if (r.data.code == 200) {
           //存进token
           localStorage.setItem("token", r.data.msg);

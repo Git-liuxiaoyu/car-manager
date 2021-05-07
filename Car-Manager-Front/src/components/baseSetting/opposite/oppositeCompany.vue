@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-breadcrumb separator="/">
-      <el-breadcrumb-item :to="{ path: 'homePage' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: 'index' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>基础设置</el-breadcrumb-item>
       <el-breadcrumb-item>往来单位</el-breadcrumb-item>
     </el-breadcrumb>
@@ -21,32 +21,32 @@
     <br/>
 
     <template>
-    
+
       <el-table :data="oppos" style="width: 100%" height="470">
         <el-table-column fixed prop="id" label="id" width="150">
-         
+
         </el-table-column>
 
         <el-table-column prop="name" label="单位名称" width="150">
-         
+
         </el-table-column>
 
         <el-table-column prop="type" label="单位类型" width="150">
-          
+
 
         </el-table-column>
 
         <el-table-column prop="phone" label="单位电话" width="150">
-         
+
         </el-table-column>
 
         <el-table-column prop="linkName" label="联系人" width="150">
-         
+
         </el-table-column>
 
         <el-table-column  prop="status" label="是否启用" width="150">
           <template slot-scope="scope">{{ scope.row.status=='1'?'启用':'禁用' }}</template>
-         
+
         </el-table-column>
 
         <el-table-column prop="" label="操作" width="300">
@@ -66,11 +66,11 @@
                 <!-- <el-button type="success" icon="el-icon-check" circle plain size="mini">分配角色</el-button> -->
             </template>
 
-         
+
         </el-table-column>
-       
+
       </el-table>
-      
+
     </template>
 
     <br/>
@@ -135,7 +135,7 @@
 
 
       <el-dialog title="往来单位详细信息" :visible.sync="oppodetail" style="width:80%;color:black">
-         
+
             单位名称：
              <el-input
                 v-model="details.name"
@@ -185,10 +185,10 @@
             </el-input>
             <br/>
 
-            
+
           <div slot="footer" class="dialog-footer">
           <el-button @click="oppodetail = false">确定</el-button>
-          
+
           </div>
 
 
@@ -243,7 +243,7 @@
     </el-dialog>
 
 
-  
+
   </div>
 </template>
 
@@ -280,7 +280,7 @@ export default {
           phone:"",
           linkName:"",
           remarks:"",
-          status:"",             
+          status:"",
       },
       types:[],
       //详细信息
@@ -291,7 +291,7 @@ export default {
           phone:"",
           linkName:"",
           remarks:"",
-          status:"",      
+          status:"",
       },
       //修改数据
       updates:{
@@ -302,27 +302,27 @@ export default {
           phone:"",
           linkName:"",
           remarks:"",
-          status:"",      
-      }   
+          status:"",
+      }
 
 
 
     }
   },
   methods:{
-    oppolist(){     
+    oppolist(){
       this.$axios.post("opposite/list").then(r => {
         //console.log(r)
        this.oppos = r.data
-        
+
       })
     },
-    //显示新增对话框 
+    //显示新增对话框
     showEditoppo() {
-          this.oppoVisible  = true;    
+          this.oppoVisible  = true;
             this.$axios.post("dictionary/type?parentid=30").then(r => {
             console.log(r)
-            this.types = r.data            
+            this.types = r.data
       })
     },
     //添加往来单位
@@ -348,21 +348,21 @@ export default {
                 this.oppolist();
             }else{
                this.$message({type: 'success', message:"添加失败",  duration:800});
-            }           
+            }
       })
     },
     //往来单位详情
     detail(id,type){
 
-        this.oppodetail = true;    
+        this.oppodetail = true;
              this.$axios.post("opposite/findbyid?id="+id+"&type="+type).then(r => {
              console.log(r)
-             this.details = r.data.data 
+             this.details = r.data.data
              if(this.details.status == 1){
                   this.details.status = "启用";
              }else{
                   this.details.status = "禁用";
-             }       
+             }
        })
     },
     //打开修改对话框
@@ -370,16 +370,16 @@ export default {
      this.oppoupdate=true;
        this.$axios.post("opposite/findbyid?id="+id+"&type="+type).then(r => {
              console.log(r)
-             this.updates = r.data.data   
+             this.updates = r.data.data
              if(this.updates.status == 0){
                 this.updates.status = true;
               }else{
                 this.updates.status = false
-              }       
+              }
        })
        this.$axios.post("dictionary/type?parentid=30").then(r => {
             console.log(r)
-            this.types = r.data    
+            this.types = r.data
        })
     },
     //修改
@@ -403,15 +403,15 @@ export default {
                 this.oppolist();
             }else{
                this.$message({type: 'success', message:"修改失败",  duration:800});
-            }        
+            }
        })
 
     },
 
     //删除往来单位信息
-    del(id){ 
+    del(id){
              this.$axios.post("opposite/delete?id="+id).then(r => {
-             console.log(r)     
+             console.log(r)
               if(r.data.code == 200){
                 this.$message({type: 'success', message:"删除成功",  duration:800});
 
@@ -419,7 +419,7 @@ export default {
                 this.oppolist();
             }else{
                this.$message({type: 'success', message:"删除失败",  duration:800});
-            }             
+            }
        })
 
     }
@@ -430,7 +430,7 @@ export default {
   created(){
         this.oppolist()
     }
- 
+
 
 }
 </script>

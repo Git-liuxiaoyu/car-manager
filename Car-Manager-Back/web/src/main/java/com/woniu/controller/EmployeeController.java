@@ -91,4 +91,17 @@ public class EmployeeController {
     public void employeeDel(Integer id){
         employeeService.delById(id);
     }
+
+    //添加用户
+    @RequestMapping("/add")
+    public ResponseResult employeeAdd(@RequestBody Employee employee){
+        employeeService.add(employee);
+        return ResponseResult.SUCCESS;
+    }
+    //修改用户
+    @RequestMapping("/update")
+    public ResponseResult employeeUpdate(@RequestBody Employee updateEmployee){
+        employeeService.update(updateEmployee);
+        return ResponseResult.SUCCESS;
+    }
 }

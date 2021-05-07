@@ -2,6 +2,7 @@ package com.woniu.dao;
 
 import com.woniu.po.DictionaryPo;
 
+import java.util.Dictionary;
 import java.util.List;
 
 /**
@@ -13,6 +14,17 @@ public interface DictionaryDao {
      * @param
      * @return
      */
-    List<DictionaryPo> types(DictionaryPo dictionaryPo);
+    Integer count(String searchText);
 
+    List<DictionaryPo> list(String searchText);
+
+    List<DictionaryPo> menuList();
+
+    void add(DictionaryPo dictionaryPo);
+
+    List<DictionaryPo> listGetByParentId(Integer id);
+
+    void delete(Integer id);
+
+    void update(DictionaryPo dictionaryPo);
 }
