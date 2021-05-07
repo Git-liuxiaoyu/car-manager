@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woniu.dao.DriverDao;
 import com.woniu.domain.Driver;
 import com.woniu.domain.Employee;
+import com.woniu.po.CarPo;
 import com.woniu.po.DriverPo;
 import com.woniu.po.EmployeePo;
 import com.woniu.redis.DriverRedisDao;
@@ -96,6 +97,21 @@ public class DriverAdapter {
 
     public int updateRole(Integer employeeId){
         return driverDao.updateRole(employeeId);
+    }
+
+
+    //获得所有驾驶员姓名
+    public List<Driver> getAll(){
+        List<DriverPo> driverPos = driverDao.getAll();
+
+        List<Driver> driverList = new ArrayList<>();
+        for (DriverPo driverPo : driverPos) {
+            Driver item = new Driver();
+            BeanUtils.copyProperties(driverPo, item);
+            driverList.add(item);
+        }
+       return driverList;
+
     }
 
 }

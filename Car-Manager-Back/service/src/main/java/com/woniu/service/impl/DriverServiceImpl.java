@@ -47,6 +47,11 @@ public class DriverServiceImpl implements DriverService {
     }
 
     @Override
+    public List<Driver> getAll() {
+        return driverAdapter.getAll();
+    }
+
+    @Override
     public int updateRole(Integer employeeId) {
         return driverAdapter.updateRole(employeeId);
     }

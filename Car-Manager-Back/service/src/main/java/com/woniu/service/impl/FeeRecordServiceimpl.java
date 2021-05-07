@@ -3,6 +3,7 @@ package com.woniu.service.impl;
 import com.woniu.adapter.FeeRecordAdapter;
 import com.woniu.domain.FeeRecord;
 import com.woniu.domain.GetRecord;
+import com.woniu.po.CarPo;
 import com.woniu.po.FeeRecordPo;
 import com.woniu.po.GetRecordPo;
 import com.woniu.service.FeeRecordService;
@@ -21,9 +22,9 @@ public class FeeRecordServiceimpl implements FeeRecordService {
 
 
     @Override
-    public List<FeeRecord> list() {
+    public List<FeeRecord> list(String searchText,int pageIndex,int pageSize) {
 
-        return feeRecordAdapter.Lists();
+        return feeRecordAdapter.Lists(searchText,pageIndex,pageSize);
     }
 
     @Override
@@ -33,17 +34,29 @@ public class FeeRecordServiceimpl implements FeeRecordService {
     }
 
     @Override
-    public int delete(FeeRecordPo feeRecordPo) {
-        return feeRecordAdapter.delete(feeRecordPo);
+    public int delete(FeeRecord feeRecord) {
+        return feeRecordAdapter.delete(feeRecord);
     }
 
     @Override
-    public int update(FeeRecordPo feeRecordPo) {
-        return feeRecordAdapter.update(feeRecordPo);
+    public int update(FeeRecord feeRecord) {
+        return feeRecordAdapter.update(feeRecord);
     }
 
     @Override
     public FeeRecordPo findbyid(FeeRecordPo feeRecordPo) {
         return feeRecordAdapter.findbyid(feeRecordPo);
     }
+
+    @Override
+    public int count(String searchText) {
+        return feeRecordAdapter.count(searchText);
+    }
+
+    @Override
+    public List<CarPo> getAllCarNum() {
+        return feeRecordAdapter.getAllCarNum();
+    }
+
+
 }

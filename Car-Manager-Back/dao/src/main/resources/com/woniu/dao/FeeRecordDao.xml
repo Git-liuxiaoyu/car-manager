@@ -5,9 +5,36 @@
 <mapper namespace="com.woniu.dao.FeeRecordDao">
     
     <!--查询取车记录列表-->
-    <select id="list" resultType="FeeRecordPo">
-        select * from fee_record
+    <!--resultMap-->
+    <resultMap type="FeeRecordPo" id="FeeRecordPoResultMap">
+        <id column="id" property="id" />
+        <result column="carId" property="carId" />
+        <result column="feeName" property="feeName" />
+        <result column="payTime" property="payTime" />
+        <result column="fee" property="fee" />
+        <result column="oppositeCompanyId" property="oppositeCompanyId" />
+        <result column="driverId" property="driverId" />
+        <result column="remarks" property="remarks" />
+        <result column="carNum" property="carPo.carNum"/>
+        <result column="oppositeName" property="oppositeName"/>
+        <result column="driverName" property="driverName"/>
+<!--        <association property="carPo" javaType="CarPo">-->
+<!--            <id column="id" property="id"/>-->
+<!--            <result column="carNum" property="carNum"/>-->
+<!--        </association>-->
+    </resultMap>
+    <select id="list"  resultMap="FeeRecordPoResultMap">
+        select f.*,c.carNum,o.`name` oppositeName,e.`name` driverName from fee_record f,car c,opposite_company o,driver d,employee e
+        <where>
+            f.carId=c.id and o.id=f.oppositeCompanyId and f.driverId=d.id and d.employeeId=e.id
+            <if test="searchText!=null and searchText!='' ">
+               and c.carNum like concat('%',#{searchText},'%')
+            </if>
+        </where>
     </select>
+<!--    <select id="list" resultType="FeeRecordPo">-->
+<!--        select * from fee_record-->
+<!--    </select>-->
     
     <!--添加规费记录-->
     <insert id="add" parameterType="FeeRecordPo">
@@ -25,6 +52,7 @@
             <if test="payTime !=null and payTime!='' ">payTime = #{payTime},</if>
             <if test="fee !=null and fee!='' ">fee = #{fee},</if>
             <if test="oppositeCompanyId !=null and oppositeCompanyId!='' ">oppositeCompanyId = #{oppositeCompanyId},</if>
+            <if test="driverId !=null and driverId!='' ">driverId = #{driverId},</if>
             <if test="remarks !=null and remarks!='' ">remarks = #{remarks},</if>
         </set>
         where id = #{id}
@@ -39,8 +67,20 @@
         select * from fee_record where id = #{id}
     </select>
 
+    <select id="count" parameterType="int" resultType="int">
+        select count(0) from fee_record f,car c
+        <where>
+            f.carId=c.id
+            <if test="searchText!=null and searchText!='' ">
+                and c.carNum like concat('%',#{searchText},'%')
+            </if>
 
+        </where>
+    </select>
 
+    <select id="getAllCar" resultType="CarPo">
+        select * from car
+    </select>
 
 
 </mapper>

@@ -10,12 +10,12 @@
 
               <el-row :gutter="20">
                 <el-col :span="6">
-                  <el-input placeholder="请输入内容" v-model="name" class="input-with-select">
+                  <el-input placeholder="请输入内容" v-model="searchText" class="input-with-select">
                     <el-button slot="append" icon="el-icon-search"></el-button>
                   </el-input>
                 </el-col>
                 <el-col :span="18">
-                  <el-button type="danger">批量删除</el-button>
+                  <!-- <el-button type="danger">批量删除</el-button> -->
                   <el-button type="primary" @click="addDriver">新增</el-button>
                 </el-col>
               </el-row>
@@ -29,7 +29,12 @@
                       <template slot-scope="scope">{{ scope.row.employee.gender=='0'?'男':'女'}}</template>
                   </el-table-column>
                   <el-table-column  prop="employee.telephone" label="电话" width="100" ></el-table-column>
-                  <el-table-column  prop="employee.entryDate" label="入职时间" width="180" ></el-table-column>
+                  <el-table-column  prop="employee.entryDate" label="入职时间" width="180" >
+                        <template slot-scope="scope">
+                            <i class="el-icon-time"></i>
+                            {{ scope.row.employee.entryDate | dateConvert() }}
+                        </template>
+                  </el-table-column>
                   <el-table-column  prop="driverNum" label="驾照号码" width="180" ></el-table-column>
                   <el-table-column  prop="type" label="驾照类型" width="100" ></el-table-column>
                   <el-table-column  prop="status" label="是否启用" width="100" >
@@ -38,9 +43,18 @@
                   <el-table-column   label="操作" width="150" >
 
                       <template slot-scope="scoped">
-                          <el-button type="primary" circle plain
+                          <!-- <el-button type="primary" circle plain
                           @click="showDriverDialog(scoped.row)"
-                          >查看详细</el-button>
+                          >查看详细</el-button> -->
+                        <el-tooltip content="查看详细" placement="bottom" effect="light">
+                          <el-button icon="el-icon-search" circle  @click="showDriverDialog(scoped.row)"></el-button>
+                        </el-tooltip>
+
+
+                        <el-tooltip content="删除" placement="bottom" effect="light">
+                        <el-button type="danger" icon="el-icon-delete" circle @click="deleteDriver(scoped.row.id)"></el-button>
+                        </el-tooltip>
+
                       </template>
                   </el-table-column>
                 </el-table>
@@ -158,6 +172,7 @@ export default {
 
     data(){
         return{
+            searchText:'',
             driverData:[{
                 driverNum:'',
                 type:'',
@@ -181,6 +196,7 @@ export default {
                 driverNum:'',
                 type:'',
                 status:'',
+                remarks:'',
                 employee:{name:'',deptId:'',gender:'',telephone:"",entryDate:"",address:'',birthday:'',idCard:''}
             }
         }
@@ -237,19 +253,23 @@ export default {
         showDriverDialog(row){
           
          this.dialogshowDriverVisible=true;
-          this.showDriver.employee.name=row.employee.name;
-          this.showDriver.employee.deptId=row.employee.deptId;
-          this.showDriver.employee.gender=row.employee.gender;
-          this.showDriver.employee.telephone=row.employee.telephone;
-          this.showDriver.employee.entryDate=row.employee.entryDate;
-         this.showDriver.employee.address=row.employee.address;
-         this.showDriver.employee.birthday=row.employee.birthday;
-         this.showDriver.employee.idCard=row.employee.idCard;
-         this.showDriver.driverNum=row.driverNum;
-         this.showDriver.type=row.type;
-         this.showDriver.remarks=row.remarks;
-         this.showDriver.status=row.status;
-        }
+        //   this.showDriver.employee.name=row.employee.name;
+        //   this.showDriver.employee.deptId=row.employee.deptId;
+        //   this.showDriver.employee.gender=row.employee.gender;
+        //   this.showDriver.employee.telephone=row.employee.telephone;
+        //   this.showDriver.employee.entryDate=row.employee.entryDate;
+        //  this.showDriver.employee.address=row.employee.address;
+        //  this.showDriver.employee.birthday=row.employee.birthday;
+        //  this.showDriver.employee.idCard=row.employee.idCard;
+        //  this.showDriver.driverNum=row.driverNum;
+        //  this.showDriver.type=row.type;
+        //  this.showDriver.remarks=row.remarks;
+        //  this.showDriver.status=row.status;
+        this.showDriver=row
+        },
+        deleteDriver(id){
+
+        },
     },
     created(){
        this.loadDriver();

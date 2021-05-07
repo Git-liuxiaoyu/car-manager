@@ -9,6 +9,7 @@ public class Driver {
     private Integer type;
     private Integer status;
     private Integer employeeId;
+    private String employeeName;
     private String remarks;
     private Employee employee;
 

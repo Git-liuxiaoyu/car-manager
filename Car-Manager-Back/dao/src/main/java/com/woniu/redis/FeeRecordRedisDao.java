@@ -12,16 +12,22 @@ import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+
 @Component
 public class FeeRecordRedisDao {
 
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
 
-    public List<FeeRecordPo> list() {
+    public List<FeeRecordPo> list(int pageIndex, String searchText,int pageSize) {
 
         List<FeeRecordPo> Lists = new ArrayList<>();
-        BoundValueOperations<String, String> boundValueOps = redisTemplate.boundValueOps("feerecordlist");
+        String key = "feerecordlist" + pageIndex+pageSize;
+        if (searchText != null && !searchText.equals("")) {
+            key += searchText;
+        }
+        BoundValueOperations<String, String> boundValueOps = redisTemplate.boundValueOps(key);
         String dataStr = boundValueOps.get();
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -35,15 +41,26 @@ public class FeeRecordRedisDao {
     }
 
     //更新redis
-    public void addRedisUserList(List<FeeRecordPo> lists) {
+    public void addRedisUserList(List<FeeRecordPo> lists, int pageIndex, String searchText,int pageSize) {
 
         ObjectMapper objectMapper = new ObjectMapper();
-        BoundValueOperations<String, String> boundValueOps = redisTemplate.boundValueOps("feerecordlist");
+        String key = "feerecordlist" + pageIndex+pageSize;
+        if (searchText != null && !searchText.equals("")) {
+            key += searchText;
+        }
+        BoundValueOperations<String, String> boundValueOps = redisTemplate.boundValueOps(key);
         try {
             String temp = objectMapper.writeValueAsString(lists);
             //3、然后把查到的结果存到redis里面
             boundValueOps.set(temp);
         } catch (Exception exception) {  }
+    }
+
+    //清除redis的数据
+    public void updateRedis(){
+        Set<String> keys=redisTemplate.keys("feerecordlist*");
+        Long delete = redisTemplate.delete(keys);
+        System.out.println(delete);
     }
 
 }
