@@ -22,5 +22,7 @@ public interface DriverDao {
     EmployeePo getEmployee(String name);
 
     int updateRole(Integer employeeId);
+//    获得所有信息
+    List<DriverPo> getAll();
 
 }

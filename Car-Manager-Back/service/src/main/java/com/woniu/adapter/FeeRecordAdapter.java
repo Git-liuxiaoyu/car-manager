@@ -2,8 +2,11 @@ package com.woniu.adapter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woniu.dao.FeeRecordDao;
+import com.woniu.domain.Car;
+import com.woniu.domain.Driver;
 import com.woniu.domain.FeeRecord;
 import com.woniu.domain.GetRecord;
+import com.woniu.po.CarPo;
 import com.woniu.po.FeeRecordPo;
 import com.woniu.po.GetRecordPo;
 import com.woniu.redis.FeeRecordRedisDao;
@@ -29,23 +32,31 @@ public class FeeRecordAdapter {
      * 查询列表
      * @return
      */
-    public List<FeeRecord> Lists(){
-        List<FeeRecordPo> feeRecordList = feeRecordRedisDao.list();
+    public List<FeeRecord> Lists(String searchText, int pageIndex,int pageSize){
+        List<FeeRecordPo> feeRecordList = feeRecordRedisDao.list(pageIndex, searchText,pageSize);
         ObjectMapper objectMapper = new ObjectMapper();
         if(feeRecordList.size() == 0){
             //从数据库查数据
-            feeRecordList = feeRecordDao.list();
+            feeRecordList = feeRecordDao.list(searchText);
             //存入redis的缓存中
-            feeRecordRedisDao.addRedisUserList(feeRecordList);
+            feeRecordRedisDao.addRedisUserList(feeRecordList, pageIndex, searchText,pageSize);
         }
         //把dao的 RoleList RolePo --- 转成  List<Role>
         List<FeeRecord> feeRecords = new ArrayList<FeeRecord>();
         for(FeeRecordPo frpo : feeRecordList) {
             FeeRecord item = new FeeRecord();
             BeanUtils.copyProperties(frpo, item);
+            Car car = new Car();
+            BeanUtils.copyProperties(frpo.getCarPo(), car);
+            item.setCar(car);
             feeRecords.add(item);
         }
         return feeRecords;
+    }
+
+    //查询总记录数
+    public int count(String searchText) {
+        return feeRecordDao.count(searchText);
     }
 
 
@@ -55,7 +66,9 @@ public class FeeRecordAdapter {
      */
     public int add(FeeRecordPo fepo){
         int i = feeRecordDao.add(fepo);
-        if(i > 0){updateredis();}
+        if(i > 0){
+            updateredis();
+        }
         return i;
     }
 
@@ -64,10 +77,16 @@ public class FeeRecordAdapter {
      * 修改取车记录列表
      * @return
      */
-    public int update(FeeRecordPo fepo){
-        int i = feeRecordDao.update(fepo);
+    public int update(FeeRecord feeRecord){
+        FeeRecordPo feeRecordPo = new FeeRecordPo();
+        BeanUtils.copyProperties(feeRecord, feeRecordPo);
+
+
+        int i = feeRecordDao.update(feeRecordPo);
         //修改成功
-        if(i > 0){updateredis();}
+        if(i > 0){
+            updateredis();
+        }
         return i;
     }
 
@@ -75,10 +94,14 @@ public class FeeRecordAdapter {
      * 删除
      * @return
      */
-    public int delete(FeeRecordPo fepo){
-        int i = feeRecordDao.delete(fepo);
+    public int delete(FeeRecord feeRecord){
+        FeeRecordPo feeRecordPo = new FeeRecordPo();
+        BeanUtils.copyProperties(feeRecord, feeRecordPo);
+        int i = feeRecordDao.delete(feeRecordPo);
         //删除成功
-        if(i>0){ updateredis();}
+        if(i>0){
+            updateredis();
+        }
         return i;
     }
 
@@ -93,14 +116,20 @@ public class FeeRecordAdapter {
     }
 
 
-
     /**
      * 更新redis
      */
     public void updateredis(){
 
-        List<FeeRecordPo> list = feeRecordDao.list();
-        //修改redis的值
-        feeRecordRedisDao.addRedisUserList(list);
+//        List<FeeRecordPo> list = feeRecordDao.list();
+////        修改redis的值
+//        feeRecordRedisDao.addRedisUserList(list);
+        feeRecordRedisDao.updateRedis();
     }
+
+    public List<CarPo> getAllCarNum(){
+       return feeRecordDao.getAllCar();
+    }
+
+
 }

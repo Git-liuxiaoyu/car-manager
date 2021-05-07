@@ -53,4 +53,19 @@
     <update id="updateRole" >
         update employee_role set roleId=3 where employeeId=#{employeeId}
     </update>
+
+
+
+    <resultMap type="DriverPo" id="driverPoAllResultMap">
+        <id column="id" property="id" />
+        <result column="employeeName" property="employeeName"/>
+<!--        <association property="employeePo" javaType="EmployeePo">-->
+<!--            <id column="employeeId" property="id"/>-->
+<!--            <result column="name" property="name"/>-->
+<!--        </association>-->
+
+    </resultMap>
+    <select id="getAll" resultMap="driverPoAllResultMap" >
+        select d.*,e.name employeeName from driver d,employee e where d.employeeId=e.id
+    </select>
 </mapper>

@@ -16,7 +16,11 @@ public interface DriverService {
 
     int delDriver(Integer id);
 
+    int updateRole(Integer employeeId);
+    //获取驾驶员的中员工列表的信息
     EmployeePo getEmployee(String name);
 
-    int updateRole(Integer employeeId);
+
+    //获取驾驶员的姓名
+    List<Driver> getAll();
 }
