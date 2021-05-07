@@ -1,11 +1,8 @@
 package com.woniu.adapter;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.woniu.dao.RepairRecordDao;
 import com.woniu.dao.RepairRecordDao;
 import com.woniu.domain.RepairRecord;
 import com.woniu.po.RepairRecordPo;
-import com.woniu.redis.RepairRecordRedisDao;
 import com.woniu.redis.RepairRecordRedisDao;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,61 +19,29 @@ public class RepairRecordAdapter {
     @Autowired
     private RepairRecordRedisDao repairRecordRedisDao;
 
-    public List<RepairRecord> findLists(){
-        List<RepairRecordPo> repairRecordPoList = repairRecordRedisDao.list();
-        ObjectMapper objectMapper = new ObjectMapper();
-        if(repairRecordPoList.size() == 0){
+    public List<RepairRecord> list(String searchText, int pageIndex,int pageSize) {
+        //查询的list
+        List<RepairRecordPo> repairRecordList = repairRecordRedisDao.list(pageIndex, searchText,pageSize);
+
+        if (repairRecordList.size() == 0) {
             //从数据库查数据
-            repairRecordPoList = repairRecordDao.findList();
-//            driverList = list
+            repairRecordList = repairRecordDao.list(searchText);
             //存入redis的缓存中
-            repairRecordRedisDao.addRedisList(repairRecordPoList);
+            repairRecordRedisDao.addRedisRepairRecordList(repairRecordList, pageIndex, searchText,pageSize);
         }
-        //把dao的 RoleList RolePo --- 转成  List<Role>
-        List<RepairRecord> repairRecords = new ArrayList<RepairRecord>();
-        for(RepairRecordPo repairRecordPo : repairRecordPoList) {
+        //把dao的 RoleList RolePo --- 转成  List<RolePo>
+        List<RepairRecord> repairRecords = new ArrayList<>();
+        for (RepairRecordPo e : repairRecordList) {
             RepairRecord item = new RepairRecord();
-            BeanUtils.copyProperties(repairRecordPo, item);
+            BeanUtils.copyProperties(e, item);
             repairRecords.add(item);
         }
         return repairRecords;
     }
 
-
-    /**
-     * 添加驾驶员档案
-     * @param oilRecord
-     * @return
-     */
-    public int add(RepairRecord oilRecord){
-
-        RepairRecordPo item = new RepairRecordPo();
-        BeanUtils.copyProperties(oilRecord, item);
-        int i = repairRecordDao.add(item);
-        if (i>0){
-
-            List<RepairRecordPo> repairRecordPos = repairRecordDao.findList();
-            //存入redis的缓存中
-            repairRecordRedisDao.addRedisList(repairRecordPos);
-        }
-        return i;
-    }
-    /**
-     * 修改加油信息
-     * @param oilRecord
-     * @return
-     */
-    public int update(RepairRecord oilRecord){
-
-        RepairRecordPo item = new RepairRecordPo();
-        BeanUtils.copyProperties(oilRecord, item);
-        int i = repairRecordDao.update(item);
-        if (i>0){
-            List<RepairRecordPo> repairRecordPos = repairRecordDao.findList();
-            //存入redis的缓存中
-            repairRecordRedisDao.addRedisList(repairRecordPos);
-        }
-        return i;
+    //查询总记录数
+    public int count(String searchText) {
+        return repairRecordDao.count(searchText);
     }
 
     /**
@@ -84,17 +49,34 @@ public class RepairRecordAdapter {
      * @param id
      * @return
      */
-    public int delete(Integer id){
+    public void delete(Integer id) {
+        repairRecordDao.delete(id);
+        repairRecordRedisDao.updateRedis();
+    }
 
-//        RepairRecordPo item = new RepairRecordPo();
-//        BeanUtils.copyProperties(oilRecord, item);
-        int i = repairRecordDao.delete(id);
-        if (i>0){
-            List<RepairRecordPo> repairRecordPos = repairRecordDao.findList();
-            //存入redis的缓存中
-            repairRecordRedisDao.addRedisList(repairRecordPos);
-        }
-        return i;
+
+    /**
+     * 添加驾驶员档案
+     * @param repairRecord
+     * @return
+     */
+    public void add(RepairRecord repairRecord){
+        RepairRecordPo item = new RepairRecordPo();
+        BeanUtils.copyProperties(repairRecord, item);
+        repairRecordDao.add(item);
+        repairRecordRedisDao.updateRedis();
+    }
+    /**
+     * 修改加油信息
+     * @param repairRecord
+     * @return
+     */
+    public void update(RepairRecord repairRecord){
+
+        RepairRecordPo item = new RepairRecordPo();
+        BeanUtils.copyProperties(repairRecord, item);
+        repairRecordDao.update(item);
+        repairRecordRedisDao.updateRedis();
     }
 
 

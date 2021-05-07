@@ -3,19 +3,23 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.woniu.dao.RepairRecordDao">
-
-    <select id="findList" resultType="RepairRecordPo">
-        select * from repair_record
+    <!--resultMap-->
+    <resultMap type="RepairRecordPo" id="RepairRecordPoResultMap">
+        <id column="id" property="id" />
+        <result column="carNum" property="carNum"/>
+    </resultMap>
+    <select id="list" resultMap="RepairRecordPoResultMap">
+        select r.* ,c.carNum from repair_record r,car c
+        <where> r.carId = c.id
+            <if test="searchText!=null and searchText!='' ">and c.carNum like concat('%',#{searchText},'%')</if>
+        </where>
     </select>
     <!--新增修理记录-->
     <insert id="add" parameterType="RepairRecordPo">
-        insert into repair_record(carId,oppositeCompanyId,sendTime,preGetTime,reason,remarks,driverId)
-        values(#{carId},#{oppositeCompanyId},#{sendTime},#{preGetTime},#{reason},#{remarks},#{driverId})
+        insert into repair_record(carId,oppositeCompanyId,sendTime,preGetTime,reason,remarks,driverId,getTime,repairFee,repairType,repairItem,useGoods)
+        values(#{carId},#{oppositeCompanyId},#{sendTime},#{preGetTime},#{reason},#{remarks},#{driverId},#{getTime},#{repairFee},#{repairType},#{repairItem},#{useGoods})
     </insert>
-
-
-
-<!--修改出车列表-->
+<!--修改修理列表-->
     <update id="update" parameterType="RepairRecordPo">
         update repair_record
     <set>
@@ -28,11 +32,16 @@
 
         <if test="remarks!=null and remarks!=''" > remarks = #{remarks},</if>
         <if test="driverId!=null and driverId!=''" > driverId = #{driverId},</if>
-
     </set>
             where id = #{id}
     </update>
-<!--删除出车信息-->
+    <select id="count" parameterType="int" resultType="int">
+        select count(0) from repair_record r,car c
+        <where> r.carId = c.id
+            <if test="searchText!=null and searchText!='' ">and c.carNum like concat('%',#{searchText},'%')</if>
+        </where>
+    </select>
+    <!--删除修理信息-->
         <delete id="delete" parameterType="Integer">
             delete from repair_record where id=#{id}
         </delete>

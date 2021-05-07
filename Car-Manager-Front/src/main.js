@@ -41,3 +41,16 @@ Vue.filter("dateConvert", function (str) {
   let time = year+'-'+month+'-'+day;
   return time
 });
+
+//时间全局过滤器   
+Vue.filter("timeConvert", function (str) {
+  let date = new Date(str);
+  let year = date.getFullYear().toString();
+  let month = (date.getMonth() + 1).toString().padStart(2, 0);
+  let day = date.getDate().toString().padStart(2, 0);
+  let hour = date.getHours().toString().padStart(2, 0);
+  let minute = date.getMinutes().toString().padStart(2, 0);
+  let second = date.getSeconds().toString().padStart(2, 0);
+  let time = `${year}-${month}-${day} ${hour}:${minute}:${second}`;
+  return time
+});

@@ -32,5 +32,4 @@ public class CarPo {
     private String remarks;
     private Integer status;
     private String images;
-
 }

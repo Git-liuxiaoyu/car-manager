@@ -8,14 +8,15 @@ public interface RepairRecordDao {
 
 
     //查询维修信息
-    List<RepairRecordPo> findList();
+    List<RepairRecordPo> list(String searchText);
 
     //添加维修信息
-    int add(RepairRecordPo repairRecordPo);
+    void add(RepairRecordPo repairRecordPo);
     //
     //修改维修信息
-    int update(RepairRecordPo repairRecordPo);
+    void update(RepairRecordPo repairRecordPo);
     //
-    // 删除维修信息
-    int delete(Integer id);
+    Integer count(String searchText);
+
+    void delete(Integer id);
 }

@@ -20,24 +20,27 @@ public class RepairRecordServiceImpl implements RepairRecordService {
 
 
     @Override
-    public List<RepairRecord> findList() {
+    public List<RepairRecord> list(String searchText,int pageIndex,int pageSize) {
 
-        return repairRecordAdapter.findLists();
+        return repairRecordAdapter.list(searchText,pageIndex,pageSize);
     }
 
     @Override
-    public int add(RepairRecord departureRecord) {
-        return repairRecordAdapter.add(departureRecord);
-//     return 1;
+    public void add(RepairRecord departureRecord) {
+        repairRecordAdapter.add(departureRecord);
+
     }
 
     @Override
-    public int update(RepairRecord departureRecord) {
-        return repairRecordAdapter.update(departureRecord);
+    public void update(RepairRecord departureRecord) {
+        repairRecordAdapter.update(departureRecord);
     }
-
     @Override
-    public int delete(Integer id) {
-        return repairRecordAdapter.delete(id);
+    public int count(String searchText) {
+        return repairRecordAdapter.count(searchText);
+    }
+    @Override
+    public void delete(Integer id) {
+         repairRecordAdapter.delete(id);
     }
 }

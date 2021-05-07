@@ -3,6 +3,7 @@ package com.woniu.service.impl;
 import com.woniu.adapter.CarAdapter;
 import com.woniu.dao.CarDao;
 import com.woniu.domain.Car;
+import com.woniu.domain.Car;
 import com.woniu.po.CarPo;
 import com.woniu.service.CarService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,28 +19,34 @@ import java.util.List;
 public class CarServiceImpl implements CarService {
     @Autowired
     private CarAdapter carAdapter;
+
     @Override
-    public List<CarPo> carList() {
-        return carAdapter.findCarList();
+    public List<Car> getAll() {
+        return carAdapter.getAll();
     }
 
     @Override
-    public int add(CarPo carPo) {
-        return carAdapter.add(carPo);
+    public List<Car> list(String searchText, int pageIndex, int pageSize) {
+
+        return carAdapter.list(searchText,pageIndex,pageSize);
     }
 
     @Override
-    public int update(CarPo carPo) {
-        return carAdapter.update(carPo);
+    public void add(Car departureRecord) {
+        carAdapter.add(departureRecord);
+
     }
 
     @Override
-    public int delete(CarPo carPo) {
-        return carAdapter.delete(carPo);
+    public void update(Car departureRecord) {
+        carAdapter.update(departureRecord);
     }
-
     @Override
-    public CarPo findById(CarPo carPo) {
-        return carAdapter.findById(carPo);
+    public int count(String searchText) {
+        return carAdapter.count(searchText);
+    }
+    @Override
+    public void delete(Integer id) {
+        carAdapter.delete(id);
     }
 }

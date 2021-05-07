@@ -1,7 +1,8 @@
 package com.woniu.controller;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.woniu.domain.Car;
-import com.woniu.po.CarPo;
 import com.woniu.service.CarService;
 import com.woniu.util.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,28 +15,50 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
+@RequestMapping("/car")
 public class CarController {
-
     @Autowired
     private CarService carService;
-    @RequestMapping("/car/add")
-    public int add(@RequestBody CarPo carPo){
-        return carService.add(carPo);
+
+    @RequestMapping("/list")
+    public ResponseResult<PageInfo<Car>> list(Integer p, String searchText, Integer size) {
+        int pageIndex=1;
+        int pageSize=5;
+        if(p>=1){
+            pageIndex=p;
+        }
+        if(pageSize>=5){
+            pageSize=size;
+        }
+        Integer total=carService.count(searchText);
+        PageHelper.startPage(pageIndex,pageSize);
+        List<Car> carList = carService.list(searchText,pageIndex,pageSize);
+        PageInfo<Car> pageInfo = new PageInfo<>(carList);
+        pageInfo.setTotal(total);
+        return new ResponseResult<>(pageInfo);
+    }
+
+    @RequestMapping("/add")
+    public ResponseResult add(@RequestBody Car car){
+        carService.add(car);
+        return ResponseResult.SUCCESS;
+    }
+
+    @RequestMapping("/update")
+    public ResponseResult updated(@RequestBody Car car){
+        carService.update(car);
+        return ResponseResult.SUCCESS;
+    }
+    @RequestMapping("/delete")
+    public ResponseResult delete(Integer id){
+        carService.delete(id);
+        return ResponseResult.SUCCESS;
+    }
+    @RequestMapping("/getAll")
+    public ResponseResult<List<Car>>getAll(){
+        List<Car> allCars = carService.getAll();
+        return new ResponseResult<>(allCars);
 
     }
-    @RequestMapping("/car/delete")
-    public int delete(CarPo carPo){
-        return carService.delete(carPo);
 
-    }
-    @RequestMapping("/car/update")
-    public int update(@RequestBody CarPo carPo){
-        return carService.update(carPo);
-
-    }
-    @RequestMapping("/car/list")
-    public ResponseResult<List<CarPo>> list(Integer pageIndex, String searchText){
-        List<CarPo> cars = carService.carList();
-        return new ResponseResult<List<CarPo>>(cars);
-    }
 }
