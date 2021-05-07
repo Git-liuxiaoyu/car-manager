@@ -235,7 +235,7 @@ export default {
          },
 
         showDriverDialog(row){
-          alert(1223)
+          
          this.dialogshowDriverVisible=true;
           this.showDriver.employee.name=row.employee.name;
           this.showDriver.employee.deptId=row.employee.deptId;

@@ -132,66 +132,59 @@
         </div>
     </el-dialog>
 
-
-
-      <el-dialog title="往来单位详细信息" :visible.sync="oppodetail" style="width:80%;color:black">
          
-            单位名称：
-             <el-input
-                v-model="details.name"
-                :disabled="true" style="width:400px">
-            </el-input>
-            <br/><br/>
+  <!--往来单位详情-->
+<el-dialog title="往来单位详细信息" :visible.sync="oppodetail" center width="70%">
+      <el-form :model="details" label-width="150px">
+        <el-row :gutter="20">
+            <el-col :span="6">
+                <el-form-item label="单位名称：" prop="name">
+                    {{details.name}}
+                </el-form-item>
+            </el-col> 
 
-            单位类型：
-             <el-input
-                v-model="details.typename"
-                :disabled="true" style="width:400px">
-            </el-input>
-             <br/><br/>
+            <el-col :span="6">
+                <el-form-item label="单位类型：" prop="typename">
+                    {{details.typename}}
+                </el-form-item>
+            </el-col> 
 
-            单位地址：
-             <el-input
-                v-model="details.address"
-                :disabled="true" style="width:400px">
-            </el-input>
-            <br/><br/>
+            <el-col :span="6">
+                <el-form-item label="单位地址：" prop="address">
+                    {{details.address}}
+                </el-form-item>
+            </el-col> 
 
-            联系电话：
-             <el-input
-                v-model="details.phone"
-                :disabled="true" style="width:400px">
-            </el-input>
-            <br/><br/>
+            <el-col :span="6">
+                <el-form-item label="联系电话：" prop="phone">
+                    {{details.phone}}
+                </el-form-item>
+            </el-col> 
 
-            联&nbsp; 系 &nbsp;人：
-             <el-input
-                v-model="details.linkName"
-                :disabled="true" style="width:400px">
-            </el-input>
-            <br/><br/>
+            <el-col :span="6">
+                <el-form-item label="联系人：" prop="linkName">
+                    {{details.linkName}}
+                </el-form-item>
+            </el-col> 
 
-             备 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注：
-             <el-input
-                v-model="details.remarks"
-                :disabled="true" style="width:400px">
-            </el-input>
-            <br/><br/>
+            <el-col :span="6">
+                <el-form-item label="备注：" prop="remarks">
+                    {{details.remarks}}
+                </el-form-item>
+            </el-col> 
 
-             状 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;态：
-             <el-input
-                v-model="details.status"
-                :disabled="true" style="width:400px">
-            </el-input>
-            <br/>
-
+            <el-col :span="6">
+                <el-form-item label="状态：" prop="status">
+                    {{details.status}}
+                </el-form-item>
+            </el-col> 
             
           <div slot="footer" class="dialog-footer">
           <el-button @click="oppodetail = false">确定</el-button>
           
           </div>
-
-
+          </el-row>
+      </el-form> 
     </el-dialog>
 
 
@@ -283,6 +276,8 @@ export default {
           status:"",             
       },
       types:[],
+
+      
       //详细信息
       details:{
           name:"",
@@ -410,22 +405,28 @@ export default {
 
     //删除往来单位信息
     del(id){ 
+
+
+
+      this.$confirm("此操作将删除该账户,是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(res => {
              this.$axios.post("opposite/delete?id="+id).then(r => {
              console.log(r)     
               if(r.data.code == 200){
                 this.$message({type: 'success', message:"删除成功",  duration:800});
-
                 //重新加载页面
                 this.oppolist();
             }else{
                this.$message({type: 'success', message:"删除失败",  duration:800});
             }             
        })
-
+      }).catch(res => {
+        this.$message.info("取消删除");
+      })
     }
-
-
-
   },
   created(){
         this.oppolist()

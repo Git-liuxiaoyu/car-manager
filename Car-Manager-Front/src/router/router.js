@@ -24,6 +24,8 @@ let router = new Router({
         {path: '/car', component: () => import('@/components/baseSetting/car/car')},
         {path: '/opposite', component: () => import('@/components/baseSetting/opposite/oppositeCompany')},
         {path: '/driver', component: () => import('@/components/baseSetting/driver/driver')},
+        {path: '/oilrecord', component: () => import('@/components/baseSetting/oilrecord/oilrecord')},
+
       ]
     },
 

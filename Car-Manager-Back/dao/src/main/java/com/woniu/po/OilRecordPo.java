@@ -9,7 +9,9 @@ public class OilRecordPo {
 
     private Integer id;
     private Integer carId;
+    private String carNum;//车牌号外键
     private Integer oppositeCompanyId;
+    private String oppositename;//往来单位名
     private String addTime;
     private Integer oilType;
     private BigDecimal prePrice;
@@ -20,4 +22,5 @@ public class OilRecordPo {
     private Double lastMileage;
     private String remarks;
     private Integer driverId;
+    private String drivername;//加油人员名
 }
