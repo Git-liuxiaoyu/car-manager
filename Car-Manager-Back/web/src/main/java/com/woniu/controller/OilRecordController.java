@@ -1,85 +1,123 @@
 package com.woniu.controller;
 
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.woniu.dao.OilRecordDao;
 import com.woniu.domain.DepartureRecord;
+import com.woniu.domain.Employee;
 import com.woniu.domain.OilRecord;
+import com.woniu.domain.ViolationRecord;
+import com.woniu.po.CarPo;
+import com.woniu.po.DriverPo;
+import com.woniu.po.OilRecordPo;
+import com.woniu.po.OppositeCompanyPo;
 import com.woniu.service.DepartureRecordService;
 import com.woniu.service.OilRecordService;
 import com.woniu.util.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
 import java.util.List;
 
+@CrossOrigin
 @RestController
-@RequestMapping("/OilRecord")
+@RequestMapping("/oilrecord")
 public class OilRecordController {
 
     @Autowired
     private OilRecordService oilRecordService;
 
-
-    @RequestMapping("/list")
-    public List<OilRecord> list(){
-
-        List<OilRecord> oilRecords = oilRecordService.oilRecordList();
-        return oilRecords;
-
+    //查询车牌号下拉框
+    @RequestMapping("carlist")
+    public List<CarPo> carlist(){
+        List<CarPo> carlist = oilRecordService.carlist();
+        return carlist;
     }
 
-    @RequestMapping("/add")
-    public ResponseResult add(){
-//        List<Role> roles = roleService.roles();
-//        List<Driver> drivers = driverService.driverList();
-        OilRecord oilRecord = new OilRecord();
-        oilRecord.setCarId(1);
-        oilRecord.setOppositeCompanyId(1);
-        oilRecord.setAddTime("2020-10-10 10:10:00");
-        oilRecord.setOilType(2);
-        oilRecord.setPrePrice(new BigDecimal("100.0"));
-        oilRecord.setThisOilVolume(6.00);
-        oilRecord.setLastOilVolume(60.00);
 
-        oilRecord.setPrice(new BigDecimal("360"));
-        oilRecord.setThisMileage(1000.00);
-        oilRecord.setLastMileage(500.00);
-        oilRecord.setRemarks("111");
-        oilRecord.setDriverId(1);
+    //查询往来单位下拉框
+    @RequestMapping("oppolist")
+    public List<OppositeCompanyPo> oppolist(){
+        List<OppositeCompanyPo> oppolist = oilRecordService.oppolist(31);
+        return oppolist;
+    }
+
+    //查询加油人员下拉框
+    @RequestMapping("driverlist")
+    public List<DriverPo> driverlist(){
+        List<DriverPo> driverlist = oilRecordService.driverlist();
+
+        return driverlist;
+    }
+
+
+
+
+
+    @RequestMapping("/list")
+    public ResponseResult<PageInfo<OilRecord>> list(Integer p, String searchText, Integer size) {
+        int pageIndex=1;
+        int pageSize=5;
+        if(p>=1){
+            pageIndex=p;
+        }
+        if(pageSize>=5){
+            pageSize=size;
+        }
+        Integer total=oilRecordService.count(searchText);
+        PageHelper.startPage(pageIndex,pageSize);
+        List<OilRecord> oilreList = oilRecordService.oilRecordList(searchText,pageIndex,pageSize);
+        PageInfo<OilRecord> pageInfo = new PageInfo<>(oilreList);
+        pageInfo.setTotal(total);
+
+        return new ResponseResult<>(pageInfo);
+    }
+
+
+    @RequestMapping("/add")
+    public ResponseResult add(@RequestBody OilRecord oilRecord){
+
         oilRecordService.add(oilRecord);
         return ResponseResult.SUCCESS;
 
     }
 
+    /**
+     * 修改
+     * @param oilRecord
+     * @return
+     */
     @RequestMapping("/update")
-    public ResponseResult updated(){
-//        List<Role> roles = roleService.roles();
-//        List<Driver> drivers = driverService.driverList();
-        OilRecord oilRecord = new OilRecord();
-        oilRecord.setId(1);
-        oilRecord.setOppositeCompanyId(1);
-        oilRecord.setOilType(2);
-        oilRecord.setPrePrice(new BigDecimal("100.0"));
-        oilRecord.setThisOilVolume(6.00);
-        oilRecord.setLastOilVolume(60.00);
+    public ResponseResult updated(@RequestBody OilRecord oilRecord){
 
-        oilRecord.setPrice(new BigDecimal("360"));
-        oilRecord.setThisMileage(1000.00);
-        oilRecord.setLastMileage(500.00);
-        oilRecord.setRemarks("9999999999");
-        oilRecord.setDriverId(1);
-        oilRecordService.update(oilRecord);
-        return ResponseResult.SUCCESS;
-
+        System.out.println("要修改的数据："+oilRecord);
+        int i = oilRecordService.update(oilRecord);
+        if (i > 0) {
+            return new ResponseResult(200, "修改成功");
+        } else {
+            return new ResponseResult(500, "修改失败");
+        }
     }
 
     @RequestMapping("delete")
-    public ResponseResult delete(){
+    public ResponseResult delete(Integer id){
 
-        oilRecordService.delete(1);
-        return ResponseResult.SUCCESS;
+        int i = oilRecordService.delete(id);
+        if(i > 0){return new ResponseResult(200,"删除成功");}
+        else{return new ResponseResult(500,"删除失败");}
+    }
+
+    @RequestMapping("findbyid")
+    public OilRecordPo findbyid(Integer id){
+        OilRecordPo orpo = new OilRecordPo();
+        orpo.setId(id);
+        OilRecordPo po = oilRecordService.findbyid(orpo);
+        return po;
     }
 
 

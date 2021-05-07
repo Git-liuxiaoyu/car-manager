@@ -20,6 +20,7 @@
     </el-row>
     <br/>
     <br/>
+    
     <template>
       <el-table :data="tableData" border style="width: 100%" height="400"
                 :header-cell-style="{background:'#eef1f6',color:'#606266'}">
@@ -413,6 +414,7 @@ export default {
         }
       })
     },
+
     findEmployee() {
       this.$axios.get("employee/list", {params: {p: this.p, searchText: this.searchText, size: this.size}}).then(r => {
         this.tableData = r.data.data.list

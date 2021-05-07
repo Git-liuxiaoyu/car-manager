@@ -119,6 +119,7 @@
                        </el-select>
                     </el-form-item>
                 </el-col>
+                
                 <el-col :span="6">
             <el-form-item label="颜色：" prop="color">
                 <el-select v-model="value" placeholder="请选择">
@@ -131,6 +132,7 @@
                 </el-select>
             </el-form-item>
                 </el-col>
+
                 <el-col :span="6">
                  <el-form-item label="载重（吨）：" prop="carrying">
                 <el-input v-model="insertCar.carrying"></el-input>
@@ -416,6 +418,8 @@
         <el-button type="primary" @click="updateCar">确 定</el-button>
         </div>
     </el-dialog>
+
+
     <!--车辆详情对话框-->
     <el-dialog title="车辆详情" :visible.sync="showCarViewVisible" center width="80%">
         <el-form :model="viewCar" label-width="150px">
@@ -515,6 +519,8 @@
     </el-dialog>
   </div>
 </template>
+
+
 <script >
 export default {
   data() {

@@ -3,10 +3,56 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.woniu.dao.OilRecordDao">
-
-    <select id="findList" resultType="OilRecordPo">
-        select * from oil_record
+    
+    
+    
+    
+    <resultMap type = "OilRecordPo" id = "oilreResultMap">
+        <!-- id用于指定Cart中的主键 -->
+        <id column="id" property="id" />
+        <result column="carId" property="carId" />
+        <result column="carnum" property="carNum"/>
+        <result column="oppositeCompanyId" property="oppositeCompanyId"/>
+        <result column="oppositename" property="oppositename"/>
+        <result column="addTime" property="addTime"/>
+        <result column="oilType" property="oilType"/>
+        <result column="prePrice" property="prePrice"/>
+        <result column="thisOilVolume" property="thisOilVolume"/>
+        <result column="lastOilVolume" property="lastOilVolume"/>
+        <result column="price" property="price"/>
+        <result column="thisMileage" property="thisMileage"/>
+        <result column="lastMileage" property="lastMileage"/>
+        <result column="remarks" property="remarks"/>
+        <result column="driverId" property="driverId"/>
+        <result column="drivername" property="drivername"/>
+    </resultMap>
+    
+    <!--分页查询-->
+    <select id="findList" resultMap="oilreResultMap" resultType="OilRecordPo">
+        select o.*,c.carNum carnum,oc.name oppositename,e.`name` drivername from
+        oil_record o,car c ,opposite_company oc,driver d,employee e where
+        c.id = o.carId and o.oppositeCompanyId = oc.id and o.driverId = d.id and d.employeeId = e.id
+            <if test="searchText!=null and searchText!='' ">
+                and c.carNum like concat('%',#{searchText},'%')
+            </if>
+        
     </select>
+    
+    
+    
+    <!--数量-->
+    <select id="count" parameterType="int" resultType="int">
+        select count(0) from
+        oil_record o,car c ,opposite_company oc,driver d,employee e where
+        c.id = o.carId and o.oppositeCompanyId = oc.id and o.driverId = d.id and d.employeeId = e.id
+        <if test="searchText!=null and searchText!='' ">
+            and c.carNum like concat('%',#{searchText},'%')
+        </if>
+     
+    </select>
+    
+    
+    
     <!--新增出车记录-->
     <insert id="add" parameterType="OilRecordPo">
         insert into oil_record(carId,oppositeCompanyId,addTime,oilType,prePrice,thisOilVolume,lastOilVolume,price,thisMileage,lastMileage,remarks,driverId)
@@ -43,4 +89,71 @@
         <delete id="delete" parameterType="Integer">
             delete from oil_record where id=#{id}
         </delete>
+    
+    <!--查询车牌号-->
+    <select id="carlist" resultType="CarPo">
+        select * from car
+    </select>
+    
+    <!--查询车牌号-->
+    <select id="oppolist" resultType="OppositeCompanyPo">
+        select * from opposite_company where type = #{type}
+    </select>
+    
+    
+    
+    <resultMap type = "DriverPo" id = "oilreResultMap2">
+        <id column="id" property="id" />
+        <result column="name" property="employeePo.name" />
+    
+    </resultMap>
+    <!--查询加油人员-->
+    <select id="driverlist" resultMap="oilreResultMap2" resultType="DriverPo">
+        select * from driver d ,employee e where d.employeeId = e.id
+    </select>
+    
+    
+    
+    <resultMap type = "OilRecordPo" id = "oilreResultMap3">
+        <!-- id用于指定Cart中的主键 -->
+        <id column="id" property="id" />
+        <result column="carId" property="carId" />
+        <result column="carnum" property="carNum"/>
+        <result column="oppositeCompanyId" property="oppositeCompanyId"/>
+        <result column="oppositename" property="oppositename"/>
+        <result column="addTime" property="addTime"/>
+        <result column="oilType" property="oilType"/>
+        <result column="prePrice" property="prePrice"/>
+        <result column="thisOilVolume" property="thisOilVolume"/>
+        <result column="lastOilVolume" property="lastOilVolume"/>
+        <result column="price" property="price"/>
+        <result column="thisMileage" property="thisMileage"/>
+        <result column="lastMileage" property="lastMileage"/>
+        <result column="remarks" property="remarks"/>
+        <result column="driverId" property="driverId"/>
+        <result column="drivername" property="drivername"/>
+    </resultMap>
+    
+    <!--分页查询-->
+    <select id="findbyid" resultMap="oilreResultMap3" resultType="OilRecordPo">
+        select o.*,c.carNum carnum,oc.name oppositename,e.`name` drivername from
+        oil_record o,car c ,opposite_company oc,driver d,employee e where
+        c.id = o.carId and o.oppositeCompanyId = oc.id and o.driverId = d.id and d.employeeId = e.id
+            and o.id = #{id}
+    
+    </select>
+    
+    
+    
+    
+    
+    
+<!--    &lt;!&ndash;根据id查询&ndash;&gt;-->
+<!--    <select id="findbyid" resultType="OilRecordPo">-->
+<!--        select * from oil_record where id = #{id}-->
+<!--    </select>-->
+<!--    -->
+
+
+
 </mapper>
