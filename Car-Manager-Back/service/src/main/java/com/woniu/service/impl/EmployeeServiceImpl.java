@@ -66,4 +66,14 @@ public class EmployeeServiceImpl implements EmployeeService {
     public void update(Employee updateEmployee) {
         employeeAdapter.update(updateEmployee);
     }
+
+    @Override
+    public Employee getByAccount(String account) {
+       return employeeAdapter.getByAccount(account);
+    }
+
+    @Override
+    public void updatePassWord(Employee employee) {
+        employeeAdapter.updatePassWord(employee);
+    }
 }

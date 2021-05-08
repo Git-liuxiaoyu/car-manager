@@ -22,4 +22,8 @@ public interface EmployeeService {
     void add(Employee employee);
 
     void update(Employee updateEmployee);
+
+    Employee getByAccount(String account);
+
+    void updatePassWord(Employee employee);
 }

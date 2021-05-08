@@ -28,10 +28,10 @@ public class RepairRecordRedisDao {
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
 
-    public List<RepairRecordPo> list(int pageIndex, String searchText,int pageSize) {
+    public List<RepairRecordPo> list(int pageIndex, String searchText, int pageSize) {
         List<RepairRecordPo> repairRecordList = new ArrayList<>();
 
-        String key = "repairRecordList" + pageIndex+pageSize;
+        String key = "repairRecordList" + pageIndex + pageSize;
         if (searchText != null && !searchText.equals("")) {
             key += searchText;
         }
@@ -51,9 +51,9 @@ public class RepairRecordRedisDao {
     }
 
     //将查询的数据存入redis中
-    public void addRedisRepairRecordList(List<RepairRecordPo> repairRecordList, int pageIndex, String searchText,int pageSize) {
+    public void addRedisRepairRecordList(List<RepairRecordPo> repairRecordList, int pageIndex, String searchText, int pageSize) {
         ObjectMapper objectMapper = new ObjectMapper();
-        String key = "repairRecordList" + pageIndex+pageSize;
+        String key = "repairRecordList" + pageIndex + pageSize;
         if (searchText != null && !searchText.equals("")) {
             key += searchText;
         }
@@ -67,8 +67,8 @@ public class RepairRecordRedisDao {
     }
 
     //清除redis的数据
-    public void updateRedis(){
-        Set<String> keys=redisTemplate.keys("repairRecordList*");
+    public void updateRedis() {
+        Set<String> keys = redisTemplate.keys("repairRecordList*");
         redisTemplate.delete(keys);
     }
 }

@@ -7,16 +7,16 @@
           <br/><br/><br/>
           <div class="acc">
             <el-col :span="18" :push="3">
-              <el-input placeholder="请输入内容" v-model="employee.account">
-                <el-button slot="prepend" icon="el-icon-user-solid"></el-button>
+              <el-input placeholder="请输入账号" v-model="employee.account" max
+                        clearable prefix-icon="el-icon-user-solid" @keyup.enter.native="login">
               </el-input>
             </el-col>
           </div>
 
           <div class="pwd">
             <el-col :span="18" :push="3">
-              <el-input placeholder="请输入内容" v-model="employee.password" type="password">
-                <el-button slot="prepend" icon="el-icon-lock"></el-button>
+              <el-input placeholder="请输入密码" v-model="employee.password"
+                        prefix-icon="el-icon-lock" type="password" clearable @keyup.enter.native="login">
               </el-input>
             </el-col>
           </div>
@@ -34,6 +34,7 @@
         </div>
       </el-col>
     </el-row>
+
   </div>
 </template>
 
@@ -45,7 +46,6 @@ export default {
       employee: {
         account: '',
         password: '',
-        captcha: ''
       },
     }
   },
@@ -53,13 +53,14 @@ export default {
     reset() {
       this.employee.account = '';
       this.employee.password = '';
-      this.employee.captcha = ''
     },
     login() {
       this.$axios.post("employee/login", this.employee).then(r => {
         if (r.data.code == 200) {
           //存进token
           localStorage.setItem("token", r.data.msg);
+          //将账号和用户名存进浏览器中
+          localStorage.setItem("account", this.employee.account);
           //跳转路由
           this.$router.push("/home");
           this.$message.success("登入成功");

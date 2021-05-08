@@ -104,4 +104,18 @@ public class EmployeeController {
         employeeService.update(updateEmployee);
         return ResponseResult.SUCCESS;
     }
+
+    //查询用户的密码
+    @RequestMapping("/getByAccount")
+    public ResponseResult getByAccount(String account){
+        Employee e=employeeService.getByAccount(account);
+        return new ResponseResult(e);
+    }
+
+    //修改用户的密码
+    @RequestMapping("/updatePassWord")
+    public ResponseResult updatePassWord(@RequestBody Employee employee){
+        employeeService.updatePassWord(employee);
+        return ResponseResult.SUCCESS;
+    }
 }

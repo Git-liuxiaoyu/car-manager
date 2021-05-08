@@ -20,6 +20,8 @@ let router = new Router({
       component: () => import('@/components/home/home'),
       children: [
         {path: '/roleManager', component: () => import('@/components/role/roleManager.vue')},
+        {path: '/userManager', component: () => import('@/components/role/userManager.vue')},
+        {path: '/changePassword', component: () => import('@/components/role/changePassword.vue')},
         {path: '/index', component: () => import('@/components/index')},
         {path: '/car', component: () => import('@/components/baseSetting/car/car')},
         {path: '/opposite', component: () => import('@/components/baseSetting/opposite/oppositeCompany')},
@@ -30,7 +32,6 @@ let router = new Router({
         {path: '/fee', component: () => import('@/components/dailyProcess/fee/fee')},
       ]
     },
-
   ]
 })
 export default router;

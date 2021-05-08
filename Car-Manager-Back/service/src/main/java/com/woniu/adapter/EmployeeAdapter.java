@@ -66,4 +66,18 @@ public class EmployeeAdapter {
         employeeDao.update(employeePo);
         employeeRedisDao.updateRedis();
     }
+
+    public Employee getByAccount(String account) {
+        Employee employee = new Employee();
+        EmployeePo employeePo= employeeDao.getByAccount(account);
+        BeanUtils.copyProperties(employeePo, employee);
+        return employee;
+    }
+
+    public void updatePassWord(Employee employee) {
+        EmployeePo employeePo = new EmployeePo();
+        BeanUtils.copyProperties(employee, employeePo);
+        employeeDao.updatePassWord(employeePo);
+        employeeRedisDao.updateRedis();
+    }
 }

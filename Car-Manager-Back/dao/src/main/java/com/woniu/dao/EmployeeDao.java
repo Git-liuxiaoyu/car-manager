@@ -32,4 +32,8 @@ public interface EmployeeDao {
     void add(EmployeePo employeePo);
 
     void update(EmployeePo employeePo);
+
+    EmployeePo getByAccount(String account);
+
+    void updatePassWord(EmployeePo employeePo);
 }

@@ -21,7 +21,7 @@
     </select>
 
     <select id="mens" resultType="MenuPo">
-        select m.href, m.parentid, m.id, m.name, e.name userName
+        select DISTINCT(m.name),m.href, m.parentid, m.id, e.name userName
         from role r,
              role_menu rm,
              menu m,
@@ -71,5 +71,13 @@
             address=#{address},
             status=#{status}
         where id = #{id}
+    </update>
+
+    <select id="getByAccount" resultType="EmployeePo">
+        select * from employee where account=#{account}
+    </select>
+
+    <update id="updatePassWord">
+        update employee set password=#{password} where id=#{id}
     </update>
 </mapper>

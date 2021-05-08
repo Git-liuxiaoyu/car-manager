@@ -3,7 +3,7 @@
 <template>
   <div>
     <el-breadcrumb separator="/">
-      <el-breadcrumb-item :to="{ path: 'home' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: 'index' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>日常处理</el-breadcrumb-item>
       <el-breadcrumb-item>加油记录</el-breadcrumb-item>
     </el-breadcrumb>
@@ -26,52 +26,52 @@
  <el-table :data="oilrecords" style="width: 100%" height="470">
 
         <el-table-column prop="carNum" label="车牌号" width="90">
-         
+
         </el-table-column>
 
         <el-table-column prop="oppositename" label="往来单位" width="90">
-          
+
 
         </el-table-column>
 
         <el-table-column prop="addTime" label="加油时间" width="180">
-         
+
         </el-table-column>
 
         <el-table-column prop="oilTypename" label="油料标号" width="90">
-         
+
         </el-table-column>
 
         <el-table-column prop="prePrice" label="油料单价" width="90">
-         
+
         </el-table-column>
 
         <el-table-column prop="thisOilVolume" label="本次加油" width="90">
-         
+
         </el-table-column>
 
         <el-table-column prop="lastOilVolume" label="上次加油" width="90">
-         
+
         </el-table-column>
 
         <el-table-column prop="price" label="加油总价" width="80">
-         
+
         </el-table-column>
 
         <el-table-column prop="thisMileage" label="本次里程" width="80">
-         
+
         </el-table-column>
 
          <el-table-column prop="lastMileage" label="上次里程" width="80">
-         
+
         </el-table-column>
 
          <el-table-column prop="remarks" label="备注" width="100">
-         
+
         </el-table-column>
 
         <el-table-column prop="drivername" label="加油人员" width="80">
-         
+
         </el-table-column>
 
         <el-table-column prop="" label="操作" width="300">
@@ -84,8 +84,8 @@
                     @click="del(scope.row.id)"
                 ></el-button>
                 <!-- <el-button type="success" icon="el-icon-check" circle plain size="mini">分配角色</el-button> -->
-            </template>        
-        </el-table-column>      
+            </template>
+        </el-table-column>
       </el-table>
     </template>
 
@@ -109,11 +109,11 @@
 
 
 
-  <!-- 添加车辆 对话框 
+  <!-- 添加车辆 对话框
     :visible 是否显示对话框，如果 dialogFormVisible：true 就显示  否则就不显示
     rules 就是表单每项的数据校验  ref  就是将来可以通过 this.$ref.addCar
     el-form-item :就是el-form表单里面的每项-->
-    <el-dialog title="新增加油记录" :visible.sync="oilreVisible" 
+    <el-dialog title="新增加油记录" :visible.sync="oilreVisible"
         ref = "addCar" center width="80%">
         <el-form :model="editoilreadd" label-width="150px">
             <el-row :gutter="20">
@@ -212,7 +212,7 @@
                 </el-col>
 
             </el-row>
-        </el-form> 
+        </el-form>
         <div slot="footer" class="dialog-footer">
             <el-button @click="oilreVisible = false">取 消</el-button>
             <el-button type="primary" @click="addoilre()">确 定</el-button>
@@ -221,13 +221,13 @@
 
 
 
-    
-    
-    
-    
-    
+
+
+
+
+
     <!-- 修改加油记录信息 -->
-     <el-dialog title="修改加油记录" :visible.sync="oilreupdate" 
+     <el-dialog title="修改加油记录" :visible.sync="oilreupdate"
         ref = "addCar" center width="80%">
         <el-form :model="updates" label-width="150px">
             <el-row :gutter="20">
@@ -241,7 +241,7 @@
                     </el-form-item>
                 </el-col>
 
-           
+
 
 
 
@@ -329,7 +329,7 @@
                 </el-col>
 
             </el-row>
-        </el-form> 
+        </el-form>
         <div slot="footer" class="dialog-footer">
             <el-button @click="oilreupdate = false">取 消</el-button>
             <el-button type="primary" @click="update()">确 定</el-button>
@@ -398,7 +398,7 @@ export default {
                     drivername:"",//加油人员名，查出---------
 
                 } ,
-               
+
                 cars:[],//查询的车牌号下拉框
                 opposites:[],//查询的往来单位下拉框
                 driverIds:[],//查询的加油人员下拉框
@@ -427,7 +427,7 @@ export default {
                     driverId:"",//加油人员
                     drivername:"",//加油人员名，查出---------
                 },
-           
+
 
             //控制添加对话框是否显示
             oilreVisible:false,
@@ -435,20 +435,20 @@ export default {
             //修改对话框
             oilreupdate:false,
 
-            
+
 
 
         }
- 
+
     },
 
     methods:{
     //列表
-    oilrelist(){   
+    oilrelist(){
 
       this.$axios.get("oilrecord/list",{params: {p: this.p, searchText: this.searchText, size: this.size}}).then(r => {
           console.log("数据")
-        console.log( r.data.data)   
+        console.log( r.data.data)
         this.oilrecords = r.data.data.list
         this.total = r.data.data.total
       })
@@ -464,29 +464,29 @@ export default {
     },
 
 
-    //显示新增对话框 
+    //显示新增对话框
     showEditoilre() {
-          this.oilreVisible  = true;    
+          this.oilreVisible  = true;
             //查询车牌号下拉框
             this.$axios.post("oilrecord/carlist").then(r => {
-                this.cars = r.data        
-                console.log(r)   
+                this.cars = r.data
+                console.log(r)
             })
 
             //查询往来单位下拉框
             this.$axios.post("oilrecord/oppolist").then(r => {
-                this.opposites = r.data        
-                console.log(r)   
+                this.opposites = r.data
+                console.log(r)
             })
 
              //查询加油人员下拉框
             this.$axios.post("oilrecord/driverlist").then(r => {
-                this.driverIds = r.data  
+                this.driverIds = r.data
                 this.employeePo = r.data
-                
-                console.log(r.data.data.employeePo)   
+
+                console.log(r.data.data.employeePo)
             })
-            
+
     },
     //添加加油记录
     addoilre(){
@@ -503,11 +503,11 @@ export default {
 
                 //重新加载页面
                 this.oilrelist();
-                this.oilreVisible  = false;    
+                this.oilreVisible  = false;
 
             }else{
                this.$message({type: 'success', message:"添加失败",  duration:800});
-            }           
+            }
       })
     },
     //打开修改对话框
@@ -515,20 +515,20 @@ export default {
      this.oilreupdate=true;
          //查询车牌号下拉框
             this.$axios.post("oilrecord/carlist").then(r => {
-                this.cars = r.data        
-                console.log(r)   
+                this.cars = r.data
+                console.log(r)
             })
 
             //查询往来单位下拉框
             this.$axios.post("oilrecord/oppolist").then(r => {
-                this.opposites = r.data        
-                console.log(r)   
+                this.opposites = r.data
+                console.log(r)
             })
 
              //查询加油人员下拉框
             this.$axios.post("oilrecord/driverlist").then(r => {
-                this.driverIds = r.data        
-                console.log(r)   
+                this.driverIds = r.data
+                console.log(r)
             })
 
 
@@ -544,8 +544,8 @@ export default {
             this.updates.oppositeCompanyId = this.updates.oppositename
             //this.updates.driverId = this.updates.drivername
 
-            this.$axios.post("oilrecord/update",this.updates).then(r => {    
-                console.log(r)   
+            this.$axios.post("oilrecord/update",this.updates).then(r => {
+                console.log(r)
             if(r.data.code == 200){
                 this.$message({type: 'success', message:"修改成功",  duration:800});
                 this.oppoupdate = false;
@@ -556,47 +556,47 @@ export default {
 
             //查询车牌号下拉框
             this.$axios.post("oilrecord/carlist").then(r => {
-                this.cars = r.data        
-                console.log(r)   
+                this.cars = r.data
+                console.log(r)
             })
 
             //查询往来单位下拉框
             this.$axios.post("oilrecord/oppolist").then(r => {
-                this.opposites = r.data        
-                console.log(r)   
+                this.opposites = r.data
+                console.log(r)
             })
 
              //查询加油人员下拉框
             this.$axios.post("oilrecord/driverlist").then(r => {
-                this.driverIds = r.data        
-                console.log(r)   
+                this.driverIds = r.data
+                console.log(r)
             })
 
                 //重新加载页面
                 this.oilrelist();
             }else{
                this.$message({type: 'success', message:"修改失败",  duration:800});
-            }   
+            }
             })
 
         this.oilreupdate = false;
     },
-    
-    del(id){ 
+
+    del(id){
       this.$confirm("此操作将删除该条记录,是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
       }).then(res => {
              this.$axios.post("oilrecord/delete?id="+id).then(r => {
-             console.log(r)     
+             console.log(r)
               if(r.data.code == 200){
                 this.$message({type: 'success', message:"删除成功",  duration:800});
                 //重新加载页面
                 this.oilrelist();
             }else{
                this.$message({type: 'success', message:"删除失败",  duration:800});
-            }             
+            }
        })
       }).catch(res => {
         this.$message.info("取消删除");

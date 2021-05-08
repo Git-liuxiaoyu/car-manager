@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-breadcrumb separator="/">
-      <el-breadcrumb-item :to="{ path: 'homePage' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: 'index' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>日常处理</el-breadcrumb-item>
       <el-breadcrumb-item>规费记录</el-breadcrumb-item>
     </el-breadcrumb>
@@ -31,7 +31,7 @@
         <el-table-column  prop="oppositeName" label="收费单位" width="150"></el-table-column>
         <el-table-column  prop="driverName" label="经办人" width="100"></el-table-column>
         <el-table-column  prop="remarks" label="备注" width="150"></el-table-column>
-        <el-table-column   label="操作" width="150" >                
+        <el-table-column   label="操作" width="150" >
             <!-- <template slot-scope="scoped">
                 <el-button type="primary" circle plain
                 @click="showDriverDialog(scoped.row)"
@@ -45,8 +45,8 @@
             <el-button type="danger" icon="el-icon-delete" circle @click="deleteFee(scoped.row.id)"></el-button>
             </el-tooltip>
             </template>
-            
-        </el-table-column>    
+
+        </el-table-column>
 
       </el-table>
     </template>
@@ -77,7 +77,7 @@
             </el-form-item> -->
 
 
-            <el-form-item label="车牌号" prop="carId">  
+            <el-form-item label="车牌号" prop="carId">
                 <el-select v-model="fees.carId" placeholder="请选择">
                     <el-option label="请选择" value="0" ></el-option>
                     <el-option :label="car.carNum" :value="car.id"
@@ -87,7 +87,7 @@
             </el-form-item>
           </el-col>
 
-          
+
 
           <el-col :span="8">
             <el-form-item label="规费名称">
@@ -115,7 +115,7 @@
           </el-col>
 
           <el-col :span="8">
-            <el-form-item label="经办人" prop="driverId">  
+            <el-form-item label="经办人" prop="driverId">
                 <el-select v-model="fees.driverId" placeholder="请选择">
                     <el-option label="请选择" value="0" ></el-option>
                     <el-option :label="driver.employeeName" :value="driver.id"
@@ -142,7 +142,7 @@
     </el-dialog>
 
 
-    <!-- 修改 --> 
+    <!-- 修改 -->
     <el-dialog title="编辑用户" :visible.sync="dialogEditFeeVisible" center width="80%">
         <el-form :model="editFee" label-width="80px">
             <el-row :gutter="20">
@@ -153,7 +153,7 @@
             </el-form-item> -->
 
 
-            <el-form-item label="车牌号" prop="carId">  
+            <el-form-item label="车牌号" prop="carId">
                 <el-select v-model="editFee.carId" placeholder="请选择"  :disabled="true">
                     <el-option label="请选择" value="0" ></el-option>
                     <el-option :label="car.carNum" :value="car.id"
@@ -163,7 +163,7 @@
             </el-form-item>
           </el-col>
 
-          
+
 
           <el-col :span="8">
             <el-form-item label="规费名称">
@@ -194,8 +194,8 @@
               <el-input v-model="fees.driverId"></el-input>
             </el-form-item> -->
 
-            
-            <el-form-item label="经办人" prop="driverId">  
+
+            <el-form-item label="经办人" prop="driverId">
                 <el-select v-model="editFee.driverId" placeholder="请选择">
                     <el-option label="请选择" value="0" ></el-option>
                     <el-option :label="driver.employeeName" :value="driver.id"
@@ -250,7 +250,7 @@ export default {
         // 车牌号
           cars:[],
           drivers:[],
-         //控制修改弹框 
+         //控制修改弹框
           dialogEditFeeVisible:false,
           editFee:{},
 
@@ -259,8 +259,8 @@ export default {
     methods:{
         findFee(){
             this.$axios.get("feerecord/list", {params: {p: this.p, searchText: this.searchText, size: this.size}}).then(r=>{
-              console.log(r); 
-            //   this.feeData=r.data; 
+              console.log(r);
+            //   this.feeData=r.data;
                     this.feeData = r.data.data.list
                     this.total = r.data.data.total
                     console.log(r)
@@ -305,7 +305,7 @@ export default {
              }else{
               this.$message({type: 'error', message:"添加失败",  duration:800});
              }
-            //   this.feeData=r.data; 
+            //   this.feeData=r.data;
             })
         },
         // 进入修改框
@@ -325,7 +325,7 @@ export default {
              }else{
               this.$message({type: 'error', message:"修改失败",  duration:800});
              }
-            //   this.feeData=r.data; 
+            //   this.feeData=r.data;
             })
         },
         // 删除
