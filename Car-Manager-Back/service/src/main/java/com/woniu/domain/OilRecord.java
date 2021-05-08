@@ -14,6 +14,7 @@ public class OilRecord {
     private String oppositename;//往来单位名
     private String addTime;
     private Integer oilType;
+    private String oilTypename;//油料标号名
     private BigDecimal prePrice;
     private Double thisOilVolume;
     private Double lastOilVolume;

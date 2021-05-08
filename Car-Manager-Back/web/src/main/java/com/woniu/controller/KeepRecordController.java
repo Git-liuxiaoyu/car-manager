@@ -1,11 +1,17 @@
 package com.woniu.controller;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.woniu.domain.KeepRecord;
+import com.woniu.domain.OilRecord;
 import com.woniu.po.KeepRecordPo;
+import com.woniu.po.OppositeCompanyPo;
 import com.woniu.service.KeepRecordService;
+import com.woniu.service.OilRecordService;
 import com.woniu.util.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,16 +27,41 @@ public class KeepRecordController {
     @Autowired
     private KeepRecordService keepRecordService;
 
+    @Autowired
+    private OilRecordService oilRecordService;
 
-    /**
-     * 列表
-     * @return
-     */
-    @RequestMapping("list")
-    public List<KeepRecord> getrecordlist(){
-        List<KeepRecord> list = keepRecordService.list();
-        return list;
+
+    //分页查询列表
+    @RequestMapping("/list")
+    public ResponseResult<PageInfo<KeepRecord>> list(Integer p, String searchText, Integer size) {
+        int pageIndex=1;
+        int pageSize=5;
+        if(p>=1){
+            pageIndex=p;
+        }
+        if(pageSize>=5){
+            pageSize=size;
+        }
+        Integer total=keepRecordService.count(searchText);
+        PageHelper.startPage(pageIndex,pageSize);
+        List<KeepRecord> keepList = keepRecordService.keepList(searchText,pageIndex,pageSize);
+        PageInfo<KeepRecord> pageInfo = new PageInfo<>(keepList);
+        pageInfo.setTotal(total);
+        //System.out.println(pageInfo);
+
+        return new ResponseResult<>(pageInfo);
     }
+
+
+    //查询往来单位下拉框
+    @RequestMapping("oppolist")
+    public List<OppositeCompanyPo> oppolist(){
+        List<OppositeCompanyPo> oppolist = oilRecordService.oppolist(30);
+        return oppolist;
+    }
+
+
+
 
     /**
      * 添加
@@ -38,22 +69,9 @@ public class KeepRecordController {
      * @return
      */
     @RequestMapping("add")
-    public ResponseResult add(){
+    public ResponseResult add(@RequestBody KeepRecordPo keepRecordPo){
 
-        KeepRecordPo krpo = new KeepRecordPo();
-        krpo.setCarId(1);
-        krpo.setType(1);
-        krpo.setKeepDate("2021-04-30 14:45:58");
-        krpo.setFee(new BigDecimal(200.00));
-        krpo.setOppositeCompanyId(2);
-        krpo.setThisKeepMileage(200.0);
-        krpo.setKeepContext("全车保养");
-        krpo.setNextKeepTime("2021-04-30 14:45:58");
-        krpo.setNextKeepMileage(200.0);
-        krpo.setDriverId(1);
-        krpo.setRemarks("无");
-
-        int i = keepRecordService.add(krpo);
+        int i = keepRecordService.add(keepRecordPo);
         if(i > 0){return new ResponseResult(200,"添加成功");}
         else{return new ResponseResult(500,"添加失败");}
     }
@@ -64,21 +82,8 @@ public class KeepRecordController {
      * @return
      */
     @RequestMapping("update")
-    public ResponseResult update(){
-        KeepRecordPo krpo = new KeepRecordPo();
-        krpo.setCarId(2);
-        krpo.setType(2);
-        krpo.setKeepDate("2021-04-30 14:45:58");
-        krpo.setFee(new BigDecimal(100.00));
-        krpo.setOppositeCompanyId(2);
-        krpo.setThisKeepMileage(200.0);
-        krpo.setKeepContext("半车保养");
-        krpo.setNextKeepTime("2021-04-30 14:45:58");
-        krpo.setNextKeepMileage(100.0);
-        krpo.setDriverId(1);
-        krpo.setRemarks("无");
-        krpo.setId(2);
-
+    public ResponseResult update(@RequestBody KeepRecordPo krpo){
+        System.out.println("要修改的数据"+krpo);
         int i = keepRecordService.update(krpo);
 
         if(i >0){
@@ -94,9 +99,9 @@ public class KeepRecordController {
      * @return
      */
     @RequestMapping("delete")
-    public ResponseResult delete(){
+    public ResponseResult delete(Integer id){
         KeepRecordPo krpo = new KeepRecordPo();
-        krpo.setId(2);
+        krpo.setId(id);
 
         int i = keepRecordService.delete(krpo);
 
@@ -106,9 +111,9 @@ public class KeepRecordController {
     }
 
     @RequestMapping("findbyid")
-    public ResponseResult<KeepRecordPo> findbyid(){
+    public ResponseResult<KeepRecordPo> findbyid(Integer id){
         KeepRecordPo krpo = new KeepRecordPo();
-        krpo.setId(1);
+        krpo.setId(id);
         KeepRecordPo feeRecordPo = keepRecordService.findbyid(krpo);
 
         if(feeRecordPo != null){

@@ -16,6 +16,7 @@
         <result column="oppositename" property="oppositename"/>
         <result column="addTime" property="addTime"/>
         <result column="oilType" property="oilType"/>
+        <result column="oiltypename" property="oilTypename"/>
         <result column="prePrice" property="prePrice"/>
         <result column="thisOilVolume" property="thisOilVolume"/>
         <result column="lastOilVolume" property="lastOilVolume"/>
@@ -25,13 +26,15 @@
         <result column="remarks" property="remarks"/>
         <result column="driverId" property="driverId"/>
         <result column="drivername" property="drivername"/>
+        
     </resultMap>
     
     <!--分页查询-->
     <select id="findList" resultMap="oilreResultMap" resultType="OilRecordPo">
-        select o.*,c.carNum carnum,oc.name oppositename,e.`name` drivername from
-        oil_record o,car c ,opposite_company oc,driver d,employee e where
+        select o.*,c.carNum carnum,oc.name oppositename,e.`name` drivername,dy.text oiltypename from
+        oil_record o,car c ,opposite_company oc,driver d,employee e,dictionary dy where
         c.id = o.carId and o.oppositeCompanyId = oc.id and o.driverId = d.id and d.employeeId = e.id
+        and o.oilType = dy.id
             <if test="searchText!=null and searchText!='' ">
                 and c.carNum like concat('%',#{searchText},'%')
             </if>
@@ -104,12 +107,12 @@
     
     <resultMap type = "DriverPo" id = "oilreResultMap2">
         <id column="id" property="id" />
-        <result column="name" property="employeePo.name" />
-    
+        <result column="ename" property="employeePo.name" />
+        <result column="eid" property="employeePo.id" />
     </resultMap>
     <!--查询加油人员-->
     <select id="driverlist" resultMap="oilreResultMap2" resultType="DriverPo">
-        select * from driver d ,employee e where d.employeeId = e.id
+        select d.*,e.name ename,e.id eid from driver d ,employee e where d.employeeId = e.id
     </select>
     
     
@@ -134,7 +137,7 @@
         <result column="drivername" property="drivername"/>
     </resultMap>
     
-    <!--分页查询-->
+    <!---->
     <select id="findbyid" resultMap="oilreResultMap3" resultType="OilRecordPo">
         select o.*,c.carNum carnum,oc.name oppositename,e.`name` drivername from
         oil_record o,car c ,opposite_company oc,driver d,employee e where

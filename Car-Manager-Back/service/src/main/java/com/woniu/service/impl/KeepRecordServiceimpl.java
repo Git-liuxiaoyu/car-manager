@@ -2,6 +2,7 @@ package com.woniu.service.impl;
 
 import com.woniu.adapter.KeepRecordAdapter;
 import com.woniu.domain.KeepRecord;
+import com.woniu.domain.OilRecord;
 import com.woniu.po.KeepRecordPo;
 import com.woniu.service.KeepRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +17,10 @@ public class KeepRecordServiceimpl implements KeepRecordService {
     @Autowired
     private KeepRecordAdapter keeRecordAdapter;
 
+
     @Override
-    public List<KeepRecord> list() {
-        return keeRecordAdapter.Lists();
+    public List<KeepRecord> keepList(String searchText, int pageIndex, int pageSize) {
+        return keeRecordAdapter.Lists(searchText,pageIndex,pageSize);
     }
 
     @Override
@@ -39,5 +41,11 @@ public class KeepRecordServiceimpl implements KeepRecordService {
     @Override
     public KeepRecordPo findbyid(KeepRecordPo krpo) {
         return keeRecordAdapter.findbyid(krpo);
+    }
+
+    //分页总数
+    @Override
+    public int count(String searchText) {
+        return keeRecordAdapter.count(searchText);
     }
 }

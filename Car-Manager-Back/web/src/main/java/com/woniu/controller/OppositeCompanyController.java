@@ -7,6 +7,7 @@ import com.woniu.po.DictionaryPo;
 import com.woniu.po.OppositeCompanyPo;
 import com.woniu.po.ViolationRecordPo;
 import com.woniu.service.DictionaryService;
+import com.woniu.service.OilRecordService;
 import com.woniu.service.OppositeCompanyService;
 import com.woniu.util.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +23,9 @@ public class OppositeCompanyController {
     @Autowired
     private OppositeCompanyService oppositeCompanyService;
 
+
     @Autowired
-    private DictionaryService dictionaryService;
+    private OilRecordService oilRecordService;
 
 
     /**
@@ -60,8 +62,12 @@ public class OppositeCompanyController {
      * @return
      */
     @RequestMapping("findbyid")
-    public ResponseResult<OppositeCompanyPo> findbyid(Integer id, Integer type) {
-       return null;
+    public ResponseResult<OppositeCompanyPo> findbyid(Integer id) {
+        OppositeCompanyPo oppo = new OppositeCompanyPo();
+        oppo.setId(id);
+        OppositeCompanyPo findbyid = oppositeCompanyService.findbyid(oppo);
+
+        return new ResponseResult<>(findbyid);
     }
 
 
@@ -102,6 +108,14 @@ public class OppositeCompanyController {
             return new ResponseResult(500, "删除失败");
         }
 
+    }
+
+
+    //查询往来单位下拉框
+    @RequestMapping("getoppolist")
+    public List<OppositeCompanyPo> oppolist(Integer type){
+        List<OppositeCompanyPo> oppolist = oilRecordService.oppolist(type);
+        return oppolist;
     }
 
 

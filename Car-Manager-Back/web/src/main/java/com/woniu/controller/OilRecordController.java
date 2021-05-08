@@ -8,11 +8,9 @@ import com.woniu.domain.DepartureRecord;
 import com.woniu.domain.Employee;
 import com.woniu.domain.OilRecord;
 import com.woniu.domain.ViolationRecord;
-import com.woniu.po.CarPo;
-import com.woniu.po.DriverPo;
-import com.woniu.po.OilRecordPo;
-import com.woniu.po.OppositeCompanyPo;
+import com.woniu.po.*;
 import com.woniu.service.DepartureRecordService;
+import com.woniu.service.DictionaryService;
 import com.woniu.service.OilRecordService;
 import com.woniu.util.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @CrossOrigin
@@ -31,6 +30,9 @@ public class OilRecordController {
 
     @Autowired
     private OilRecordService oilRecordService;
+
+    @Autowired
+    private DictionaryService dictionaryService;
 
     //查询车牌号下拉框
     @RequestMapping("carlist")
@@ -81,7 +83,7 @@ public class OilRecordController {
 
     @RequestMapping("/add")
     public ResponseResult add(@RequestBody OilRecord oilRecord){
-
+        System.out.println("添加："+oilRecord);
         oilRecordService.add(oilRecord);
         return ResponseResult.SUCCESS;
 
@@ -112,6 +114,8 @@ public class OilRecordController {
         else{return new ResponseResult(500,"删除失败");}
     }
 
+
+
     @RequestMapping("findbyid")
     public OilRecordPo findbyid(Integer id){
         OilRecordPo orpo = new OilRecordPo();
@@ -119,6 +123,8 @@ public class OilRecordController {
         OilRecordPo po = oilRecordService.findbyid(orpo);
         return po;
     }
+
+
 
 
 

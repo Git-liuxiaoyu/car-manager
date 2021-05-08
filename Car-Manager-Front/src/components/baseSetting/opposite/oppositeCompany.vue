@@ -145,7 +145,7 @@
 
           <el-col :span="6">
             <el-form-item label="单位类型：" prop="typename">
-              {{ details.typename }}
+              {{ typee }}
             </el-form-item>
           </el-col>
 
@@ -275,7 +275,7 @@ export default {
         status: "",
       },
       types: [],
-
+      typee:"",
 
       //详细信息
       details: {
@@ -313,9 +313,10 @@ export default {
     //显示新增对话框
     showEditoppo() {
       this.oppoVisible = true;
-      this.$axios.post("dictionary/type?parentid=30").then(r => {
+      this.$axios.post("dictionary/menu").then(r => {
+        console.log("新增对话框")
         console.log(r)
-        this.types = r.data
+        this.types = r.data.data[3].children
       })
     },
     //添加往来单位
@@ -327,7 +328,7 @@ export default {
         this.editoppo.status = '1'
       }
       this.$axios.post("opposite/add", this.editoppo).then(r => {
-        console.log(r)
+        //console.log(r)
         if (r.data.code == 200) {
           this.$message({type: 'success', message: "添加成功", duration: 800});
           this.oppoVisible = false;
@@ -348,8 +349,8 @@ export default {
     detail(id, type) {
 
       this.oppodetail = true;
-      this.$axios.post("opposite/findbyid?id=" + id + "&type=" + type).then(r => {
-        console.log(r)
+      this.$axios.post("opposite/findbyid?id=" + id).then(r => {
+        //console.log(r)
         this.details = r.data.data
         if (this.details.status == 1) {
           this.details.status = "启用";
@@ -357,12 +358,23 @@ export default {
           this.details.status = "禁用";
         }
       })
+       this.$axios.post("dictionary/menu").then(r => {
+        console.log("详情对话框")
+        console.log(r)
+        this.types = r.data.data[3].children
+            for (var i in this.types) {
+            if(this.types[i].id==type){
+              this.typee = this.types[i].text
+            }
+          }
+
+      })
     },
     //打开修改对话框
     goupdate(id, type) {
       this.oppoupdate = true;
-      this.$axios.post("opposite/findbyid?id=" + id + "&type=" + type).then(r => {
-        console.log(r)
+      this.$axios.post("opposite/findbyid?id=" + id).then(r => {
+        //console.log(r)
         this.updates = r.data.data
         if (this.updates.status == 0) {
           this.updates.status = true;
@@ -370,9 +382,11 @@ export default {
           this.updates.status = false
         }
       })
-      this.$axios.post("dictionary/type?parentid=30").then(r => {
+       this.$axios.post("dictionary/menu").then(r => {
+        console.log("修改对话框")
         console.log(r)
-        this.types = r.data
+        this.types = r.data.data[3].children
+        
       })
     },
     //修改
