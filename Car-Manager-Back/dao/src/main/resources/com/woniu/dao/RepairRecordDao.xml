@@ -23,15 +23,18 @@
     <update id="update" parameterType="RepairRecordPo">
         update repair_record
     <set>
+        <if test="carId!=null and carId!=''" > carId = #{carId},</if>
         <if test="oppositeCompanyId!=null and oppositeCompanyId!=''" > oppositeCompanyId = #{oppositeCompanyId},</if>
-
         <if test="sendTime!=null and sendTime!=''" > sendTime = #{sendTime},</if>
-
         <if test="preGetTime!=null and preGetTime!=''" > preGetTime = #{preGetTime},</if>
         <if test="reason!=null and reason!=''" > reason = #{reason},</if>
-
         <if test="remarks!=null and remarks!=''" > remarks = #{remarks},</if>
         <if test="driverId!=null and driverId!=''" > driverId = #{driverId},</if>
+        <if test="getTime!=null and getTime!=''" > getTime = #{getTime},</if>
+        <if test="repairFee!=null and repairFee!=''" > repairFee = #{repairFee},</if>
+        <if test="repairType!=null and repairType!=''" > repairType = #{repairType},</if>
+        <if test="repairItem!=null and repairItem!=''" > repairItem = #{repairItem},</if>
+        <if test="useGoods!=null and useGoods!=''" > useGoods = #{useGoods},</if>
     </set>
             where id = #{id}
     </update>

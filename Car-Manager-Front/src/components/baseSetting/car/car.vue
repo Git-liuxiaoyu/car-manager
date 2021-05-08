@@ -525,7 +525,7 @@
 export default {
   data() {
     return {
-      totalCount: 0,
+      total: 0,
       p: 1,
       searchText: "",
       size:5,
