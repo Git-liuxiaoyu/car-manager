@@ -97,8 +97,13 @@
           </el-col>
 
           <el-col :span="8">
-            <el-form-item label="缴费时间">
+            <!-- <el-form-item label="缴费时间">
               <el-input type="datetime" v-model="fees.payTime"></el-input>
+            </el-form-item> -->
+
+              <el-form-item label="加油时间" >
+                <el-date-picker v-model="fees.payTime"  format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss" clearable style="width: 100%"
+                 :picker-options="startDatePicker" :disabled="dialogStatus=='view'" type="date"  :placeholder="dialogStatus=='view'?'':'请输入支付时间'"></el-date-picker>
             </el-form-item>
           </el-col>
 

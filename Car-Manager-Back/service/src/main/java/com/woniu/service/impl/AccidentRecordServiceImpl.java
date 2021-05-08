@@ -1,6 +1,9 @@
 package com.woniu.service.impl;
 
 import com.woniu.adapter.AccidentRecordAdapter;
+//import com.woniu.po.AccidentRecord;
+import com.woniu.domain.AccidentRecord;
+import com.woniu.domain.AccidentRecord;
 import com.woniu.po.AccidentRecordPo;
 import com.woniu.service.AccidentRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,27 +20,33 @@ public class AccidentRecordServiceImpl implements AccidentRecordService {
     @Autowired
     private AccidentRecordAdapter accidentRecordAdapter;
     @Override
-    public List<AccidentRecordPo> accidentRecordList(AccidentRecordPo accidentRecordPo) {
-        return accidentRecordAdapter.findAccidentRecordList(accidentRecordPo);
+    public List<AccidentRecord> list(String searchText, int pageIndex, int pageSize) {
+
+        return accidentRecordAdapter.List(searchText,pageIndex,pageSize);
     }
 
     @Override
-    public int add(AccidentRecordPo accidentRecordPo) {
-        return accidentRecordAdapter.add(accidentRecordPo);
+    public int add(AccidentRecord accidentRecord) {
+
+        return accidentRecordAdapter.add(accidentRecord);
     }
 
     @Override
-    public int update(AccidentRecordPo accidentRecordPo) {
-        return accidentRecordAdapter.update(accidentRecordPo);
+    public int delete(Integer id) {
+        return accidentRecordAdapter.delete(id);
     }
 
     @Override
-    public int delete(AccidentRecordPo accidentRecordPo) {
-        return accidentRecordAdapter.delete(accidentRecordPo);
+    public int update(AccidentRecord feeRecord) {
+        return accidentRecordAdapter.update(feeRecord);
     }
 
+
+
     @Override
-    public AccidentRecordPo findById(AccidentRecordPo accidentRecordPo) {
-        return accidentRecordAdapter.findById(accidentRecordPo);
+    public int count(String searchText) {
+        return accidentRecordAdapter.count(searchText);
     }
+
+
 }

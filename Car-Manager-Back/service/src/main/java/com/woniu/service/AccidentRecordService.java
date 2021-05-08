@@ -1,5 +1,6 @@
 package com.woniu.service;
 
+import com.woniu.domain.AccidentRecord;
 import com.woniu.po.AccidentRecordPo;
 
 import java.util.List;
@@ -10,9 +11,16 @@ import java.util.List;
  */
 
 public interface AccidentRecordService {
-    public List<AccidentRecordPo> accidentRecordList(AccidentRecordPo accidentRecordPo);
-    public int add(AccidentRecordPo accidentRecordPo);
-    public int update(AccidentRecordPo accidentRecordPo);
-    public int delete(AccidentRecordPo accidentRecordPo);
-    public AccidentRecordPo findById(AccidentRecordPo accidentRecordPo);
+    //查询维修信息
+    List<AccidentRecord> list(String searchText, int pageIndex, int pageSize);
+
+    //添加维修信息
+    int add(AccidentRecord accidentRecord);
+    //
+    //修改维修信息
+    int update(AccidentRecord accidentRecord);
+
+    int count(String searchText);
+    // 删除维修信息
+    int delete(Integer id);
 }

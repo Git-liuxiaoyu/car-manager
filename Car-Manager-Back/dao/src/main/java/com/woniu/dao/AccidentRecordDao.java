@@ -2,6 +2,7 @@ package com.woniu.dao;
 
 import com.woniu.po.AccidentRecordPo;
 import com.woniu.po.CarPo;
+import com.woniu.po.AccidentRecordPo;
 
 
 import java.util.List;
@@ -11,9 +12,21 @@ import java.util.List;
  * @Date 2021/4/29 18:12
  */
 public interface AccidentRecordDao {
-    public List<AccidentRecordPo> accidentRecordList(AccidentRecordPo accidentRecordPo);
-    public int add(AccidentRecordPo accidentRecordPo);
-    public int update(AccidentRecordPo accidentRecordPo);
-    public int delete(AccidentRecordPo accidentRecordPo);
-    public AccidentRecordPo findById(AccidentRecordPo accidentRecordPo);
+    //列表
+    List<AccidentRecordPo> list(String searchText);
+
+    //添加
+    int add(AccidentRecordPo accidentRecordPo);
+
+    //删除
+    int delete(Integer id);
+
+    //修改
+    int update(AccidentRecordPo accidentRecordPo);
+
+    //根据id查询记录
+//    AccidentRecordPo findbyid(AccidentRecordPo accidentRecordPo);
+
+    int count(String searchText);
+
 }

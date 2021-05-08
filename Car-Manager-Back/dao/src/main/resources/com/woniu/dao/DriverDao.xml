@@ -9,6 +9,7 @@
         <result column="driverNum" property="driverNum" />
         <result column="type" property="type" />
         <result column="status" property="status" />
+        <result column="remarks" property="remarks" />
         <association property="employeePo" javaType="EmployeePo">
             <id column="employeeId" property="id"/>
             <result column="name" property="name"/>
@@ -24,7 +25,13 @@
     </resultMap>
     <select id="findDriverList" resultMap="driverPoResultMap" >
         --         select * from driver
-        select d.*,e.name, e.deptId,e.gender,e.telephone,e.entryDate,e.address,e.birthday,e.idCard from driver d , employee e,employee_role er where d.employeeId=e.id and er.employeeId=e.id and er.roleId=3
+        select d.*,e.name, e.deptId,e.gender,e.telephone,e.entryDate,e.address,e.birthday,e.idCard from driver d , employee e,employee_role er
+        <where>
+            d.employeeId=e.id and er.employeeId=e.id and er.roleId=2
+            <if test="searchText!=null and searchText!='' ">
+               and e.name like concat('%',#{searchText},'%')
+            </if>
+        </where>
     </select>
 
     <insert id="addDriver" parameterType="DriverPo">
@@ -47,11 +54,11 @@
     </update>
 
    <select id="getEmployee" resultType="EmployeePo">
-       select * from employee e,employee_role er where e.id=er.employeeId and e.name=#{name} and er.roleId!=3
+       select * from employee e,employee_role er where e.id=er.employeeId and e.name=#{name} and er.roleId!=2
    </select>
 
     <update id="updateRole" >
-        update employee_role set roleId=3 where employeeId=#{employeeId}
+        update employee_role set roleId=#{roleId} where employeeId=#{employeeId}
     </update>
 
 
@@ -67,5 +74,16 @@
     </resultMap>
     <select id="getAll" resultMap="driverPoAllResultMap" >
         select d.*,e.name employeeName from driver d,employee e where d.employeeId=e.id
+    </select>
+
+
+    <select id="count" parameterType="int" resultType="int">
+        select count(0) from driver d,employee e
+        <where>
+            d.employeeId = e.id
+            <if test="searchText!=null and searchText!='' ">
+               and e.name like concat('%',#{searchText},'%')
+            </if>
+        </where>
     </select>
 </mapper>

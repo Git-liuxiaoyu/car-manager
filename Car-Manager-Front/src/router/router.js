@@ -28,6 +28,7 @@ let router = new Router({
         {path: '/repairRecord', component: () => import('@/components/dailyProcess/repairRecord/repairRecord')},
         {path: '/oilrecord', component: () => import('@/components/dailyProcess/oilrecord/oilrecord')},
         {path: '/fee', component: () => import('@/components/dailyProcess/fee/fee')},
+        {path: '/accidentRecord', component: () => import('@/components/dailyProcess/accidentRecord/accidentRecord')},
       ]
     },
 
