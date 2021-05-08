@@ -1,12 +1,13 @@
 package com.woniu.dao;
 
 import com.woniu.po.KeepRecordPo;
+import com.woniu.po.OilRecordPo;
 
 import java.util.List;
 
 public interface KeepRecordDao {
-    //保养记录列表
-    List<KeepRecordPo> list();
+    //查询加油信息
+    List<KeepRecordPo> findList(String searchText);
 
     //添加保养记录
     int add(KeepRecordPo keepRecordPo);
@@ -19,4 +20,8 @@ public interface KeepRecordDao {
 
     //根据id查询保养记录
     KeepRecordPo findbyid(KeepRecordPo keepRecordPo);
+
+    //总数
+    int count(String searchText);
+
 }

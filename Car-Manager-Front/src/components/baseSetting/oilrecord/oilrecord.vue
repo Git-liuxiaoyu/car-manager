@@ -35,7 +35,10 @@
         </el-table-column>
 
         <el-table-column prop="addTime" label="加油时间" width="180">
-         
+        <template slot-scope="scope">
+            <i class="el-icon-time"></i>
+            {{ scope.row.addTime | timeConvert() }}
+          </template>
         </el-table-column>
 
         <el-table-column prop="oilTypename" label="油料标号" width="90">
@@ -139,12 +142,32 @@
                     </el-form-item>
                 </el-col>
 
+
             <el-col :span="10">
-            <el-form-item label="加油时间：" prop="addTime">
-                <el-date-picker v-model="editoilreadd.addTime"  format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss" clearable style="width: 100%"
-                 :picker-options="startDatePicker" :disabled="dialogStatus=='view'" type="date"  :placeholder="dialogStatus=='view'?'':'请输入加油时间'"></el-date-picker>
-            </el-form-item>
+                <el-form-item label="加油时间：" prop="addTime">
+                        <el-date-picker
+                        v-model="editoilreadd.addTime"
+                        type="datetime"
+                        value-format="yyyy-MM-DD HH:mm:ss"
+                        placeholder="选择日期">
+                        </el-date-picker>         
+                </el-form-item>                
             </el-col>
+
+             <!-- <el-col :span="10">
+            <el-form-item label="加油时间：">
+                <el-date-picker
+                v-model="editoilreadd.addTime"
+                type="datetime"
+                placeholder="选择日期时间"
+                align="right"
+                :picker-options="pickerOptions">
+                </el-date-picker>
+            </el-form-item>
+          </el-col> -->
+
+
+
 
 
              <el-col :span="6">
@@ -200,12 +223,12 @@
                 </el-form-item>
             </el-col>
 
-            <el-col :span="6">
+             <el-col :span="6">
                     <el-form-item label="加油人员" prop="driverId">
-                            <el-select v-model="employeePo.name" placeholder="请选择">
+                            <el-select v-model="editoilreadd.driverId" placeholder="请选择">
                                 <el-option label="请选择" value="0" ></el-option>
-                                <el-option :label="driverIds.name" :value="driverIds.id"
-                                        v-for="driverIds in driverIds" :key="driverIds.id">
+                                <el-option :label="driver.employeeName" :value="driver.id"
+                                        v-for="driver in drivers" :key="driver.id">
                                 </el-option>
                             </el-select>
                     </el-form-item>
@@ -247,29 +270,50 @@
 
                 <el-col :span="6">
                     <el-form-item label="加油站" prop="oppositeCompanyId">
-                            <el-select v-model="updates.oppositename" placeholder="请选择">
+                            <el-select v-model="updates.oppositeCompanyId" placeholder="请选择">
                                 <el-option label="请选择" value="0" ></el-option>
-                                <el-option :label="opposites.name" :value="opposites.id"
+                                <el-option :label="opposites.carNum" :value="opposites.id"
                                         v-for="opposites in opposites" :key="opposites.id">
                                 </el-option>
                             </el-select>
                     </el-form-item>
                 </el-col>
 
-            <el-col :span="10">
+            <!-- <el-col :span="10">
             <el-form-item label="加油时间：" prop="addTime">
                 <el-date-picker v-model="updates.addTime"  format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss" clearable style="width: 100%"
                  :picker-options="startDatePicker" :disabled="dialogStatus=='view'" type="date"  :placeholder="dialogStatus=='view'?'':'请输入加油时间'"></el-date-picker>
             </el-form-item>
-            </el-col>
+            </el-col> -->
+
+            <el-col :span="10">
+                    <el-form-item label="加油时间" prop="carId">
+                             <el-input
+                                placeholder="加油时间"
+                                v-model="updates.addTime"
+                                :disabled="true">
+                            </el-input>
+                    </el-form-item>
+                </el-col>
+
+
+             
+
+
+            
+        <!-- <el-col :span="10">
+            <el-form-item label="加油时间">
+              <el-input type="datetime" v-model="updates.addTime"></el-input>
+            </el-form-item>
+          </el-col> -->
 
 
              <el-col :span="6">
-                    <el-form-item label="油料标号" prop="oppositeCompanyId">
+                    <el-form-item label="油料标号" prop="oilType">
                             <el-select v-model="updates.oilType" placeholder="请选择">
                                 <el-option label="请选择" value="0" ></el-option>
-                                <el-option :label="oilTypes.text" :value="oilTypes.id"
-                                        v-for="oilTypes in oilTypes" :key="oilTypes.id">
+                                <el-option :label="oilType.text" :value="oilType.id"
+                                        v-for="oilType in oilTypes" :key="oilType.id">
                                 </el-option>
                             </el-select>
                     </el-form-item>
@@ -319,14 +363,26 @@
 
             <el-col :span="6">
                     <el-form-item label="加油人员" prop="driverId">
-                            <el-select v-model="updates.drivername" placeholder="请选择">
+                            <el-select v-model="updates.driverId" placeholder="请选择">
                                 <el-option label="请选择" value="0" ></el-option>
-                                <el-option :label="driverIds.employeePo.name" :value="updates.id"
-                                        v-for="driverIds in driverIds" :key="driverIds.id">
+                                <el-option :label="driver.employeeName" :value="driver.id"
+                                        v-for="driver in drivers" :key="driver.id">
                                 </el-option>
                             </el-select>
                     </el-form-item>
                 </el-col>
+
+
+            <!-- <el-col :span="8">
+            <el-form-item label="经办人" prop="driverId">  
+                <el-select v-model="fees.driverId" placeholder="请选择">
+                    <el-option label="请选择" value="0" ></el-option>
+                    <el-option :label="driver.employeeName" :value="driver.id"
+                            v-for="driver in drivers" :key="driver.id">
+                    </el-option>
+                </el-select>
+            </el-form-item>
+          </el-col> -->
 
             </el-row>
         </el-form> 
@@ -401,11 +457,8 @@ export default {
                
                 cars:[],//查询的车牌号下拉框
                 opposites:[],//查询的往来单位下拉框
-                driverIds:[],//查询的加油人员下拉框
-                oilTypes:[
-                    {text:"#a423",id:"1"},{text:"#s256",id:"2"}
-                ],//油料标号下拉框
-                employeePo:[],//加油人员
+                drivers:[],//查询的加油人员下拉框
+                oilTypes:[],//油料标号下拉框
 
                 //修改
                 updates:{
@@ -445,13 +498,16 @@ export default {
     methods:{
     //列表
     oilrelist(){   
-
+        var oitype =[];
       this.$axios.get("oilrecord/list",{params: {p: this.p, searchText: this.searchText, size: this.size}}).then(r => {
-          console.log("数据")
-        console.log( r.data.data)   
+ 
         this.oilrecords = r.data.data.list
         this.total = r.data.data.total
+        console.log("列表的数据")
+        console.log(r)
       })
+       
+
     },
     //分页方法
     handleCurrentChange(val) {
@@ -470,22 +526,26 @@ export default {
             //查询车牌号下拉框
             this.$axios.post("oilrecord/carlist").then(r => {
                 this.cars = r.data        
-                console.log(r)   
+                //console.log(r)   
             })
 
             //查询往来单位下拉框
             this.$axios.post("oilrecord/oppolist").then(r => {
                 this.opposites = r.data        
-                console.log(r)   
+               // console.log(r)   
             })
 
              //查询加油人员下拉框
-            this.$axios.post("oilrecord/driverlist").then(r => {
-                this.driverIds = r.data  
-                this.employeePo = r.data
-                
-                console.log(r.data.data.employeePo)   
+            this.$axios.post("feerecord/getDriverName").then(r => {
+               this.drivers=r.data.data;                 
+                console.log(r)   
             })
+            this.$axios.post("dictionary/menu").then(r => {
+                console.log("新增对话框")
+                console.log(r)
+                this.oilTypes = r.data.data[9].children
+            })
+            
             
     },
     //添加加油记录
@@ -526,13 +586,21 @@ export default {
             })
 
              //查询加油人员下拉框
-            this.$axios.post("oilrecord/driverlist").then(r => {
-                this.driverIds = r.data        
+            this.$axios.post("feerecord/getDriverName").then(r => {
+                this.drivers=r.data.data;   
+                console.log("加油人员下拉框")   
                 console.log(r)   
+            })
+
+            this.$axios.post("dictionary/menu").then(r => {
+                console.log("油料标号下拉框")
+                console.log(r)
+                this.oilTypes = r.data.data[9].children
             })
 
 
          this.$axios.get("oilrecord/findbyid?id="+id).then(r => {
+             console.log("查询的修改数据")
             console.log(r)
             this.updates = r.data
 
@@ -540,10 +608,6 @@ export default {
     },
 
     update(){
-            //this.updates.carId = this.updates.carNum
-            this.updates.oppositeCompanyId = this.updates.oppositename
-            //this.updates.driverId = this.updates.drivername
-
             this.$axios.post("oilrecord/update",this.updates).then(r => {    
                 console.log(r)   
             if(r.data.code == 200){

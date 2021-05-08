@@ -54,7 +54,6 @@ public class OilRecordRedisDao {
 
 
 
-
     //将查询的数据存入redis中
     public void addRedisList(List<OilRecordPo> oilRecordPoList, int pageIndex, String searchText,int pageSize) {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -77,20 +76,4 @@ public class OilRecordRedisDao {
         redisTemplate.delete(keys);
     }
 
-
-
-
-
-
-//    //更新redis
-//    public void addRedisList(List<OilRecordPo> oilRecordPoList) {
-//
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        BoundValueOperations<String, String> boundValueOps = redisTemplate.boundValueOps("oilRecordList");
-//        try {
-//            String temp = objectMapper.writeValueAsString(oilRecordPoList);
-//            //3、然后把查到的结果存到redis里面
-//            boundValueOps.set(temp);
-//        } catch (Exception exception) {  }
-//    }
 }

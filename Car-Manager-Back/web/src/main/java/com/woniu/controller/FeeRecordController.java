@@ -136,11 +136,15 @@ public class FeeRecordController {
             return new ResponseResult(500,"查无此人");
         }
     }
+
+
+
     @RequestMapping("getCarNum")
     public ResponseResult<List<CarPo>> getAllCarNum(){
         List<CarPo> allCarNum = feeRecordService.getAllCarNum();
         return  new ResponseResult<>(allCarNum);
     }
+
 
     @RequestMapping("getDriverName")
     public ResponseResult<List<Driver>> getDriverName(){

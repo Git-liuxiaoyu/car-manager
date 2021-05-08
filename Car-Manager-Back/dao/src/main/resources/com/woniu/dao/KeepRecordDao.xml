@@ -4,11 +4,67 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.woniu.dao.KeepRecordDao">
     
-    <!--查询取车记录列表-->
-    <select id="list" resultType="KeepRecordPo">
-        select * from keep_record
+    
+<!--    <select id="list" resultType="KeepRecordPo">-->
+<!--        select * from keep_record-->
+<!--    </select>-->
+    
+    
+    
+    
+    
+    <resultMap type = "KeepRecordPo" id = "keepResultMap">
+        <!-- id用于指定Cart中的主键 -->
+        <id column="id" property="id" />
+        <result column="carId" property="carId" />
+        <result column="carnum" property="carNum"/>
+        <result column="type" property="type"/>
+        <result column="typename" property="typename"/>
+        <result column="keepDate" property="keepDate"/>
+        <result column="fee" property="fee"/>
+        <result column="oppositeCompanyId" property="oppositeCompanyId"/>
+        <result column="oppositename" property="oppositename"/>
+        <result column="thisKeepMileage" property="thisKeepMileage"/>
+        <result column="keepContext" property="keepContext"/>
+        <result column="nextKeepTime" property="nextKeepTime"/>
+        <result column="nextKeepMileage" property="nextKeepMileage"/>
+        <result column="driverId" property="driverId"/>
+        <result column="drivername" property="drivername"/>
+        <result column="remarks" property="remarks"/>
+
+    </resultMap>
+    <!--分页查询-->
+    <select id="findList" resultMap="keepResultMap" resultType="KeepRecordPo">
+        select k.*,c.carNum carnum,oc.name oppositename,e.`name` drivername,dy.text typename from
+        keep_record k,car c ,opposite_company oc,driver d,employee e,dictionary dy where
+        c.id = k.carId and k.oppositeCompanyId = oc.id and k.driverId = d.id and d.employeeId = e.id
+        and k.Type = dy.id
+        <if test="searchText!=null and searchText!='' ">
+            and c.carNum like concat('%',#{searchText},'%')
+        </if>
+    
     </select>
     
+    
+    <!--数量-->
+    <select id="count" parameterType="int" resultType="int">
+        select count(0) from
+        keep_record k,car c ,opposite_company oc,driver d,employee e,dictionary dy where
+        c.id = k.carId and k.oppositeCompanyId = oc.id and k.driverId = d.id and d.employeeId = e.id
+        and k.Type = dy.id
+        <if test="searchText!=null and searchText!='' ">
+            and c.carNum like concat('%',#{searchText},'%')
+        </if>
+    
+    </select>
+    
+    
+    
+    
+    
+    
+    
+   
     <!--添加规费记录-->
     <insert id="add" parameterType="KeepRecordPo">
         insert into keep_record (carId,type,keepDate,fee,oppositeCompanyId,thisKeepMileage,keepContext,nextKeepTime,nextKeepMileage,driverId,remarks)
@@ -40,9 +96,42 @@
         delete from keep_record where id = #{id}
     </delete>
     
-    <select id="findbyid" resultType="KeepRecordPo">
-        select * from keep_record where id = #{id}
+    
+    
+    
+    
+    
+    
+    
+    
+    <resultMap type = "KeepRecordPo" id = "keepResultMap3">
+        <!-- id用于指定Cart中的主键 -->
+        <id column="id" property="id" />
+        <result column="carId" property="carId" />
+        <result column="carnum" property="carNum"/>
+        <result column="type" property="type"/>
+        <result column="typename" property="typename"/>
+        <result column="keepDate" property="keepDate"/>
+        <result column="fee" property="fee"/>
+        <result column="oppositeCompanyId" property="oppositeCompanyId"/>
+        <result column="oppositename" property="oppositename"/>
+        <result column="thisKeepMileage" property="thisKeepMileage"/>
+        <result column="keepContext" property="keepContext"/>
+        <result column="nextKeepTime" property="nextKeepTime"/>
+        <result column="nextKeepMileage" property="nextKeepMileage"/>
+        <result column="driverId" property="driverId"/>
+        <result column="drivername" property="drivername"/>
+        <result column="remarks" property="remarks"/>
+    </resultMap>
+    
+    <!---->
+    <select id="findbyid" resultMap="keepResultMap3" resultType="KeepRecordPo">
+        select k.*,c.carNum carnum,oc.name oppositename,e.`name` drivername from
+        keep_record k,car c ,opposite_company oc,driver d,employee e where
+        c.id = k.carId and k.oppositeCompanyId = oc.id and k.driverId = d.id and d.employeeId = e.id
+        and k.id = #{id}
     </select>
+    
 
 
 
