@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface DriverDao {
     //查询驾驶员信息
-    List<DriverPo> findDriverList();
+    List<DriverPo> findDriverList(String searchText);
 
     //添加驾驶员信息
     int addDriver(DriverPo driverPo);
@@ -21,8 +21,10 @@ public interface DriverDao {
     //获得员工信息
     EmployeePo getEmployee(String name);
 
-    int updateRole(Integer employeeId);
+    int updateRole(Integer employeeId,Integer roleId);
 //    获得所有信息
     List<DriverPo> getAll();
+
+    int count(String searchText);
 
 }

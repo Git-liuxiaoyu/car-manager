@@ -21,10 +21,16 @@ public class DriverServiceImpl implements DriverService {
 
 
     @Override
-    public List<Driver> driverList() {
+    public List<Driver> driverList(String searchText,int pageIndex,int pageSize) {
 
-        return driverAdapter.findDriverLists();
+        return driverAdapter.findDriverLists(searchText,pageIndex,pageSize);
     }
+
+    @Override
+    public int count(String searchText) {
+        return driverAdapter.count(searchText);
+    }
+
 
     @Override
     public int addDriver(Driver driver) {
@@ -52,8 +58,8 @@ public class DriverServiceImpl implements DriverService {
     }
 
     @Override
-    public int updateRole(Integer employeeId) {
-        return driverAdapter.updateRole(employeeId);
+    public int updateRole(Integer employeeId,Integer roleId) {
+        return driverAdapter.updateRole(employeeId,roleId);
     }
 
 //    @Override

@@ -12,7 +12,9 @@ import java.math.BigDecimal;
 public class AccidentRecordPo {
     private Integer id;
     private Integer carId;
+    private String carNum;
     private Integer driverId;
+    private String driverName;
     private String time;
     private String place;
     private String explain;
@@ -23,5 +25,5 @@ public class AccidentRecordPo {
     private BigDecimal oppoCost;
     private BigDecimal insureCost;
     private String remarks;
-    private CarPo carPo;
+//    private CarPo carPo;
 }

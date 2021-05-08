@@ -11,6 +11,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
@@ -25,10 +26,15 @@ public class DriverRedisDao {
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
 
-    public List<DriverPo> list() {
+    public List<DriverPo> list(int pageIndex, String searchText,int pageSize) {
 
         List<DriverPo>  driverList= new ArrayList<>();
-        BoundValueOperations<String, String> boundValueOps = redisTemplate.boundValueOps("driverList");
+
+        String key = "driverList" + pageIndex+pageSize;
+        if (searchText != null && !searchText.equals("")) {
+            key += searchText;
+        }
+        BoundValueOperations<String, String> boundValueOps = redisTemplate.boundValueOps(key);
         String dataStr = boundValueOps.get();
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -42,14 +48,25 @@ public class DriverRedisDao {
     }
 
     //更新redis
-    public void addRedisDriverList(List<DriverPo> driverList) {
+    public void addRedisDriverList(List<DriverPo> driverList, int pageIndex, String searchText,int pageSize) {
 
         ObjectMapper objectMapper = new ObjectMapper();
-        BoundValueOperations<String, String> boundValueOps = redisTemplate.boundValueOps("driverList");
+
+        String key = "driverList" + pageIndex+pageSize;
+        if (searchText != null && !searchText.equals("")) {
+            key += searchText;
+        }
+        BoundValueOperations<String, String> boundValueOps = redisTemplate.boundValueOps(key);
         try {
             String temp = objectMapper.writeValueAsString(driverList);
             //3、然后把查到的结果存到redis里面
             boundValueOps.set(temp);
         } catch (Exception exception) {  }
+    }
+
+    //清除redis的数据
+    public void updateRedis(){
+        Set<String> keys=redisTemplate.keys("driverList*");
+        redisTemplate.delete(keys);
     }
 }

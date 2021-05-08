@@ -4,6 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.woniu.dao.AccidentRecordDao;
 
+import com.woniu.domain.AccidentRecord;
+import com.woniu.domain.Car;
+import com.woniu.domain.AccidentRecord;
+import com.woniu.po.AccidentRecordPo;
 import com.woniu.po.AccidentRecordPo;
 import com.woniu.redis.AccidentRecordRedisDao;
 import org.springframework.beans.BeanUtils;
@@ -24,55 +28,91 @@ public class AccidentRecordAdapter {
     @Autowired
     private AccidentRecordRedisDao accidentRecordRedisDao;
 
-    // 添加
-    public int add(AccidentRecordPo accidentRecordPo){
-        // 向数据库里添加accidentRecord
-        int n = accidentRecordDao.add(accidentRecordPo);
-        // 从数据里查出所有accidentRecord
-        List<AccidentRecordPo> accidentRecordList = accidentRecordDao.accidentRecordList(accidentRecordPo);
-        //存入redis的缓存中
-        accidentRecordRedisDao.addRedisAccidentRecordList(accidentRecordList);
-        return n;
-    }
-    // 修改
-    public int update(AccidentRecordPo accidentRecordPo){
-        int n = accidentRecordDao.update(accidentRecordPo);
-        // 从数据里查出所有accidentRecord
-        List<AccidentRecordPo> accidentRecordList = accidentRecordDao.accidentRecordList(accidentRecordPo);
-        //存入redis的缓存中
-        accidentRecordRedisDao.addRedisAccidentRecordList(accidentRecordList);
-        return n;
-    }
-    // 删除
-    public int delete(AccidentRecordPo accidentRecord){
-        int n = accidentRecordDao.delete(accidentRecord);
-        // 从数据里查出所有accidentRecord
-        List<AccidentRecordPo> accidentRecordList = accidentRecordDao.accidentRecordList(accidentRecord);
-        //存入redis的缓存中
-        accidentRecordRedisDao.addRedisAccidentRecordList(accidentRecordList);
-        return n;
-    }
-    // 根据id查
-    public AccidentRecordPo findById(AccidentRecordPo accidentRecord){
-        return accidentRecordDao.findById(accidentRecord);
-    }
-    // 查询
-    public List<AccidentRecordPo> findAccidentRecordList(AccidentRecordPo accidentRecord){
-        List<AccidentRecordPo> accidentRecordList = accidentRecordRedisDao.list(accidentRecord);
+    /**
+     * 查询列表
+     * @return
+     */
+    public List<AccidentRecord> List(String searchText, int pageIndex, int pageSize){
+        List<AccidentRecordPo> accidentRecordPoList = accidentRecordRedisDao.list(pageIndex, searchText,pageSize);
         ObjectMapper objectMapper = new ObjectMapper();
-        if(accidentRecordList.size() == 0){
+        if(accidentRecordPoList.size() == 0){
             //从数据库查数据
-            accidentRecordList = accidentRecordDao.accidentRecordList(accidentRecord);
+            accidentRecordPoList = accidentRecordDao.list(searchText);
             //存入redis的缓存中
-            accidentRecordRedisDao.addRedisAccidentRecordList(accidentRecordList);
+            accidentRecordRedisDao.addRedisAccidentRecordList(accidentRecordPoList, pageIndex, searchText,pageSize);
         }
         //把dao的 RoleList RolePo --- 转成  List<Role>
-        List<AccidentRecordPo> accidentRecords = new ArrayList<AccidentRecordPo>();
-        for(AccidentRecordPo accidentRecordPo : accidentRecordList) {
-            AccidentRecordPo item = new AccidentRecordPo();
+        List<AccidentRecord> accidentRecordList = new ArrayList<AccidentRecord>();
+        for(AccidentRecordPo accidentRecordPo : accidentRecordPoList) {
+            AccidentRecord item = new AccidentRecord();
             BeanUtils.copyProperties(accidentRecordPo, item);
-            accidentRecords.add(item);
+//            Car car = new Car();
+//            BeanUtils.copyProperties(frpo.getCarPo(), car);
+//            item.setCar(car);
+            accidentRecordList.add(item);
         }
-        return accidentRecords ;
+        return accidentRecordList;
+    }
+
+    //查询总记录数
+    public int count(String searchText) {
+        return accidentRecordDao.count(searchText);
+    }
+
+
+    /**
+     * 添加取车记录
+     * @return
+     */
+    public int add(AccidentRecord accidentRecord){
+        AccidentRecordPo accidentRecordPo = new AccidentRecordPo();
+        BeanUtils.copyProperties(accidentRecord, accidentRecordPo);
+        int i = accidentRecordDao.add(accidentRecordPo);
+        if(i > 0){
+            updateredis();
+        }
+        return i;
+    }
+
+
+    /**
+     * 修改取车记录列表
+     * @return
+     */
+    public int update(AccidentRecord accidentRecord){
+        AccidentRecordPo accidentRecordPo = new AccidentRecordPo();
+        BeanUtils.copyProperties(accidentRecord, accidentRecordPo);
+
+
+        int i = accidentRecordDao.update(accidentRecordPo);
+        //修改成功
+        if(i > 0){
+            updateredis();
+        }
+        return i;
+    }
+
+    /**
+     * 删除
+     * @return
+     */
+    public int delete(Integer id){
+//        AccidentRecordPo feeRecordPo = new AccidentRecordPo();
+//        BeanUtils.copyProperties(feeRecord, feeRecordPo);
+        int i = accidentRecordDao.delete(id);
+        //删除成功
+        if(i>0){
+            updateredis();
+        }
+        return i;
+    }
+
+
+    /**
+     * 更新redis
+     */
+    public void updateredis(){
+
+        accidentRecordRedisDao.updateRedis();
     }
 }

@@ -23,14 +23,14 @@ public class DriverAdapter {
     @Autowired
     private DriverRedisDao driverRedisDao;
 
-    public List<Driver> findDriverLists(){
-        List<DriverPo> driverList = driverRedisDao.list();
-        ObjectMapper objectMapper = new ObjectMapper();
+    public List<Driver> findDriverLists(String searchText, int pageIndex,int pageSize){
+        List<DriverPo> driverList = driverRedisDao.list(pageIndex, searchText,pageSize);
+//        ObjectMapper objectMapper = new ObjectMapper();
         if(driverList.size() == 0){
             //从数据库查数据
-            driverList = driverDao.findDriverList();
+            driverList = driverDao.findDriverList(searchText);
             //存入redis的缓存中
-            driverRedisDao.addRedisDriverList(driverList);
+            driverRedisDao.addRedisDriverList(driverList,pageIndex, searchText,pageSize);
         }
         //把dao的 RoleList RolePo --- 转成  List<RolePo>
         List<Driver> drivers = new ArrayList<Driver>();
@@ -45,16 +45,19 @@ public class DriverAdapter {
         return drivers;
     }
 
+    //查询总记录数
+    public int count(String searchText) {
+        return driverDao.count(searchText);
+    }
+
+
     public int addDriver(Driver driver){
 
         DriverPo item = new DriverPo();
         BeanUtils.copyProperties(driver, item);
         int i = driverDao.addDriver(item);
         if (i>0){
-            List<DriverPo> driverList =  driverDao.findDriverList();
-            //存入redis的缓存中
-            driverRedisDao.addRedisDriverList(driverList);
-
+             updateredis();
         }
         return 1;
 
@@ -71,9 +74,7 @@ public class DriverAdapter {
         BeanUtils.copyProperties(driver, item);
         int i = driverDao.updateDriver(item);
         if (i>0){
-            List<DriverPo> driverList =  driverDao.findDriverList();
-            //存入redis的缓存中
-            driverRedisDao.addRedisDriverList(driverList);
+            updateredis();
         }
         return 1;
     }
@@ -84,9 +85,7 @@ public class DriverAdapter {
 //        BeanUtils.copyProperties(driver, item);
         int i = driverDao.delDriver(id);
         if (i>0){
-            List<DriverPo> driverList =  driverDao.findDriverList();
-            //存入redis的缓存中
-            driverRedisDao.addRedisDriverList(driverList);
+            updateredis();
         }
         return 1;
     }
@@ -95,8 +94,8 @@ public class DriverAdapter {
         return driverDao.getEmployee(name);
     }
 
-    public int updateRole(Integer employeeId){
-        return driverDao.updateRole(employeeId);
+    public int updateRole(Integer employeeId,Integer roleId){
+        return driverDao.updateRole(employeeId,roleId);
     }
 
 
@@ -112,6 +111,14 @@ public class DriverAdapter {
         }
        return driverList;
 
+    }
+
+    /**
+     * 更新redis
+     */
+    public void updateredis(){
+
+        driverRedisDao.updateRedis();
     }
 
 }

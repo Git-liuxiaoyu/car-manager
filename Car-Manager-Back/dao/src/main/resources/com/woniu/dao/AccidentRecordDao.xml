@@ -10,11 +10,13 @@
     </sql>
     <!--添加-->
     <insert id="add" parameterType="AccidentRecordPo">
-        insert into accident_record(
-        <include refid="columns"></include>
-        )
-        values(null,#{carId},#{driverId},#{time},#{place},#{explain},#{selfCondition},
-              #{oppoCondition},#{solveResult},#{selfCost},#{oppoCost},#{insureCost},#{remarks})
+<!--        insert into accident_record(-->
+<!--        <include refid="columns"></include>-->
+<!--        )-->
+<!--        values(null,#{carId},#{driverId},#{time},#{place},#{explain},#{selfCondition},-->
+<!--              #{oppoCondition},#{solveResult},#{selfCost},#{oppoCost},#{insureCost},#{remarks})-->
+        insert into accident_record(carId,driverId,time,place,`explain`,selfCondition,oppoCondition,solveResult,selfCost,oppoCost,insureCost,remarks)
+        values(#{carId},#{driverId},#{time},#{place},#{explain},#{selfCondition},#{oppoCondition},#{solveResult},#{selfCost},#{oppoCost},#{insureCost},#{remarks})
     </insert>
     <!-- 删除 -->
     <delete id="delete" parameterType="AccidentRecordPo">
@@ -28,7 +30,7 @@
             <if test="driverId!=null">driverId=#{driverId},</if>
             <if test="time!=null">time=#{time},</if>
             <if test="place!=null">place=#{place},</if>
-            <if test="explain!=null">explain=#{explain},</if>
+            <if test="explain!=null">`explain`=#{explain},</if>
             <if test="selfCondition!=null">selfCondition=#{selfCondition},</if>
             <if test="oppoCondition!=null">oppoCondition=#{oppoCondition},</if>
             <if test="solveResult!=null">solveResult=#{solveResult},</if>
@@ -51,15 +53,18 @@
         <result column="solveResult" property="solveResult" />
         <result column="selfCost" property="selfCost" />
         <result column="oppoCost" property="oppoCost" />
-        <result column="insureCost" property="paytime" />
+        <result column="insureCost" property="insureCost" />
         <result column="remarks" property="remarks" />
-        <result column="carNum" property="carPo.carNum"/>
+        <result column="carNum" property="carNum"/>
+        <result column="driverName" property="driverName"/>
     </resultMap>
     <!--动态分页查询-->
-    <select id="accidentRecordList" resultMap="accidentRecordPoResultMap" parameterType="AccidentRecordPo">
-        select ar.* ,c.carNum from accident_record ar,car c
-        <where> ar.carId = c.id
-         <if test="carPo.carNum!=null and carPo.carNum!=''">and c.carNum like concat('%',#{carPo.carNum},'%')</if>
+    <select id="list" resultMap="accidentRecordPoResultMap" parameterType="AccidentRecordPo">
+        select  a.*, c.carNum carNum,e.name driverName from accident_record a, car c,driver d, employee e
+        <where> a.carId=c.id and a.driverId=d.id and d.employeeId=e.id
+         <if test="searchText!=null and searchText!=''">
+         and c.carNum like concat('%',#{searchText},'%')
+        </if>
         </where>
     </select>
 <!--    <select id="accidentRecordList" resultType="AccidentRecordPo">-->
@@ -70,5 +75,17 @@
         select
         <include refid="columns"></include>
         from accident_record where id=#{id}
+    </select>
+
+
+    <select id="count" parameterType="int" resultType="int">
+        select count(0) from accident_record a,car c
+        <where>
+            a.carId=c.id
+            <if test="searchText!=null and searchText!='' ">
+                and c.carNum like concat('%',#{searchText},'%')
+            </if>
+
+        </where>
     </select>
 </mapper>

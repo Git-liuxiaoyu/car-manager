@@ -12,7 +12,9 @@ import java.math.BigDecimal;
 public class AccidentRecord {
     private Integer id;
     private Integer carId;
+    private String carNum;
     private Integer driverId;
+    private String driverName;
     private String time;
     private String place;
     private String explain;

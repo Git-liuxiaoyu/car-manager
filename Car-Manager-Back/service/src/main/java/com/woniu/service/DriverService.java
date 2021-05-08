@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface DriverService {
 
-    public List<Driver> driverList();
+    public List<Driver> driverList(String searchText,int pageIndex,int pageSize);
 
     int addDriver(Driver driver);
 
@@ -16,11 +16,11 @@ public interface DriverService {
 
     int delDriver(Integer id);
 
-    int updateRole(Integer employeeId);
+    int updateRole(Integer employeeId,Integer roleId);
     //获取驾驶员的中员工列表的信息
-    EmployeePo getEmployee(String name);
-
-
+    EmployeePo getEmployee(String name );
     //获取驾驶员的姓名
     List<Driver> getAll();
+
+    int count(String searchText);
 }
