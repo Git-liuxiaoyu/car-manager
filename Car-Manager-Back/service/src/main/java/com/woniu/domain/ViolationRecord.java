@@ -16,4 +16,6 @@ public class ViolationRecord {
     private Integer driverId;//驾驶员id
     private String place;//违章地点
     private String remarks;//违章备注
+    private String carNum; //车牌号码
+    private String driverName; // 驾驶员姓名
 }

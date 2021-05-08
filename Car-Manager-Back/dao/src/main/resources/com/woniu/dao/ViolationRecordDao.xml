@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.woniu.dao.ViolationRecordDao">
+    <!--resultMap-->
+    <resultMap type="ViolationRecordPo" id="ViolationRecordPoResultMap">
+        <id column="id" property="id" />
+        <result column="carNum" property="carNum"/>
+    </resultMap>
+    <select id="list" resultMap="ViolationRecordPoResultMap">
+        select v.* ,c.carNum  from violation_record v,car c
+        <where> v.carId = c.id
+            <if test="searchText!=null and searchText!='' ">and c.carNum like concat('%',#{searchText},'%')</if>
+        </where>
+    </select>
+    <!--新增修理记录-->
+    <insert id="add" parameterType="ViolationRecordPo">
+        insert into violation_record values (null,#{carId},#{type},#{time},#{fee},#{reduceScore},#{driverId},#{place},#{remarks})
+    </insert>
+    <!--修改修理列表-->
+    <update id="update" parameterType="ViolationRecordPo">
+        update violation_record
+        <set>
+            <if test="carId !=null and carId!='' ">carId = #{carId},</if>
+            <if test="type !=null and type!='' ">`type` = #{type},</if>
+            <if test="time !=null and time!='' ">`time` = #{time},</if>
+            <if test="fee !=null and fee!='' ">fee = #{fee},</if>
+            <if test="reduceScore !=null and reduceScore!='' ">reduceScore = #{reduceScore},</if>
+            <if test="driverId !=null and driverId!='' ">driverId = #{driverId},</if>
+            <if test="place !=null and place!='' ">place = #{place},</if>
+            <if test="remarks !=null and remarks!='' ">remarks = #{remarks},</if>
+        </set>
+        where id = #{id}
+    </update>
+    <select id="count" parameterType="int" resultType="int">
+        select count(0) from violation_record v,car c
+        <where> v.carId = c.id
+            <if test="searchText!=null and searchText!='' ">and c.carNum like concat('%',#{searchText},'%')</if>
+        </where>
+    </select>
+    <!--删除修理信息-->
+    <delete id="delete" parameterType="Integer">
+        delete from violation_record where id=#{id}
+    </delete>
+</mapper>

@@ -1,28 +1,23 @@
 package com.woniu.service;
 
+
 import com.woniu.domain.ViolationRecord;
-import com.woniu.po.ViolationRecordPo;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Service
-@Transactional
 public interface ViolationRecordService {
 
-    //违章记录列表
-    List<ViolationRecord> list();
+    //查询维修信息
+    List<ViolationRecord> list(String searchText,int pageIndex,int pageSize);
 
-    //添加违章记录
-    int add(ViolationRecordPo vrpo);
+    //添加维修信息
+    void add(ViolationRecord violationRecord);
+    //
+    //修改维修信息
+    void update(ViolationRecord violationRecord);
 
-    //删除违章记录
-    int delete(ViolationRecordPo vrpo);
+    int count(String searchText);
+    // 删除维修信息
+    void delete(Integer id);
 
-    //修改违章记录
-    int update(ViolationRecordPo vrpo);
-
-    //根据id查询违章记录
-    ViolationRecordPo findbyid(ViolationRecordPo vrpo);
 }

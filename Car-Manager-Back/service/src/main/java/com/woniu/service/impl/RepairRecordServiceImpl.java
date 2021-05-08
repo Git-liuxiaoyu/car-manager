@@ -26,14 +26,14 @@ public class RepairRecordServiceImpl implements RepairRecordService {
     }
 
     @Override
-    public void add(RepairRecord departureRecord) {
-        repairRecordAdapter.add(departureRecord);
+    public void add(RepairRecord repairRecord) {
+        repairRecordAdapter.add(repairRecord);
 
     }
 
     @Override
-    public void update(RepairRecord departureRecord) {
-        repairRecordAdapter.update(departureRecord);
+    public void update(RepairRecord repairRecord) {
+        repairRecordAdapter.update(repairRecord);
     }
     @Override
     public int count(String searchText) {
