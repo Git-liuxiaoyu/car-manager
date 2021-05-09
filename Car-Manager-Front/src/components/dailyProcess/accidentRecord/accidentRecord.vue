@@ -23,11 +23,16 @@
     <br/>
 
     <template>
-      <el-table :data="tableData" border style="width: 100%" height="377"
+      <el-table :data="tableData" border style="width: 100%" max-height="377"
                 :header-cell-style="{background:'#eef1f6',color:'#606266'}">
         <el-table-column prop="carNum" label="车牌号码" min-width></el-table-column>
         <el-table-column prop="driverName" label="驾驶员" min-width></el-table-column>
-        <el-table-column prop="time" label="事故时间" min-width :show-overflow-tooltip="true"></el-table-column>
+        <el-table-column prop="time" label="事故时间" min-width :show-overflow-tooltip="true">
+          <template slot-scope="scope">
+            <i class="el-icon-time"></i>
+            {{ scope.row.time | timeConvert() }}
+          </template>
+        </el-table-column>
         <el-table-column prop="place" label="事故地点" min-width></el-table-column>
         <el-table-column prop="explain" label="事故说明" min-width></el-table-column>
         <el-table-column prop="selfCost" label="我方承担金额" min-width></el-table-column>
@@ -78,13 +83,14 @@
 
             <el-form-item label="车牌号" prop="carId">
               <el-select v-model="addAccident.carId" placeholder="请选择">
-                <el-option label="请选择" value="0"></el-option>
+                <el-option label="请选择" value="0" ></el-option>
                 <el-option :label="car.carNum" :value="car.id"
                            v-for="car in cars" :key="car.id">
                 </el-option>
               </el-select>
             </el-form-item>
           </el-col>
+
 
 
           <el-col :span="8">
@@ -95,7 +101,7 @@
 
             <el-form-item label="驾驶员" prop="driverId">
               <el-select v-model="addAccident.driverId" placeholder="请选择">
-                <el-option label="请选择" value="0"></el-option>
+                <el-option label="请选择" value="0" ></el-option>
                 <el-option :label="driver.employeeName" :value="driver.id"
                            v-for="driver in drivers" :key="driver.id">
                 </el-option>
@@ -104,21 +110,13 @@
           </el-col>
 
           <el-col :span="8">
-            <!-- <el-form-item label="缴费时间">
-              <el-input type="datetime" v-model="fees.payTime"></el-input>
-            </el-form-item> -->
-
-            <!-- <el-form-item label="事故时间" >
-              <el-date-picker v-model="addAccident.time"  format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss" clearable style="width: 100%"
-               :picker-options="startDatePicker" :disabled="dialogStatus=='view'" type="date"  :placeholder="dialogStatus=='view'?'':'请输入支付时间'"></el-date-picker>
-          </el-form-item> -->
-
-            <el-form-item label="事故时间" prop="time">
+            <el-form-item label="事故时间:">
               <el-date-picker
                 v-model="addAccident.time"
                 type="datetime"
-                value-format="yyyy-MM-DD HH:mm:ss"
-                placeholder="选择日期">
+                placeholder="选择日期时间"
+                value-format="yyyy-MM-dd HH-mm-SS"
+              >
               </el-date-picker>
             </el-form-item>
           </el-col>
@@ -130,7 +128,7 @@
           </el-col>
 
           <el-col :span="12">
-            <el-form-item label="事故说明" prop="explain">
+            <el-form-item label="事故说明"  prop="explain">
               <el-input v-model="addAccident.explain"></el-input>
             </el-form-item>
           </el-col>
@@ -167,7 +165,7 @@
           </el-col>
 
           <el-col :span="12">
-            <el-form-item label="保险承但金额" prop="insureCost">
+            <el-form-item label="保险承但金额" prop="insureCost" >
               <el-input v-model="addAccident.insureCost"></el-input>
             </el-form-item>
           </el-col>
@@ -201,14 +199,15 @@
 
 
             <el-form-item label="车牌号" prop="carId">
-              <el-select v-model="editAccident.carId" placeholder="请选择">
-                <el-option label="请选择" value="0"></el-option>
+              <el-select v-model="editAccident.carId" placeholder="请选择" :disabled="true">
+                <el-option label="请选择" value="0" ></el-option>
                 <el-option :label="car.carNum" :value="car.id"
                            v-for="car in cars" :key="car.id">
                 </el-option>
               </el-select>
             </el-form-item>
           </el-col>
+
 
 
           <el-col :span="8">
@@ -219,7 +218,7 @@
 
             <el-form-item label="驾驶员" prop="driverId">
               <el-select v-model="editAccident.driverId" placeholder="请选择">
-                <el-option label="请选择" value="0"></el-option>
+                <el-option label="请选择" value="0" ></el-option>
                 <el-option :label="driver.employeeName" :value="driver.id"
                            v-for="driver in drivers" :key="driver.id">
                 </el-option>
@@ -241,7 +240,7 @@
               <el-date-picker
                 v-model="editAccident.time"
                 type="datetime"
-                value-format="yyyy-MM-DD HH:mm:ss"
+                value-format="yyyy-MM-dd HH:mm:SS"
                 placeholder="选择日期">
               </el-date-picker>
             </el-form-item>
@@ -254,7 +253,7 @@
           </el-col>
 
           <el-col :span="12">
-            <el-form-item label="事故说明" prop="explain">
+            <el-form-item label="事故说明"  prop="explain">
               <el-input v-model="editAccident.explain"></el-input>
             </el-form-item>
           </el-col>
@@ -291,7 +290,7 @@
           </el-col>
 
           <el-col :span="12">
-            <el-form-item label="保险承但金额" prop="insureCost">
+            <el-form-item label="保险承但金额" prop="insureCost" >
               <el-input v-model="editAccident.insureCost"></el-input>
             </el-form-item>
           </el-col>
@@ -316,33 +315,27 @@
 
 <script>
 export default {
-  data() {
-    return {
-      searchText: '',
+  data(){
+    return{
+      searchText:'',
       p: 1,
       total: 0,
       size: 5,
-      tableData: [],
+      tableData:[],
       //新增
-      addDialogFormVisible: false,
-      addAccident: {},
-      cars: [],
-      drivers: [],
+      addDialogFormVisible:false,
+      addAccident:{},
+      cars:[],
+      drivers:[],
       // 编辑
-      dialogEditVisible: false,
-      editAccident: {},
+      dialogEditVisible:false,
+      editAccident:{},
 
     }
   },
-  methods: {
-    loadAccident() {
-      this.$axios.get("accidentRecord/list", {
-        params: {
-          p: this.p,
-          searchText: this.searchText,
-          size: this.size
-        }
-      }).then(r => {
+  methods:{
+    loadAccident(){
+      this.$axios.get("accidentRecord/list", {params: {p: this.p, searchText: this.searchText, size: this.size}}).then(r=>{
         console.log(r);
         this.tableData = r.data.data.list
         this.total = r.data.data.total
@@ -360,65 +353,83 @@ export default {
       this.loadAccident();
     },
 
-    addAccidentDialog() {
-      this.addDialogFormVisible = true;
+    addAccidentDialog(){
+      this.addDialogFormVisible=true;
       this.loadDriverName();
       this.getCarList()
     },
 
     // 获取驾驶员信息
-    loadDriverName() {
-      this.$axios.get("driver/getAll").then(r => {
+    loadDriverName(){
+      this.$axios.get("driver/getAll" ).then(r=>{
         console.log(r);
-        this.drivers = r.data.data;
+        this.drivers=r.data.data;
       })
     },
     // 获取车牌信息
-    getCarList() {
+    getCarList(){
       this.$axios.get("car/getAll").then(r => {
         this.cars = r.data.data
         console.log(this.cars)
       })
     },
 
-    toAddAccident() {
+    toAddAccident(){
 
-      this.$axios.post("accidentRecord/add", this.addAccident).then(r => {
+      this.$axios.post("accidentRecord/add",this.addAccident ).then(r=>{
         console.log(r);
-        if (r.data.code == 200) {
-          this.$message({type: 'success', message: "添加成功", duration: 800});
-          this.addDialogFormVisible = false;
+        if(r.data.code==200){
+          this.$message({type: 'success', message:"添加成功",  duration:800});
+          this.addDialogFormVisible=false;
           this.loadAccident();
-        } else {
-          this.$message({type: 'error', message: "添加失败", duration: 800});
+        }else{
+          this.$message({type: 'error', message:"添加失败",  duration:800});
         }
         // this.drivers=r.data.data;
       })
     },
-    updateAccident(row) {
-      this.dialogEditVisible = true;
-      this.editAccident = row;
+    updateAccident(row){
+      this.dialogEditVisible=true;
+      this.editAccident=row;
       this.loadDriverName();
       this.getCarList()
     },
-    toUpdate() {
+    toUpdate(){
 
-      this.$axios.post("accidentRecord/update", this.editAccident).then(r => {
+      this.$axios.post("accidentRecord/update",this.editAccident).then(r=>{
         console.log(r);
-        if (r.data.code == 200) {
-          this.$message({type: 'success', message: "添加成功", duration: 800});
-          this.dialogEditVisible = false;
+        if(r.data.code==200){
+          this.$message({type: 'success', message:"修改成功",  duration:800});
+          this.dialogEditVisible=false;
           this.loadAccident();
-        } else {
-          this.$message({type: 'error', message: "添加失败", duration: 800});
+        }else{
+          this.$message({type: 'error', message:"修改失败",  duration:800});
         }
       })
     },
-    deleteAccident(id) {
+    deleteAccident(id){
+
+      this.$confirm("是否删除?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(res => {
+        this.$axios.get("accidentRecord/delete?id="+id).then(r=>{
+          console.log(r);
+          if(r.data.code==200){
+            this.$message({type: 'success', message:"删除成功",  duration:800});
+            this.loadAccident();
+          }else{
+            this.$message({type: 'error', message:"删除失败",  duration:800});
+          }
+        });
+      }).catch(res => {
+        this.$message.info("删除取消");
+      })
 
     }
   },
-  created() {
+  created(){
     this.loadAccident();
   }
 

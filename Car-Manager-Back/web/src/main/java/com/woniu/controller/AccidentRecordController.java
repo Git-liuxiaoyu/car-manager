@@ -31,16 +31,19 @@ public class AccidentRecordController {
 
     }
     @RequestMapping("/accidentRecord/delete")
-    public int delete(Integer id){
-        return accidentRecordService.delete(id);
+    public ResponseResult delete(Integer id){
+        int i = accidentRecordService.delete(id);
+
+        if(i > 0){return new ResponseResult(200,"删除成功");}
+        else{return new ResponseResult(500,"删除失败");}
 
     }
     @RequestMapping("/accidentRecord/update")
     public ResponseResult update(@RequestBody AccidentRecord accidentRecord){
         System.out.println(accidentRecord);
         int i = accidentRecordService.update(accidentRecord);
-        if(i > 0){return new ResponseResult(200,"添加成功");}
-        else{return new ResponseResult(500,"添加失败");}
+        if(i > 0){return new ResponseResult(200,"修改成功");}
+        else{return new ResponseResult(500,"修改失败");}
 
     }
     @RequestMapping("/accidentRecord/list")
