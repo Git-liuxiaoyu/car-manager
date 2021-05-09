@@ -98,7 +98,7 @@
         select * from car
     </select>
     
-    <!--查询车牌号-->
+    <!--查询往来单位-->
     <select id="oppolist" resultType="OppositeCompanyPo">
         select * from opposite_company where type = #{type}
     </select>

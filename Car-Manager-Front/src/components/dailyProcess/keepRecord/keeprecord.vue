@@ -184,23 +184,26 @@
 
             <el-col :span="10">
                 <el-form-item label="保养时间：" prop="keepDate">
+
                         <el-date-picker
                         v-model="keepadds.keepDate"
-                        type="datetime"
-                        value-format="yyyy-MM-DD"
+                        type="date"
+                        value-format="yyyy-MM-dd"
                         placeholder="选择日期">
-                        </el-date-picker>         
+                        </el-date-picker>
+
                 </el-form-item>                
             </el-col>
 
             <el-col :span="10">
                 <el-form-item label="下次保养时间：" prop="nextKeepTime">
+
                         <el-date-picker
                         v-model="keepadds.nextKeepTime"
-                        type="datetime"
-                        value-format="yyyy-MM-DD"
+                        type="date"
+                        value-format="yyyy-MM-dd"
                         placeholder="选择日期">
-                        </el-date-picker>         
+                        </el-date-picker>      
                 </el-form-item>                
             </el-col>
 
@@ -306,23 +309,26 @@
 
              <el-col :span="10">
                 <el-form-item label="保养时间：" prop="keepDate">
+
                         <el-date-picker
                         v-model="updates.keepDate"
-                        type="datetime"
-                        value-format="yyyy-MM-DD"
+                        value-format="yyyy-MM-dd"
+                        type="date"
                         placeholder="选择日期">
-                        </el-date-picker>         
+                        </el-date-picker>        
                 </el-form-item>                
             </el-col>
 
             <el-col :span="10">
                 <el-form-item label="下次保养时间：" prop="nextKeepTime">
-                        <el-date-picker
+
+                         <el-date-picker
                         v-model="updates.nextKeepTime"
-                        type="datetime"
-                        value-format="yyyy-MM-DD"
+                        value-format="yyyy-MM-dd"
+                        type="date"
                         placeholder="选择日期">
-                        </el-date-picker>         
+                        </el-date-picker>   
+
                 </el-form-item>                
             </el-col>
 
@@ -337,11 +343,6 @@
   </div>
 </template>
 
-
-
-
-</div>
-</template>
 
 
 <script>
@@ -475,7 +476,7 @@ export default {
             })
 
             //查询往来单位下拉框
-            this.$axios.post("keeprecord/oppolist").then(r => {
+            this.$axios.post("opposite/getoppolist?type=32").then(r => {
                 this.opposites = r.data  
                 //console.log("往来单位对话框")      
                // console.log(r)   
@@ -528,7 +529,7 @@ export default {
             })
 
             //查询往来单位下拉框
-            this.$axios.post("keeprecord/oppolist").then(r => {
+            this.$axios.post("opposite/getoppolist?type=32").then(r => {
                 this.opposites = r.data  
                 console.log("往来单位对话框")      
                 console.log(r)   
@@ -574,7 +575,7 @@ export default {
             })
 
             //查询往来单位下拉框
-            this.$axios.post("oilrecord/oppolist").then(r => {
+            this.$axios.post("opposite/getoppolist?type=32").then(r => {
                 this.opposites = r.data        
                 console.log(r)   
             })

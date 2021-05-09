@@ -1,6 +1,7 @@
 package com.woniu.service.impl;
 
 import com.woniu.adapter.InsureRecordAdapter;
+import com.woniu.domain.KeepRecord;
 import com.woniu.po.InsureRecordPo;
 import com.woniu.service.InsureRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +17,16 @@ import java.util.List;
 public class InsureRecordServiceImpl implements InsureRecordService {
     @Autowired
     private InsureRecordAdapter insureRecordAdapter;
+
     @Override
-    public List<InsureRecordPo> insureRecordList() {
-        return insureRecordAdapter.findInsureRecordList();
+    public List<InsureRecordPo> insureRecordList(String searchText, int pageIndex, int pageSize) {
+        return insureRecordAdapter.findInsureRecordList(searchText,pageIndex,pageSize);
+    }
+
+    //总数
+    @Override
+    public int count(String searchText) {
+        return insureRecordAdapter.count(searchText);
     }
 
     @Override

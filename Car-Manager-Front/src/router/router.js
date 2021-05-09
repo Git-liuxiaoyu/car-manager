@@ -28,11 +28,12 @@ let router = new Router({
         {path: '/driver', component: () => import('@/components/baseSetting/driver/driver')},
         {path: '/dictionary', component: () => import('@/components/baseSetting/dictionary/dictionary.vue')},
         {path: '/repairRecord', component: () => import('@/components/dailyProcess/repairRecord/repairRecord')},
-        {path: '/oilrecord', component: () => import('@/components/dailyProcess/oilrecord/oilrecord')},
+        {path: '/oilrecord', component: () => import('@/components/dailyProcess/oilRecord/oilrecord')},
         {path: '/fee', component: () => import('@/components/dailyProcess/fee/fee')},
-        {path: '/keeprecord', component: () => import('@/components/baseSetting/keeprecord/keeprecord')},
+        {path: '/keeprecord', component: () => import('@/components/dailyProcess/keepRecord/keeprecord')},
         {path: '/violationRecord', component: () => import('@/components/dailyProcess/violationRecord/violationRecord')},
         {path: '/accidentRecord', component: () => import('@/components/dailyProcess/accidentRecord/accidentRecord')},
+        {path: '/insureRecord', component: () => import('@/components/dailyProcess/insureRecord/insureRecord.vue')},
       ]
     },
   ]

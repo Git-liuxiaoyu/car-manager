@@ -249,7 +249,7 @@
 
     <!-- 修改加油记录信息 -->
     <el-dialog title="修改加油记录" :visible.sync="oilreupdate"
-               ref = "addCar" center width="80%">
+               ref = "updates" center width="80%">
       <el-form :model="updates" label-width="150px">
         <el-row :gutter="20">
           <el-col :span="6">
@@ -270,7 +270,7 @@
             <el-form-item label="加油站" prop="oppositeCompanyId">
               <el-select v-model="updates.oppositeCompanyId" placeholder="请选择">
                 <el-option label="请选择" value="0" ></el-option>
-                <el-option :label="opposites.carNum" :value="opposites.id"
+                <el-option :label="opposites.name" :value="opposites.id"
                            v-for="opposites in opposites" :key="opposites.id">
                 </el-option>
               </el-select>
@@ -294,16 +294,6 @@
             </el-form-item>
           </el-col>
 
-
-
-
-
-
-          <!-- <el-col :span="10">
-              <el-form-item label="加油时间">
-                <el-input type="datetime" v-model="updates.addTime"></el-input>
-              </el-form-item>
-            </el-col> -->
 
 
           <el-col :span="6">
@@ -580,6 +570,7 @@ export default {
       //查询往来单位下拉框
       this.$axios.post("oilrecord/oppolist").then(r => {
         this.opposites = r.data
+        console.log("往来单位下拉框")
         console.log(r)
       })
 
