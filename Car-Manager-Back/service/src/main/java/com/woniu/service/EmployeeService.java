@@ -26,4 +26,6 @@ public interface EmployeeService {
     Employee getByAccount(String account);
 
     void updatePassWord(Employee employee);
+
+    List<Employee> getAll();
 }

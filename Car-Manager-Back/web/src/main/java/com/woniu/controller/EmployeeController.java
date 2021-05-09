@@ -118,4 +118,11 @@ public class EmployeeController {
         employeeService.updatePassWord(employee);
         return ResponseResult.SUCCESS;
     }
+
+    //查询所有员工
+    @RequestMapping("/getAll")
+    public ResponseResult<List<Employee>> getAll(){
+       List<Employee> employeeList=employeeService.getAll();
+        return new ResponseResult(employeeList);
+    }
 }

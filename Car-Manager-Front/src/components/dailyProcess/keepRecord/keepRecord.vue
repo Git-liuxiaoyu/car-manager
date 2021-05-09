@@ -477,12 +477,9 @@ export default {
       //查询加油人员下拉框
       this.$axios.post("feerecord/getDriverName").then(r => {
         this.drivers = r.data.data;
-        //console.log(r)
       })
       //保养类别
       this.$axios.post("dictionary/menu").then(r => {
-        //console.log("新增对话框")
-        //console.log(r)
         this.keepTypes = r.data.data[6].children
       })
 
@@ -491,7 +488,6 @@ export default {
     //添加
     addkeep() {
       this.$axios.post("keeprecord/add", this.keepadds).then(r => {
-        console.log(r)
         if (r.data.code == 200) {
           this.$message({type: 'success', message: "添加成功", duration: 800});
           this.oppoVisible = false;
@@ -517,32 +513,24 @@ export default {
       //查询车牌号下拉框
       this.$axios.post("oilrecord/carlist").then(r => {
         this.cars = r.data
-        //console.log(r)
       })
 
       //查询往来单位下拉框
       this.$axios.post("opposite/getoppolist?type=32").then(r => {
         this.opposites = r.data
-        console.log("往来单位对话框")
-        console.log(r)
       })
 
       //查询加油人员下拉框
       this.$axios.post("feerecord/getDriverName").then(r => {
         this.drivers = r.data.data;
-        //console.log(r)
       })
       //保养类别
       this.$axios.post("dictionary/menu").then(r => {
-        //console.log("新增对话框")
-        //console.log(r)
         this.keepTypes = r.data.data[6].children
       })
 
 
       this.$axios.get("keeprecord/findbyid?id=" + id).then(r => {
-        console.log("查询的修改数据")
-        console.log(r)
         this.updates = r.data.data
 
       })
@@ -551,7 +539,6 @@ export default {
     //修改
     update() {
       this.$axios.post("keeprecord/update", this.updates).then(r => {
-        console.log(r)
         if (r.data.code == 200) {
           this.$message({type: 'success', message: "修改成功", duration: 800});
           this.keepupdate = false;
@@ -563,19 +550,16 @@ export default {
           //查询车牌号下拉框
           this.$axios.post("oilrecord/carlist").then(r => {
             this.cars = r.data
-            console.log(r)
           })
 
           //查询往来单位下拉框
           this.$axios.post("opposite/getoppolist?type=32").then(r => {
             this.opposites = r.data
-            console.log(r)
           })
 
           //查询加油人员下拉框
           this.$axios.post("oilrecord/driverlist").then(r => {
             this.driverIds = r.data
-            console.log(r)
           })
 
           //重新加载页面

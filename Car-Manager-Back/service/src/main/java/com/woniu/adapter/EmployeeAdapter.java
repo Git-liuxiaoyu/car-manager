@@ -80,4 +80,15 @@ public class EmployeeAdapter {
         employeeDao.updatePassWord(employeePo);
         employeeRedisDao.updateRedis();
     }
+
+    public List<Employee> getAll() {
+        List<EmployeePo> employeeList=employeeDao.getAll();
+        List<Employee> employees = new ArrayList<>();
+        for (EmployeePo e : employeeList) {
+            Employee item = new Employee();
+            BeanUtils.copyProperties(e, item);
+            employees.add(item);
+        }
+        return employees;
+    }
 }

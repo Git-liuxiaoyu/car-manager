@@ -18,14 +18,14 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/departureRecord")
+@RequestMapping("departureRecord")
 public class DepartureRecordController {
 
     @Autowired
     private DepartureRecordService departureRecordService;
 
     //分页查询
-    @RequestMapping("/list")
+    @RequestMapping("list")
     public ResponseResult<List<DepartureRecord>> departureRecordList(Integer p, String searchText, Integer size) {
         int pageIndex = 1;
         int pageSize = 5;
@@ -45,35 +45,35 @@ public class DepartureRecordController {
 
     @RequestMapping("/add")
     public ResponseResult add() {
-        DepartureRecord departureRecord = new DepartureRecord();
-        departureRecord.setDeptId(1);
-        departureRecord.setDestination("武汉");
-        departureRecord.setCarId(1);
-        departureRecord.setEmployeeId(1);
-        departureRecord.setFollowPerson("李四");
-        departureRecord.setOutTime("2021-1-1 18:0:0");
-        departureRecord.setPreInTime("2021-2-1 18:0:0");
-        departureRecord.setMileage(100.00);
-        departureRecord.setDriverId(1);
-        departureRecordService.add(departureRecord);
+//        DepartureRecord departureRecord = new DepartureRecord();
+//        departureRecord.setDeptId(1);
+//        departureRecord.setDestination("武汉");
+//        departureRecord.setCarId(1);
+//        departureRecord.setEmployeeId(1);
+//        departureRecord.setFollowPerson("李四");
+//        departureRecord.setOutTime("2021-1-1 18:0:0");
+//        departureRecord.setPreInTime("2021-2-1 18:0:0");
+//        departureRecord.setMileage(100.00);
+//        departureRecord.setDriverId(1);
+//        departureRecordService.add(departureRecord);
         return ResponseResult.SUCCESS;
 
     }
 
     @RequestMapping("/update")
     public ResponseResult updated() {
-        DepartureRecord departureRecord = new DepartureRecord();
-        departureRecord.setId(2);
-        departureRecord.setDeptId(1);
-        departureRecord.setDestination("北京");
-        departureRecord.setCarId(1);
-        departureRecord.setEmployeeId(1);
-        departureRecord.setFollowPerson("李四");
-        departureRecord.setOutTime("2021-1-1 18:0:0");
-        departureRecord.setPreInTime("2021-2-1 18:0:0");
-        departureRecord.setMileage(100.00);
-        departureRecord.setDriverId(1);
-        departureRecordService.update(departureRecord);
+//        DepartureRecord departureRecord = new DepartureRecord();
+//        departureRecord.setId(2);
+//        departureRecord.setDeptId(1);
+//        departureRecord.setDestination("北京");
+//        departureRecord.setCarId(1);
+//        departureRecord.setEmployeeId(1);
+//        departureRecord.setFollowPerson("李四");
+//        departureRecord.setOutTime("2021-1-1 18:0:0");
+//        departureRecord.setPreInTime("2021-2-1 18:0:0");
+//        departureRecord.setMileage(100.00);
+//        departureRecord.setDriverId(1);
+//        departureRecordService.update(departureRecord);
         return ResponseResult.SUCCESS;
 
     }

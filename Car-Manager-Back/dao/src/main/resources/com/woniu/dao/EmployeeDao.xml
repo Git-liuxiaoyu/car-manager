@@ -80,4 +80,8 @@
     <update id="updatePassWord">
         update employee set password=#{password} where id=#{id}
     </update>
+
+    <select id="getAll" resultType="EmployeePo">
+        select * from employee
+    </select>
 </mapper>

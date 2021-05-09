@@ -155,22 +155,6 @@
             </el-form-item>
           </el-col>
 
-          <!-- <el-col :span="10">
-         <el-form-item label="加油时间：">
-             <el-date-picker
-             v-model="editoilreadd.addTime"
-             type="datetime"
-             placeholder="选择日期时间"
-             align="right"
-             :picker-options="pickerOptions">
-             </el-date-picker>
-         </el-form-item>
-       </el-col> -->
-
-
-
-
-
           <el-col :span="6">
             <el-form-item label="油料标号" prop="oppositeCompanyId">
               <el-select v-model="editoilreadd.oilType" placeholder="请选择">
@@ -280,13 +264,6 @@
             </el-form-item>
           </el-col>
 
-          <!-- <el-col :span="10">
-          <el-form-item label="加油时间：" prop="addTime">
-              <el-date-picker v-model="updates.addTime"  format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss" clearable style="width: 100%"
-               :picker-options="startDatePicker" :disabled="dialogStatus=='view'" type="date"  :placeholder="dialogStatus=='view'?'':'请输入加油时间'"></el-date-picker>
-          </el-form-item>
-          </el-col> -->
-
           <el-col :span="10">
             <el-form-item label="加油时间" prop="carId">
               <el-input
@@ -296,8 +273,6 @@
               </el-input>
             </el-form-item>
           </el-col>
-
-
 
           <el-col :span="6">
             <el-form-item label="油料标号" prop="oilType">
@@ -364,17 +339,6 @@
           </el-col>
 
 
-          <!-- <el-col :span="8">
-          <el-form-item label="经办人" prop="driverId">
-              <el-select v-model="fees.driverId" placeholder="请选择">
-                  <el-option label="请选择" value="0" ></el-option>
-                  <el-option :label="driver.employeeName" :value="driver.id"
-                          v-for="driver in drivers" :key="driver.id">
-                  </el-option>
-              </el-select>
-          </el-form-item>
-        </el-col> -->
-
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -388,7 +352,6 @@
 
 
 <script>
-import axios from 'axios';
 export default {
   data() {
     return {
@@ -491,11 +454,8 @@ export default {
     oilrelist(){
       var oitype =[];
       this.$axios.get("oilrecord/list",{params: {p: this.p, searchText: this.searchText, size: this.size}}).then(r => {
-
         this.oilrecords = r.data.data.list
         this.total = r.data.data.total
-        console.log("列表的数据")
-        console.log(r)
       })
 
 
@@ -517,23 +477,18 @@ export default {
       //查询车牌号下拉框
       this.$axios.post("oilrecord/carlist").then(r => {
         this.cars = r.data
-        //console.log(r)
       })
 
       //查询往来单位下拉框
       this.$axios.post("oilrecord/oppolist").then(r => {
         this.opposites = r.data
-        // console.log(r)
       })
 
       //查询加油人员下拉框
       this.$axios.post("feerecord/getDriverName").then(r => {
         this.drivers=r.data.data;
-        console.log(r)
       })
       this.$axios.post("dictionary/menu").then(r => {
-        console.log("新增对话框")
-        console.log(r)
         this.oilTypes = r.data.data[9].children
       })
 
@@ -542,7 +497,6 @@ export default {
     //添加加油记录
     addoilre(){
       this.$axios.post("oilrecord/add", this.editoilreadd).then(r => {
-        console.log(r)
         if(r.data.code == 200){
           this.$message({type: 'success', message:"添加成功",  duration:800});
           this.oppoVisible = false;
@@ -567,33 +521,24 @@ export default {
       //查询车牌号下拉框
       this.$axios.post("oilrecord/carlist").then(r => {
         this.cars = r.data
-        console.log(r)
       })
 
       //查询往来单位下拉框
       this.$axios.post("oilrecord/oppolist").then(r => {
         this.opposites = r.data
-        console.log("往来单位下拉框")
-        console.log(r)
       })
 
       //查询加油人员下拉框
       this.$axios.post("feerecord/getDriverName").then(r => {
         this.drivers=r.data.data;
-        console.log("加油人员下拉框")
-        console.log(r)
       })
 
       this.$axios.post("dictionary/menu").then(r => {
-        console.log("油料标号下拉框")
-        console.log(r)
         this.oilTypes = r.data.data[9].children
       })
 
 
       this.$axios.get("oilrecord/findbyid?id="+id).then(r => {
-        console.log("查询的修改数据")
-        console.log(r)
         this.updates = r.data
 
       })
@@ -601,7 +546,6 @@ export default {
 
     update(){
       this.$axios.post("oilrecord/update",this.updates).then(r => {
-        console.log(r)
         if(r.data.code == 200){
           this.$message({type: 'success', message:"修改成功",  duration:800});
           this.oppoupdate = false;
@@ -613,19 +557,16 @@ export default {
           //查询车牌号下拉框
           this.$axios.post("oilrecord/carlist").then(r => {
             this.cars = r.data
-            console.log(r)
           })
 
           //查询往来单位下拉框
           this.$axios.post("oilrecord/oppolist").then(r => {
             this.opposites = r.data
-            console.log(r)
           })
 
           //查询加油人员下拉框
           this.$axios.post("oilrecord/driverlist").then(r => {
             this.driverIds = r.data
-            console.log(r)
           })
 
           //重新加载页面
@@ -645,7 +586,6 @@ export default {
         type: "warning"
       }).then(res => {
         this.$axios.post("oilrecord/delete?id="+id).then(r => {
-          console.log(r)
           if(r.data.code == 200){
             this.$message({type: 'success', message:"删除成功",  duration:800});
             //重新加载页面

@@ -25,7 +25,6 @@
     <template>
       <el-table :data="tableData" border style="width: 100%" max-height="377"
                 :header-cell-style="{background:'#eef1f6',color:'#606266'}">
-
         <el-table-column prop="id" label="编号" min-width></el-table-column>
 
         <el-table-column prop="name" label="角色名称" min-width></el-table-column>

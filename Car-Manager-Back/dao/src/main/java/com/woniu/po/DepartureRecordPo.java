@@ -17,7 +17,4 @@ public class DepartureRecordPo {
     private String destination;
     private Double mileage;
     private Integer employeeId;
-    private String carNum;
-    private String text;
-    private String name;
 }

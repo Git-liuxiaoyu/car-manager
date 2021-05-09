@@ -22,31 +22,36 @@
 
 
     <el-container>
-        <!-- 中左 -->
-        <!-- default-active默认显示高亮 -->
-        <el-aside width="200px" class="main">
-          <el-menu class="el-menu-vertical-demo" :router="true" background-color="#edfff3" :unique-opened="true"
-                   default-active="index">
-            <el-menu-item index="index">
-              <i class="el-icon-s-home"></i>
-              <span slot="title">首页</span>
-            </el-menu-item>
-            <el-submenu :index="item.id+''" v-for="item in menu" :key="item.id">
-              <template slot="title">
-                <i class="el-icon-menu"></i>
-                <span>{{ item.name }}</span>
-              </template>
-              <el-menu-item-group>
-                <el-menu-item :index="son.href" v-for="son in item.children" :key="son.id">{{ son.name }}</el-menu-item>
-              </el-menu-item-group>
-            </el-submenu>
-          </el-menu>
-        </el-aside>
+      <!-- 中左 -->
+      <!-- default-active默认显示高亮 -->
+      <el-aside width="200px" class="main">
+        <el-menu class="el-menu-vertical-demo" :router="true" background-color="#edfff3" :unique-opened="true"
+                 default-active="index">
+          <el-menu-item index="index">
+            <i class="el-icon-s-home"></i>
+            <span slot="title">首页</span>
+          </el-menu-item>
 
-        <!-- 中右 -->
-        <el-main class="main">
-          <router-view></router-view>
-        </el-main>
+          <el-submenu :index="item.id+''" v-for="item in menu" :key="item.id">
+
+            <template slot="title">
+              <i class="el-icon-menu"></i>
+              <span>{{ item.name }}</span>
+            </template>
+
+            <el-menu-item-group>
+              <el-menu-item :index="son.href" v-for="son in item.children" :key="son.id">{{ son.name }}</el-menu-item>
+            </el-menu-item-group>
+
+          </el-submenu>
+
+        </el-menu>
+      </el-aside>
+
+      <!-- 中右 -->
+      <el-main class="main">
+        <router-view></router-view>
+      </el-main>
 
 
       <!--            &lt;!&ndash; 底部 &ndash;&gt;-->
@@ -95,8 +100,8 @@ export default {
       })
     }
   },
-  created() {
-    this.findPerms();
+  mounted() {
+    this.findPerms()
   }
 }
 </script>
@@ -110,7 +115,7 @@ export default {
   background-color: #edfff3;
   border: 1px solid black;
   height: 90vh;
-  overflow-y:auto ;
+  overflow-y: auto;
 }
 
 .wrapper {

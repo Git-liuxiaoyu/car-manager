@@ -401,13 +401,9 @@ export default {
           size: this.size
         }
       }).then(r => {
-
         this.insurelist = r.data.data.list
         this.total = r.data.data.total
-        console.log("列表的数据")
-        console.log(r)
       })
-
     },
     //分页方法
     handleCurrentChange(val) {
@@ -425,26 +421,19 @@ export default {
       //查询车牌号下拉框
       this.$axios.post("oilrecord/carlist").then(r => {
         this.cars = r.data
-        //console.log(r)
       })
 
       //保险下拉框
       this.$axios.post("opposite/getoppolist?type=33").then(r => {
         this.opposites = r.data
-        console.log("保险公司对话框")
-        console.log(r)
       })
 
       //查询经办下拉框
       this.$axios.post("feerecord/getDriverName").then(r => {
         this.drivers = r.data.data;
-        console.log("经办人对话框")
-        console.log(r)
       })
       //保养类别
       this.$axios.post("dictionary/menu").then(r => {
-        console.log("保险类别对话框")
-        console.log(r)
         this.insureTypes = r.data.data[3].children[2].children
       })
 
@@ -453,12 +442,9 @@ export default {
     //添加
     addinsure() {
       this.$axios.post("insureRecord/add", this.insureadds).then(r => {
-        console.log("添加的返回值")
-        console.log(r)
         if (r.data == 1) {
           this.$message({type: 'success', message: "添加成功", duration: 800});
           this.insureVisible = false;
-
           //循环清空editoppo集合中的值
           for (var i in this.insureadds) {
             this.insureadds[i] = "";
@@ -480,32 +466,23 @@ export default {
       //查询车牌号下拉框
       this.$axios.post("oilrecord/carlist").then(r => {
         this.cars = r.data
-        //console.log(r)
       })
 
       //保险下拉框
       this.$axios.post("opposite/getoppolist?type=33").then(r => {
         this.opposites = r.data
-        console.log("保险公司对话框")
-        console.log(r)
       })
 
       //查询经办下拉框
       this.$axios.post("feerecord/getDriverName").then(r => {
         this.drivers = r.data.data;
-        console.log("经办人对话框")
-        console.log(r)
       })
       //保养类别
       this.$axios.post("dictionary/menu").then(r => {
-        console.log("保险类别对话框")
-        console.log(r)
         this.insureTypes = r.data.data[3].children[2].children
       })
 
       this.$axios.get("insureRecord/findbyid?id=" + id).then(r => {
-        console.log("查询的修改数据")
-        console.log(r)
         this.updates = r.data.data
       })
 
@@ -513,7 +490,6 @@ export default {
     //修改
     update() {
       this.$axios.post("insureRecord/update", this.updates).then(r => {
-        console.log(r)
         if (r.data == 1) {
           this.$message({type: 'success', message: "修改成功", duration: 800});
           this.keepupdate = false;

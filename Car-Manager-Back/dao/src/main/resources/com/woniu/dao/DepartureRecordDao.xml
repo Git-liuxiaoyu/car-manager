@@ -5,16 +5,14 @@
 <mapper namespace="com.woniu.dao.DepartureRecordDao">
 
     <select id="count" parameterType="int" resultType="int">
-        select count(0) from departure_record dr,car c,dictionary d,employee e
-        where dr.carId=c.id and dr.deptId=d.id and dr.employeeId=e.id
+        select count(0) from departure_record
         <if test="searchText!=null and searchText!='' ">
             and c.carNum like concat('%',#{searchText},'%')
         </if>
     </select>
 
     <select id="findList" resultType="DepartureRecordPo">
-        select dr.*,c.carNum,d.text,e.name from departure_record dr,car c,dictionary d,employee e
-        where dr.carId=c.id and dr.deptId=d.id and dr.employeeId=e.id
+        select * from departure_record
         <if test="searchText!=null and searchText!='' ">
             and c.carNum like concat('%',#{searchText},'%')
         </if>

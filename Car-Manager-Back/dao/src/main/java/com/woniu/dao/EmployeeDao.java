@@ -36,4 +36,6 @@ public interface EmployeeDao {
     EmployeePo getByAccount(String account);
 
     void updatePassWord(EmployeePo employeePo);
+
+    List<EmployeePo> getAll();
 }

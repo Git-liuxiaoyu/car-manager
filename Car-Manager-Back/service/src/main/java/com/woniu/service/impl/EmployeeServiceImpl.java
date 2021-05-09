@@ -76,4 +76,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     public void updatePassWord(Employee employee) {
         employeeAdapter.updatePassWord(employee);
     }
+
+    @Override
+    public List<Employee> getAll() {
+        return employeeAdapter.getAll();
+    }
 }
