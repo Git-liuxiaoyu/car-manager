@@ -15,7 +15,6 @@ import java.util.List;
 public class ViolationRecordAdapter {
     @Autowired
     private ViolationRecordDao violationRecordDao;
-
     @Autowired
     private ViolationRecordRedisDao violationRecordRedisDao;
 
@@ -45,7 +44,7 @@ public class ViolationRecordAdapter {
     }
 
     /**
-     * 删除加油信息
+     * 删除
      * @param id
      * @return
      */
@@ -56,7 +55,7 @@ public class ViolationRecordAdapter {
 
 
     /**
-     * 添加驾驶员档案
+     * 添加
      * @param violationRecord
      * @return
      */
@@ -67,12 +66,11 @@ public class ViolationRecordAdapter {
         violationRecordRedisDao.updateRedis();
     }
     /**
-     * 修改加油信息
+     * 修改
      * @param violationRecord
      * @return
      */
     public void update(ViolationRecord violationRecord){
-
         ViolationRecordPo item = new ViolationRecordPo();
         BeanUtils.copyProperties(violationRecord, item);
         violationRecordDao.update(item);

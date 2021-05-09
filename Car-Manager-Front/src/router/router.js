@@ -38,6 +38,7 @@ let router = new Router({
         {path: '/violationRecord', component: () => import('@/components/dailyProcess/violationRecord/violationRecord')},
         {path: '/accidentRecord', component: () => import('@/components/dailyProcess/accidentRecord/accidentRecord')},
         {path: '/departureRecord', component: () => import('@/components/dailyProcess/departureRecord/departureRecord')},
+        {path: '/yearcheckRecord', component: () => import('@/components/dailyProcess/yearcheckRecord/yearcheckRecord')},
       ]
     },
   ]

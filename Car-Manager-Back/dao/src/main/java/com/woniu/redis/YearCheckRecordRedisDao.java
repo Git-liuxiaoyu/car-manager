@@ -11,41 +11,63 @@ import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
- * @Author Administrator
- * @Date 2021/4/29 18:15
+ * Created with IntelliJ IDEA.
+ *
+ * @Auther: khx
+ * @Date: 2021/04/29/17:15
+ * @Description:
  */
+
 @Component
 public class YearCheckRecordRedisDao {
 
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
-    public List<YearCheckRecordPo> list() {
 
+    public List<YearCheckRecordPo> list(int pageIndex, String searchText,int pageSize) {
         List<YearCheckRecordPo> yearCheckRecordList = new ArrayList<>();
-        BoundValueOperations<String, String> boundValueOps = redisTemplate.boundValueOps("yearCheckRecordlist");
-        String dataStr = boundValueOps.get();
 
+        String key = "yearCheckRecordList" + pageIndex+pageSize;
+        if (searchText != null && !searchText.equals("")) {
+            key += searchText;
+        }
+
+        BoundValueOperations<String, String> boundValueOps = redisTemplate.boundValueOps(key);
+        String dataStr = boundValueOps.get();
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             if (!StringUtils.isEmpty(dataStr)) {
-                System.out.println("从redis缓存中取yearCheckRecord数据");
-                yearCheckRecordList = objectMapper.readValue(dataStr, new TypeReference<List<YearCheckRecordPo>>() { });
+                System.out.println("从redis缓存中取数据");
+                yearCheckRecordList = objectMapper.readValue(dataStr, new TypeReference<List<YearCheckRecordPo>>() {
+                });
             }
-        } catch (Exception ex) {  }
+        } catch (Exception ex) {
+        }
         return yearCheckRecordList;
     }
 
-    //更新redis
-    public void addRedisYearCheckRecordList(List<YearCheckRecordPo> list) {
-
+    //将查询的数据存入redis中
+    public void addRedisYearCheckRecordList(List<YearCheckRecordPo> yearCheckRecordList, int pageIndex, String searchText,int pageSize) {
         ObjectMapper objectMapper = new ObjectMapper();
-        BoundValueOperations<String, String> boundValueOps = redisTemplate.boundValueOps("yearCheckRecordlist");
+        String key = "yearCheckRecordList" + pageIndex+pageSize;
+        if (searchText != null && !searchText.equals("")) {
+            key += searchText;
+        }
+        BoundValueOperations<String, String> boundValueOps = redisTemplate.boundValueOps(key);
         try {
-            String temp = objectMapper.writeValueAsString(list);
+            String temp = objectMapper.writeValueAsString(yearCheckRecordList);
             //3、然后把查到的结果存到redis里面
             boundValueOps.set(temp);
-        } catch (Exception exception) {  }
+        } catch (Exception exception) {
+        }
+    }
+
+    //清除redis的数据
+    public void updateRedis(){
+        Set<String> keys=redisTemplate.keys("yearCheckRecordList*");
+        redisTemplate.delete(keys);
     }
 }

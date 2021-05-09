@@ -84,8 +84,7 @@
                     v-model="addData.time"
                     type="datetime"
                     placeholder="选择日期时间"
-                    value-format="yyyy-MM-dd HH-mm-SS"
-                  >
+                    value-format="yyyy-MM-dd HH:mm:SS">
                   </el-date-picker>
             </el-form-item>
           </el-col>
@@ -348,7 +347,7 @@ export default {
       })
     },
      getDriverList(){
-        this.$axios.get("feerecord/getDriverName").then(r => {
+        this.$axios.get("driver/getAll").then(r => {
         this.driverList = r.data.data
       })
     }

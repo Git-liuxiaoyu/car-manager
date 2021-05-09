@@ -1,43 +1,46 @@
 package com.woniu.service.impl;
 
 import com.woniu.adapter.YearCheckRecordAdapter;
-import com.woniu.po.YearCheckRecordPo;
+import com.woniu.domain.YearCheckRecord;
 import com.woniu.service.YearCheckRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-/**
- * @Author Administrator
- * @Date 2021/4/29 18:37
- */
-@Component
+
+@Service
+@Transactional
 public class YearCheckRecordServiceImpl implements YearCheckRecordService {
+
+
     @Autowired
     private YearCheckRecordAdapter yearCheckRecordAdapter;
+
+
     @Override
-    public List<YearCheckRecordPo> yearCheckRecordList() {
-        return yearCheckRecordAdapter.findYearCheckRecordList();
+    public List<YearCheckRecord> list(String searchText,int pageIndex,int pageSize) {
+
+        return yearCheckRecordAdapter.list(searchText,pageIndex,pageSize);
     }
 
     @Override
-    public int add(YearCheckRecordPo yearCheckRecordPo) {
-        return yearCheckRecordAdapter.add(yearCheckRecordPo);
+    public void add(YearCheckRecord yearCheckRecord) {
+        yearCheckRecordAdapter.add(yearCheckRecord);
+
     }
 
     @Override
-    public int update(YearCheckRecordPo yearCheckRecordPo) {
-        return yearCheckRecordAdapter.update(yearCheckRecordPo);
+    public void update(YearCheckRecord yearCheckRecord) {
+        yearCheckRecordAdapter.update(yearCheckRecord);
     }
-
     @Override
-    public int delete(YearCheckRecordPo yearCheckRecordPo) {
-        return yearCheckRecordAdapter.delete(yearCheckRecordPo);
+    public int count(String searchText) {
+        return yearCheckRecordAdapter.count(searchText);
     }
-
     @Override
-    public YearCheckRecordPo findById(YearCheckRecordPo yearCheckRecordPo) {
-        return yearCheckRecordAdapter.findById(yearCheckRecordPo);
+    public void delete(Integer id) {
+        yearCheckRecordAdapter.delete(id);
     }
 }

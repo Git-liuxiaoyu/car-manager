@@ -1,49 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper
-  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.woniu.dao.YearCheckRecordDao">
-    <!--sql片段-->
-    <sql id="columns">
-        id,carId,checkNum,checkDate,cost,
-        oppositeCompanyId,nextCheckDate,driverId,remarks
-    </sql>
-    <!--添加-->
+    <!--resultMap-->
+    <resultMap type="YearCheckRecordPo" id="YearCheckRecordPoResultMap">
+        <id column="id" property="id" />
+        <result column="carNum" property="carNum"/>
+    </resultMap>
+    <select id="list" resultMap="YearCheckRecordPoResultMap">
+        select y.* ,c.carNum  from yearCheck_record y,car c
+        <where> y.carId = c.id
+            <if test="searchText!=null and searchText!='' ">and c.carNum like concat('%',#{searchText},'%')</if>
+        </where>
+    </select>
+    <!--新增修理记录-->
     <insert id="add" parameterType="YearCheckRecordPo">
-        insert into yearcheck_record(
-        <include refid="columns"></include>
-        )
-        values(null,#{carId},#{checkNum},#{checkDate},#{cost},
-               #{oppositeCompanyId},#{nextCheckDate},#{driverId},#{remarks}
-
+        insert into yearCheck_record values (null,#{carId},#{checkNum},#{checkDate},#{cost},#{oppositeCompanyId},#{nextCheckDate},#{driverId},#{remarks})
     </insert>
-    <!-- 删除 -->
-    <delete id="delete" parameterType="YearCheckRecordPo">
-        delete  from yearCheck_record where id=#{id}
-    </delete>
-    <!--修改-->
+    <!--修改修理列表-->
     <update id="update" parameterType="YearCheckRecordPo">
-        update yearCheckRecord
+        update yearCheck_record
         <set>
-            <if test="carId!=null">carId=#{carId},</if>
-            <if test="checkNum!=null">checkNum=#{checkNum},</if>
-            <if test="checkDate!=null">checkDate=#{checkDate},</if>
-            <if test="cost!=null">cost=#{cost},</if>
-            <if test="oppositeCompanyId!=null">oppositeCompanyId=#{oppositeCompanyId},</if>
-            <if test="nextCheckDate!=null">nextCheckDate=#{nextCheckDate},</if>
-            <if test="driverId!=null">driverId=#{driverId},</if>
-            <if test="remarks!=null">remarks=#{remarks},</if>
+            <if test="carId !=null and carId!='' ">carId = #{carId},</if>
+            <if test="checkNum !=null and checkNum!='' ">checkNum = #{checkNum},</if>
+            <if test="checkDate !=null and checkDate!='' ">checkDate = #{checkDate},</if>
+            <if test="cost !=null and cost!='' ">cost = #{cost},</if>
+            <if test="oppositeCompanyId !=null and oppositeCompanyId!='' ">oppositeCompanyId = #{oppositeCompanyId},</if>
+            <if test="nextCheckDate !=null and nextCheckDate!='' ">nextCheckDate = #{nextCheckDate},</if>
+            <if test="driverId !=null and driverId!='' ">driverId = #{driverId},</if>
+            <if test="remarks !=null and remarks!='' ">remarks = #{remarks},</if>
         </set>
-        where id=#{id}
+        where id = #{id}
     </update>
-    <!--动态分页查询-->
-    <select id="yearCheckRecordList" resultType="YearCheckRecordPo">
-        select * from yearcheck_record
+    <select id="count" parameterType="int" resultType="int">
+        select count(0) from yearCheck_record y,car c
+        <where> y.carId = c.id
+            <if test="searchText!=null and searchText!='' ">and c.carNum like concat('%',#{searchText},'%')</if>
+        </where>
     </select>
-    <!--根据id查-->
-    <select id="findById" resultType="YearCheckRecordPo" parameterType="YearCheckRecordPo">
-        select
-        <include refid="columns"></include>
-        from yearcheck_record where id=#{id}
-    </select>
+    <!--删除修理信息-->
+    <delete id="delete" parameterType="Integer">
+        delete from yearCheck_record where id=#{id}
+    </delete>
 </mapper>
