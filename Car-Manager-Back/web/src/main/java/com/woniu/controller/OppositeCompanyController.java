@@ -1,9 +1,12 @@
 package com.woniu.controller;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.woniu.domain.Dictionary;
 import com.woniu.domain.OppositeCompany;
 
 import com.woniu.po.DictionaryPo;
+import com.woniu.po.InsureRecordPo;
 import com.woniu.po.OppositeCompanyPo;
 import com.woniu.po.ViolationRecordPo;
 import com.woniu.service.DictionaryService;
@@ -28,16 +31,25 @@ public class OppositeCompanyController {
     private OilRecordService oilRecordService;
 
 
-    /**
-     * 列表
-     *
-     * @return
-     */
-    @RequestMapping("list")
-    public List<OppositeCompany> oppositelist() {
-        List<OppositeCompany> list = oppositeCompanyService.List();
-        System.out.println("列表");
-        return list;
+    //分页查询列表
+    @RequestMapping("/list")
+    public ResponseResult<PageInfo<OppositeCompany>> oppositelist(Integer p, String searchText, Integer size) {
+        int pageIndex=1;
+        int pageSize=5;
+        if(p>=1){
+            pageIndex=p;
+        }
+        if(pageSize>=5){
+            pageSize=size;
+        }
+        Integer total=oppositeCompanyService.count(searchText);
+        PageHelper.startPage(pageIndex,pageSize);
+        List<OppositeCompany> insurelist = oppositeCompanyService.List(searchText,pageIndex,pageSize);
+        PageInfo<OppositeCompany> pageInfo = new PageInfo<>(insurelist);
+        pageInfo.setTotal(total);
+        //System.out.println(pageInfo);
+
+        return new ResponseResult<>(pageInfo);
     }
 
 

@@ -1,5 +1,6 @@
 package com.woniu.dao;
 
+import com.woniu.po.InsureRecordPo;
 import com.woniu.po.OppositeCompanyPo;
 
 import java.util.List;
@@ -9,11 +10,13 @@ import java.util.List;
  */
 public interface OppositeCompanyDao {
 
-    /**
-     * 查询集合
-     * @return
-     */
-    List<OppositeCompanyPo> list();
+
+
+    //查询往来单位信息 按单位名称查询
+    List<OppositeCompanyPo> list(String searchText);
+
+    //总数
+    int count(String searchText);
 
     /**
      * 添加

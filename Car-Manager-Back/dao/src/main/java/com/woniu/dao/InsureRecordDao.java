@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface InsureRecordDao {
 
-    //public List<InsureRecordPo> insureRecordList();
+
 
     //查询保险信息信息
     List<InsureRecordPo> insureRecordList(String searchText);
