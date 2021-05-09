@@ -101,6 +101,7 @@
     <!--查询往来单位-->
     <select id="oppolist" resultType="OppositeCompanyPo">
         select * from opposite_company where type = #{type}
+--         and status = 1
     </select>
     
     

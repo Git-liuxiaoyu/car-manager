@@ -3,6 +3,7 @@ package com.woniu.adapter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woniu.dao.OppositeCompanyDao;
 import com.woniu.domain.OppositeCompany;
+import com.woniu.po.InsureRecordPo;
 import com.woniu.po.OppositeCompanyPo;
 import com.woniu.redis.OppositeCompanyRedisDao;
 import org.springframework.beans.BeanUtils;
@@ -21,28 +22,39 @@ public class OppositeCompanyAdapter {
     @Autowired
     private OppositeCompanyDao oppositeCompanyDao;
 
-    /**
-     * 查询列表
-     * @return
-     */
-    public List<OppositeCompany> findoppositeCompanyLists(){
-        List<OppositeCompanyPo> OppositeList = oppositeCompanyRedisDao.list();
-        ObjectMapper objectMapper = new ObjectMapper();
-        if(OppositeList.size() == 0){
+    //分页查询
+    public List<OppositeCompany> findoppositeCompanyLists(String searchText, int pageIndex, int pageSize) {
+        //查询的list
+        List<OppositeCompanyPo> OppositeList = oppositeCompanyRedisDao.list(pageIndex, searchText,pageSize);
+
+        if (OppositeList.size() == 0) {
             //从数据库查数据
-            OppositeList = oppositeCompanyDao.list();
+            OppositeList = oppositeCompanyDao.list(searchText);
             //存入redis的缓存中
-            oppositeCompanyRedisDao.addRedisUserList(OppositeList);
+            oppositeCompanyRedisDao.addRedisUserList(OppositeList, pageIndex, searchText,pageSize);
         }
         //把dao的 RoleList RolePo --- 转成  List<RolePo>
         List<OppositeCompany> Roles = new ArrayList<OppositeCompany>();
-        for(OppositeCompanyPo ocpo : OppositeList) {
+        for (OppositeCompanyPo ocpo : OppositeList) {
             OppositeCompany item = new OppositeCompany();
             BeanUtils.copyProperties(ocpo, item);
             Roles.add(item);
         }
         return Roles;
     }
+
+    //查询总记录数
+    public int count(String searchText) {
+        return oppositeCompanyDao.count(searchText);
+    }
+
+
+
+
+
+
+
+
 
 
     /**
@@ -51,7 +63,7 @@ public class OppositeCompanyAdapter {
      */
     public int add(OppositeCompanyPo ocpo){
         int i = oppositeCompanyDao.add(ocpo);
-        if(i > 0){updateredis();}
+        if(i > 0){oppositeCompanyRedisDao.updateRedis();}
         return i;
     }
 
@@ -63,7 +75,7 @@ public class OppositeCompanyAdapter {
     public int update(OppositeCompanyPo ocpo){
         int i = oppositeCompanyDao.update(ocpo);
         //修改成功
-        if(i > 0){updateredis();}
+        if(i > 0){oppositeCompanyRedisDao.updateRedis();}
         return i;
     }
 
@@ -74,21 +86,10 @@ public class OppositeCompanyAdapter {
     public int delete(OppositeCompanyPo ocpo){
         int i = oppositeCompanyDao.delete(ocpo);
         //删除成功
-        if(i>0){ updateredis();}
+        if(i>0){oppositeCompanyRedisDao.updateRedis();}
         return i;
     }
 
-
-
-    /**
-     * 更新redis
-     */
-    public void updateredis(){
-
-        List<OppositeCompanyPo> list = oppositeCompanyDao.list();
-        //修改redis的值
-        oppositeCompanyRedisDao.addRedisUserList(list);
-    }
 
 
     /**
@@ -98,7 +99,6 @@ public class OppositeCompanyAdapter {
      */
     public OppositeCompanyPo findbyid(OppositeCompanyPo ocpo) {
         OppositeCompanyPo findbyid = oppositeCompanyDao.findbyid(ocpo);
-
 
 
         return findbyid;

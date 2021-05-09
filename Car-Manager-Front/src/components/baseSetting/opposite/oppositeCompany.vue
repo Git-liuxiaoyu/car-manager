@@ -11,8 +11,8 @@
 
     <el-row :gutter="20">
       <el-col :span="6">
-        <el-input placeholder="请输入内容" v-model="name" class="input-with-select">
-          <el-button slot="append" icon="el-icon-search"></el-button>
+        <el-input placeholder="输入车牌号查询" v-model="searchText" class="input-with-select">
+          <el-button slot="append" icon="el-icon-search" @click="oppolist()"></el-button>
         </el-input>
       </el-col>
       <el-col :span="18">
@@ -33,7 +33,7 @@
 
         </el-table-column>
 
-        <el-table-column prop="type" label="单位类型" min-width>
+        <el-table-column prop="typename" label="单位类型" min-width>
 
 
         </el-table-column>
@@ -65,7 +65,6 @@
             <el-button type="danger" icon="el-icon-delete" circle plain
                        @click="del(scope.row.id)"
             ></el-button>
-            <!-- <el-button type="success" icon="el-icon-check" circle plain size="mini">分配角色</el-button> -->
           </template>
 
 
@@ -79,12 +78,17 @@
     <br/>
     <br/>
 
+        <!--分页组件-->
     <el-row>
       <el-col :span="10" :push="6">
         <el-pagination
-          background
-          layout="prev, pager, next"
-          :total="1000">
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="p"
+          :page-sizes="[5, 10, 15, 20]"
+          :page-size="size"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="total">
         </el-pagination>
       </el-col>
     </el-row>
@@ -248,7 +252,6 @@ import axios from 'axios';
 export default {
   data() {
     return {
-      name: "",
       oppos: [
         {
           id: "",
@@ -261,6 +264,13 @@ export default {
           status: "",
         }
       ],
+       //分页
+      searchText: '',
+      p: 1,
+      addDialogFormVisible: false,
+      Employee: {},
+      total: 0,
+      size: 5,
       //控制添加对话框是否显示
       oppoVisible: false,
       //详细信息对话框
@@ -278,6 +288,7 @@ export default {
         remarks: "",
         status: "",
       },
+
       types: [],
       typee:"",
 
@@ -308,12 +319,33 @@ export default {
   },
   methods: {
     oppolist() {
-      this.$axios.post("opposite/list").then(r => {
-        //console.log(r)
-        this.oppos = r.data
+      this.$axios.get("opposite/list", {
+        params: {
+          p: this.p,
+          searchText: this.searchText,
+          size: this.size
+        }
+      }).then(r => {
 
+        this.oppos = r.data.data.list
+        this.total = r.data.data.total
+        console.log("列表的数据")
+        console.log(r)
       })
+
     },
+    //分页方法
+    handleCurrentChange(val) {
+      this.p = val;
+      this.oppolist();
+    },
+    handleSizeChange(val) {
+      this.size = val;
+      this.oppolist();
+    },
+
+
+
     //显示新增对话框
     showEditoppo() {
       this.oppoVisible = true;
@@ -378,7 +410,8 @@ export default {
     goupdate(id, type) {
       this.oppoupdate = true;
       this.$axios.post("opposite/findbyid?id=" + id).then(r => {
-        //console.log(r)
+        console.log("查询的修改数据")
+        console.log(r)
         this.updates = r.data.data
         if (this.updates.status == 0) {
           this.updates.status = true;
