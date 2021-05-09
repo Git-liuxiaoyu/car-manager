@@ -22,7 +22,6 @@
     <br/>
     <br/>
     <template>
-      <<<<<<< HEAD:Car-Manager-Front/src/components/dailyProcess/feeRecord/feeRecord.vue
       <el-table :data="feeData" border style="width: 100%" max-height="377"
                 :header-cell-style="{background:'#eef1f6',color:'#606266'}">
         <el-table-column prop="id" label="编号" min-width></el-table-column>

@@ -23,7 +23,7 @@
     <br/>
     <template>
 
-      <el-table :data="oppos" border style="width: 100%" height="377"
+      <el-table :data="oppos" border style="width: 100%" max-height="377"
                 :header-cell-style="{background:'#eef1f6',color:'#606266'}">
         <el-table-column fixed prop="id" label="id" min-width>
 
