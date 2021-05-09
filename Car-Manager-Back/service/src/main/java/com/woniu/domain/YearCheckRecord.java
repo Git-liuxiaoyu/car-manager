@@ -20,4 +20,5 @@ public class YearCheckRecord {
     private String nextCheckDate;
     private Integer driverId;
     private String remarks;
+    private String carNum;
 }

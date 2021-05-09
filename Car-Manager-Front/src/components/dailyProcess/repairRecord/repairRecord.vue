@@ -508,7 +508,7 @@ export default {
       })
     },
      getDriverList(){
-        this.$axios.get("feerecord/getDriverName").then(r => {
+        this.$axios.get("driver/getAll").then(r => {
         this.driverList = r.data.data
       })
     }

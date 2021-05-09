@@ -4,15 +4,19 @@ import com.woniu.po.YearCheckRecordPo;
 
 import java.util.List;
 
-/**
- * @Author Administrator
- * @Date 2021/4/29 18:12
- */
-
 public interface YearCheckRecordDao {
-    public List<YearCheckRecordPo> yearCheckRecordList();
-    public int add(YearCheckRecordPo yearCheckRecordPo);
-    public int update(YearCheckRecordPo yearCheckRecordPo);
-    public int delete(YearCheckRecordPo yearCheckRecordPo);
-    public YearCheckRecordPo findById(YearCheckRecordPo yearCheckRecordPo);
+
+
+    //查询
+    List<YearCheckRecordPo> list(String searchText);
+
+    //添加
+    void add(YearCheckRecordPo yearCheckRecordPo);
+    //
+    //修改
+    void update(YearCheckRecordPo yearCheckRecordPo);
+    //计数
+    Integer count(String searchText);
+    // 删除
+    void delete(Integer id);
 }

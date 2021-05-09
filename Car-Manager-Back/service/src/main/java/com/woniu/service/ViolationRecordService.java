@@ -7,17 +7,16 @@ import java.util.List;
 
 public interface ViolationRecordService {
 
-    //查询维修信息
+    // 查询
     List<ViolationRecord> list(String searchText,int pageIndex,int pageSize);
 
-    //添加维修信息
+    // 添加
     void add(ViolationRecord violationRecord);
-    //
-    //修改维修信息
+    // 修改
     void update(ViolationRecord violationRecord);
-
+    // 计数
     int count(String searchText);
-    // 删除维修信息
+    // 删除
     void delete(Integer id);
 
 }
