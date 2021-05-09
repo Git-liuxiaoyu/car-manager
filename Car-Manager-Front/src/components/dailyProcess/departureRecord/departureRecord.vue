@@ -11,7 +11,7 @@
     <el-row :gutter="20">
       <el-col :span="5">
         <el-input placeholder="请输入要查询的车牌" v-model="searchText" class="input-with-select">
-          <el-button slot="append" icon="el-icon-search" @click="findCar"></el-button>
+          <el-button slot="append" icon="el-icon-search" @click="findOutCar"></el-button>
         </el-input>
       </el-col>
       <el-col :span="8">
@@ -31,7 +31,11 @@
         <el-table-column prop="preInTime" label="预计回车时间" min-width :show-overflow-tooltip="true"></el-table-column>
         <el-table-column prop="inTime" label="回车时间" min-width :show-overflow-tooltip="true"></el-table-column>
         <el-table-column prop="followPerson" label="随行人员" min-width></el-table-column>
-        <el-table-column prop="driverId" label="驾驶员" min-width :show-overflow-tooltip="true"></el-table-column>
+
+        <el-table-column prop="driverId" label="驾驶员" min-width :show-overflow-tooltip="true">
+
+        </el-table-column>
+
         <el-table-column prop="destination" label="目的地" min-width :show-overflow-tooltip="true"></el-table-column>
         <el-table-column prop="mileage" label="本次行程" min-width :show-overflow-tooltip="true"></el-table-column>
         <el-table-column prop="name" label="创建人员" min-width :show-overflow-tooltip="true"></el-table-column>
@@ -80,11 +84,13 @@ export default {
       size: 5,
       //模糊查询的文本框内容
       searchText: '',
+      //驾驶员的名字的数据
+      driverName:{},
     }
   },
   methods: {
-//分页的角色列表
-    findCar() {
+//分页的出车记录列表
+    findOutCar() {
       this.$axios.get("departureRecord/list", {
         params: {
           p: this.p,
@@ -98,17 +104,19 @@ export default {
       })
     },
     //查询所有的车牌号
-    getByCarId(){
-
+    getFindDriver(){
+      this.$axios.get("driver/getAll").then(r => {
+        this.driverName=r.data.data
+      })
     },
     //分页方法
     handleCurrentChange(val) {
       this.p = val;
-      this.findCar();
+      this.findOutCar();
     },
     handleSizeChange(val) {
       this.size = val;
-      this.findCar();
+      this.findOutCar();
     },
     //出车记录
     outCar() {
@@ -124,7 +132,8 @@ export default {
     }
   },
   created() {
-    this.findCar();
+    this.getFindDriver();
+    this.findOutCar();
   }
 }
 </script>

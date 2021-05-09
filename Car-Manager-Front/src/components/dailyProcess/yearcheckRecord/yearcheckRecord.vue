@@ -22,26 +22,26 @@
     <br/>
 
     <template>
-      <el-table :data="tableData" border style="width: 100%" height="400"
+      <el-table :data="tableData" border style="width: 100%"  max-height="377"
                 :header-cell-style="{background:'#eef1f6',color:'#606266'}">
-        <el-table-column fixed prop="carNum" label="车牌号码" width="100"></el-table-column>
-        <el-table-column fixed prop="checkNum" label="年检标号" width="100"></el-table-column>
-        <el-table-column fixed prop="checkDate" label="年检时间" width="200">
+        <el-table-column  prop="carNum" label="车牌号码" min-width :show-overflow-tooltip="true"></el-table-column>
+        <el-table-column  prop="checkNum" label="年检标号"min-width :show-overflow-tooltip="true"></el-table-column>
+        <el-table-column  prop="checkDate" label="年检时间" min-width :show-overflow-tooltip="true">
           <template slot-scope="scope">
             <i class="el-icon-time"></i>
             {{ scope.row.checkDate | dateConvert() }}
           </template>
         </el-table-column>
-        <el-table-column fixed prop="cost" label="年检金额" width="100"></el-table-column>
-        <el-table-column fixed prop="oppositeName" label="年检单位" width="100"></el-table-column>
-        <el-table-column fixed prop="nextCheckDate" label="下次年检时间" width="200">
+        <el-table-column  prop="cost" label="年检金额" min-width :show-overflow-tooltip="true"></el-table-column>
+        <el-table-column  prop="oppositeName" label="年检单位" min-width :show-overflow-tooltip="true"></el-table-column>
+        <el-table-column  prop="nextCheckDate" label="下次年检时间" min-width :show-overflow-tooltip="true">
           <template slot-scope="scope">
             <i class="el-icon-time"></i>
             {{ scope.row.nextCheckDate | dateConvert() }}
           </template>
         </el-table-column>
-        <el-table-column fixed prop="driverName" label="操作人员" width="100"></el-table-column>
-        <el-table-column fixed label="操作" width="300">
+        <el-table-column  prop="driverName" label="操作人员" min-width :show-overflow-tooltip="true"></el-table-column>
+        <el-table-column  label="操作" width="120">
           <template slot-scope="scope">
             <el-tooltip content="年检信息编辑" placement="bottom" effect="light">
               <el-button type="primary" icon="el-icon-edit" circle @click="showUpdateDialog(scope.row)"></el-button>
