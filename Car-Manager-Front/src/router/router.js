@@ -33,6 +33,7 @@ let router = new Router({
         {path: '/keeprecord', component: () => import('@/components/baseSetting/keeprecord/keeprecord')},
         {path: '/violationRecord', component: () => import('@/components/dailyProcess/violationRecord/violationRecord')},
         {path: '/accidentRecord', component: () => import('@/components/dailyProcess/accidentRecord/accidentRecord')},
+        {path: '/reportForm', component: () => import('@/components/reportCenter/reportForm/reportForm')},
       ]
     },
   ]

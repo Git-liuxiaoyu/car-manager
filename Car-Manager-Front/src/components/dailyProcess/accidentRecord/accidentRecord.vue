@@ -26,7 +26,12 @@
         <!-- <el-table-column fixed prop="id" label="编号" width="100"></el-table-column> -->
         <el-table-column  prop="carNum" label="车牌号码" width="100"></el-table-column>
         <el-table-column  prop="driverName" label="驾驶员" width="80"></el-table-column>
-        <el-table-column  prop="time" label="事故时间" width="180"></el-table-column>
+        <el-table-column  prop="time" label="事故时间" width="180">
+          <template slot-scope="scope">
+            <i class="el-icon-time"></i>
+            {{ scope.row.time | timeConvert() }}
+          </template>
+        </el-table-column>
         <el-table-column  prop="place" label="事故地点" width="180"></el-table-column>
         <el-table-column  prop="explain" label="事故说明" width="180"></el-table-column>
         <el-table-column  prop="selfCost" label="我方承担金额" width="110"></el-table-column>
@@ -107,23 +112,15 @@
           </el-col>
 
           <el-col :span="8">
-            <!-- <el-form-item label="缴费时间">
-              <el-input type="datetime" v-model="fees.payTime"></el-input>
-            </el-form-item> -->
-
-              <!-- <el-form-item label="事故时间" >
-                <el-date-picker v-model="addAccident.time"  format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss" clearable style="width: 100%"
-                 :picker-options="startDatePicker" :disabled="dialogStatus=='view'" type="date"  :placeholder="dialogStatus=='view'?'':'请输入支付时间'"></el-date-picker>
-            </el-form-item> -->
-
-                <el-form-item label="事故时间" prop="time">
-                        <el-date-picker
-                        v-model="addAccident.time"
-                        type="datetime"
-                        value-format="yyyy-MM-DD HH:mm:ss"
-                        placeholder="选择日期">
-                        </el-date-picker>         
-                </el-form-item>  
+            <el-form-item label="事故时间:">
+                  <el-date-picker
+                    v-model="addAccident.time"
+                    type="datetime"
+                    placeholder="选择日期时间"
+                    value-format="yyyy-MM-dd HH-mm-SS"
+                  >
+                  </el-date-picker>
+            </el-form-item>
           </el-col>
 
           <el-col :span="12">
@@ -204,7 +201,7 @@
 
 
             <el-form-item label="车牌号" prop="carId">  
-                <el-select v-model="editAccident.carId" placeholder="请选择">
+                <el-select v-model="editAccident.carId" placeholder="请选择" :disabled="true">
                     <el-option label="请选择" value="0" ></el-option>
                     <el-option :label="car.carNum" :value="car.id"
                             v-for="car in cars" :key="car.id">
@@ -245,7 +242,7 @@
                         <el-date-picker
                         v-model="editAccident.time"
                         type="datetime"
-                        value-format="yyyy-MM-DD HH:mm:ss"
+                        value-format="yyyy-MM-dd HH:mm:SS"
                         placeholder="选择日期">
                         </el-date-picker>         
                 </el-form-item>  
@@ -404,16 +401,34 @@ export default {
             this.$axios.post("accidentRecord/update",this.editAccident).then(r=>{
                 console.log(r);
                 if(r.data.code==200){
-                    this.$message({type: 'success', message:"添加成功",  duration:800});
+                    this.$message({type: 'success', message:"修改成功",  duration:800});
                     this.dialogEditVisible=false;
                     this.loadAccident();
                 }else{
-                    this.$message({type: 'error', message:"添加失败",  duration:800});
+                    this.$message({type: 'error', message:"修改失败",  duration:800});
                 }
             })
         },
         deleteAccident(id){
 
+            this.$confirm("是否删除?", "提示", {
+                confirmButtonText: "确定",
+                cancelButtonText: "取消",
+                type: "warning"
+            }).then(res => {
+                this.$axios.get("accidentRecord/delete?id="+id).then(r=>{
+                console.log(r);
+                if(r.data.code==200){
+                this.$message({type: 'success', message:"删除成功",  duration:800});
+                this.loadAccident();
+                }else{
+                this.$message({type: 'error', message:"删除失败",  duration:800});
+                }
+                });
+            }).catch(res => {
+                this.$message.info("删除取消");
+            })
+               
         }
     },
     created(){

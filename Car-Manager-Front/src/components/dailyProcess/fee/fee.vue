@@ -26,7 +26,12 @@
         <el-table-column fixed prop="id" label="编号" width="100"></el-table-column>
         <el-table-column  prop="car.carNum" label="车牌号码" width="100"></el-table-column>
         <el-table-column  prop="feeName" label="规费名称" width="150"></el-table-column>
-        <el-table-column  prop="payTime" label="缴费时间" width="180"></el-table-column>
+        <el-table-column  prop="payTime" label="缴费时间" width="180">
+          <template slot-scope="scope">
+            <i class="el-icon-time"></i>
+            {{ scope.row.payTime | timeConvert() }}
+          </template>
+        </el-table-column>
         <el-table-column  prop="fee" label="缴费金额" width="100"></el-table-column>
         <el-table-column  prop="oppositeName" label="收费单位" width="150"></el-table-column>
         <el-table-column  prop="driverName" label="经办人" width="100"></el-table-column>
@@ -38,10 +43,10 @@
                 >查看详细</el-button>
             </template> -->
             <template slot-scope="scoped">
-            <el-tooltip content="编辑" placement="bottom" effect="light">
+            <el-tooltip content="规费信息编辑" placement="bottom" effect="light">
             <el-button type="primary" icon="el-icon-edit" circle @click="updateFee(scoped.row)"></el-button>
             </el-tooltip>
-            <el-tooltip content="删除" placement="bottom" effect="light">
+            <el-tooltip content="规费信息删除" placement="bottom" effect="light">
             <el-button type="danger" icon="el-icon-delete" circle @click="deleteFee(scoped.row.id)"></el-button>
             </el-tooltip>
             </template>
@@ -68,7 +73,7 @@
     </el-row>
     <!-- 新增 -->
     <el-dialog title="新增规费信息" :visible.sync="addDialogFormVisible" center width="80%">
-      <el-form :model="fees" label-width="70px">
+      <el-form :model="fees" label-width="100px">
         <el-row :gutter="20">
 
           <el-col :span="8">
@@ -101,9 +106,19 @@
               <el-input type="datetime" v-model="fees.payTime"></el-input>
             </el-form-item> -->
 
-              <el-form-item label="加油时间" >
+              <!-- <el-form-item label="加油时间" >
                 <el-date-picker v-model="fees.payTime"  format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss" clearable style="width: 100%"
                  :picker-options="startDatePicker" :disabled="dialogStatus=='view'" type="date"  :placeholder="dialogStatus=='view'?'':'请输入支付时间'"></el-date-picker>
+            </el-form-item> -->
+
+            <el-form-item label="缴费时间:">
+                  <el-date-picker
+                    v-model="fees.payTime"
+                    type="datetime"
+                    placeholder="选择日期时间"
+                    value-format="yyyy-MM-dd HH-mm-SS"
+                  >
+                  </el-date-picker>
             </el-form-item>
           </el-col>
 
@@ -114,9 +129,18 @@
           </el-col>
 
           <el-col :span="8">
-            <el-form-item label="收费单位">
+            <!-- <el-form-item label="收费单位">
               <el-input v-model="fees.oppositeCompanyId"></el-input>
+            </el-form-item> -->
+            <el-form-item label="收费单位" prop="oppositeCompanyId">
+                <el-select v-model="fees.oppositeCompanyId" placeholder="请选择">
+                    <el-option label="请选择" value="0" ></el-option>
+                    <el-option :label="opposite.name" :value="opposite.id"
+                            v-for="opposite in opposites" :key="opposite.id">
+                    </el-option>
+                </el-select>
             </el-form-item>
+
           </el-col>
 
           <el-col :span="8">
@@ -189,8 +213,17 @@
           </el-col>
 
           <el-col :span="8">
-            <el-form-item label="收费单位">
+            <!-- <el-form-item label="收费单位">
               <el-input v-model="editFee.oppositeCompanyId"></el-input>
+            </el-form-item> -->
+
+             <el-form-item label="收费单位" prop="oppositeCompanyId">
+                <el-select v-model="editFee.oppositeCompanyId" placeholder="请选择">
+                    <el-option label="请选择" value="0" ></el-option>
+                    <el-option :label="opposite.name" :value="opposite.id"
+                            v-for="opposite in opposites" :key="opposite.id">
+                    </el-option>
+                </el-select>
             </el-form-item>
           </el-col>
 
@@ -249,15 +282,18 @@ export default {
               oppositeName:'',
               driverName:''
           }],
-          fees:{},
-        //控制新增弹框
-          addDialogFormVisible:false,
-        // 车牌号
-          cars:[],
-          drivers:[],
-         //控制修改弹框
-          dialogEditFeeVisible:false,
-          editFee:{},
+              fees:{},
+            //控制新增弹框
+              addDialogFormVisible:false,
+            // 车牌号
+              cars:[],
+            //经办人
+              drivers:[],
+            //单位名称
+              opposites:[],
+            //控制修改弹框
+              dialogEditFeeVisible:false,
+              editFee:{},
 
         }
     },
@@ -272,11 +308,11 @@ export default {
             })
         },
         // 获取车牌信息
-        loadCarNum(){
-            this.$axios.get("feerecord/getCarNum" ).then(r=>{
-                console.log(r);
-                this.cars=r.data.data;
-            })
+        getCarList(){
+            this.$axios.get("car/getAll").then(r => {
+            this.cars = r.data.data
+            console.log(this.cars)
+        })
         },
         // 获取驾驶员信息
         loadDriverName(){
@@ -285,6 +321,21 @@ export default {
                 this.drivers=r.data.data;
             })
         },
+        getOpposite(){
+          //查询往来单位下拉框
+          this.$axios.post("opposite/getoppolist?type="+104).then(r => {
+            this.opposites = r.data
+            console.log(r)
+            for(let i;i<this.feeData.length;i++){
+              if(this.feeData.oppositeCompanyId===r.data.id){
+                  this.feeData.oppositeName=r.data.name;
+              }
+            }
+            // this.feeData.oppositeName=r.data.name;
+          })
+
+        },
+        
 
         //分页方法
         handleCurrentChange(val) {
@@ -298,6 +349,8 @@ export default {
         // 打开添加框
         addFees(){
             this.addDialogFormVisible=true;
+            this.getCarList();
+            this.loadDriverName();
         },
         //调用添加方法
         toAddFees(){
@@ -352,13 +405,14 @@ export default {
                 });
             }).catch(res => {
                 this.$message.info("删除取消");
-      })
+        })
         }
     },
     created(){
         this.findFee();
-        this.loadCarNum();
-        this.loadDriverName();
+        // this.loadCarNum();
+        // this.loadDriverName();
+          this.getOpposite();
     }
 }
 </script>
