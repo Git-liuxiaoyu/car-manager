@@ -7,6 +7,7 @@
     </el-breadcrumb>
 
     <br/>
+    <br/>
 
     <el-row :gutter="20">
       <el-col :span="6">
@@ -19,37 +20,38 @@
       </el-col>
     </el-row>
     <br/>
-
+    <br/>
     <template>
 
-      <el-table :data="oppos" style="width: 100%" height="470">
-        <el-table-column fixed prop="id" label="id" width="150">
+      <el-table :data="oppos" border style="width: 100%" height="377"
+                :header-cell-style="{background:'#eef1f6',color:'#606266'}">
+        <el-table-column fixed prop="id" label="id" min-width>
 
         </el-table-column>
 
-        <el-table-column prop="name" label="单位名称" width="150">
+        <el-table-column prop="name" label="单位名称" min-width>
 
         </el-table-column>
 
-        <el-table-column prop="type" label="单位类型" width="150">
+        <el-table-column prop="type" label="单位类型" min-width>
 
 
         </el-table-column>
 
-        <el-table-column prop="phone" label="单位电话" width="150">
+        <el-table-column prop="phone" label="单位电话" min-width>
 
         </el-table-column>
 
-        <el-table-column prop="linkName" label="联系人" width="150">
+        <el-table-column prop="linkName" label="联系人" min-width>
 
         </el-table-column>
 
-        <el-table-column prop="status" label="是否启用" width="150">
+        <el-table-column prop="status" label="是否启用" min-width>
           <template slot-scope="scope">{{ scope.row.status == '1' ? '启用' : '禁用' }}</template>
 
         </el-table-column>
 
-        <el-table-column prop="" label="操作" width="300">
+        <el-table-column prop="" label="操作" width="170">
           <template slot-scope="scope">
             <!-- element -ui  button   plain属性，鼠标放上去变蓝色  size="mini" -->
             <el-button icon="el-icon-search" circle plain @click="detail(scope.row.id,scope.row.type)">
@@ -73,6 +75,8 @@
 
     </template>
 
+    <br/>
+    <br/>
     <br/>
 
     <el-row>
@@ -386,7 +390,7 @@ export default {
         console.log("修改对话框")
         console.log(r)
         this.types = r.data.data[3].children
-        
+
       })
     },
     //修改

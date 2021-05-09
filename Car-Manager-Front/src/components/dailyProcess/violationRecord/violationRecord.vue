@@ -19,26 +19,26 @@
       </el-col>
     </el-row>
     <br/>
-    <br/>   
+    <br/>
 
     <template>
-      <el-table :data="tableData" border style="width: 100%" height="400"
+      <el-table :data="tableData" border style="width: 100%" max-height="377"
                 :header-cell-style="{background:'#eef1f6',color:'#606266'}">
-        <el-table-column fixed prop="carNum" label="车牌号码" width="100%"></el-table-column>
-        <el-table-column fixed prop="violationName" label="违章项目" width="100%"></el-table-column>
-        <el-table-column fixed prop="time" label="违章时间" width="200">
+        <el-table-column  prop="carNum" label="车牌号码" min-width :show-overflow-tooltip="true"></el-table-column>
+        <el-table-column  prop="violationName" label="违章项目" min-width :show-overflow-tooltip="true"></el-table-column>
+        <el-table-column  prop="time" label="违章时间" min-width :show-overflow-tooltip="true">
           <template slot-scope="scope">
             <i class="el-icon-time"></i>
             {{ scope.row.time | timeConvert() }}
           </template>
         </el-table-column>
-        <el-table-column fixed prop="fee" label="违章罚款" width="150%"></el-table-column>
-        <el-table-column fixed prop="reduceScore" label="违章扣分" width="150%"> </el-table-column>
-        <el-table-column fixed prop="driverName" label="驾驶员" width="150%"></el-table-column>
-        <el-table-column fixed prop="place" label="违章地点" width="150%"></el-table-column>
-        <el-table-column fixed prop="remarks" label="备注" width="100%"> </el-table-column>
+        <el-table-column  prop="fee" label="违章罚款" min-width :show-overflow-tooltip="true"></el-table-column>
+        <el-table-column  prop="reduceScore" label="违章扣分" min-width :show-overflow-tooltip="true"> </el-table-column>
+        <el-table-column  prop="driverName" label="驾驶员" min-width :show-overflow-tooltip="true"></el-table-column>
+        <el-table-column  prop="place" label="违章地点" min-width :show-overflow-tooltip="true"></el-table-column>
+        <el-table-column  prop="remarks" label="备注" min-width :show-overflow-tooltip="true"> </el-table-column>
 
-        <el-table-column fixed label="操作" width="200%">
+        <el-table-column  label="操作" width="120">
           <template slot-scope="scope">
             <el-tooltip content="编辑" placement="bottom" effect="light">
               <el-button type="primary" icon="el-icon-edit" circle @click="showUpdateDialog(scope.row)"></el-button>
@@ -120,7 +120,7 @@
 
           <el-col :span="6">
             <el-form-item label="违章备注">
-                <el-input v-model="addData.remarks"></el-input> 
+                <el-input v-model="addData.remarks"></el-input>
             </el-form-item>
           </el-col>
 
@@ -198,7 +198,7 @@
 
           <el-col :span="6">
             <el-form-item label="违章备注">
-                <el-input v-model="updateData.remarks"></el-input> 
+                <el-input v-model="updateData.remarks"></el-input>
             </el-form-item>
           </el-col>
 

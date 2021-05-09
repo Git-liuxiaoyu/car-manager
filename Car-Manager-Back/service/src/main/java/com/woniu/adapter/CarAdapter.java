@@ -35,7 +35,7 @@ public class CarAdapter {
     }
     public List<Car> list(String searchText, int pageIndex,int pageSize) {
         //查询的list
-        List<CarPo> carList = carRedisDao.list(pageIndex, searchText,pageSize);
+        List<CarPo> carList = carRedisDao.list(pageIndex,searchText,pageSize);
 
         if (carList.size() == 0) {
             //从数据库查数据

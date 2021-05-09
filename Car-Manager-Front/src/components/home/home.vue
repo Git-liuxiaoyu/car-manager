@@ -22,8 +22,6 @@
 
 
     <el-container>
-
-      <el-container>
         <!-- 中左 -->
         <!-- default-active默认显示高亮 -->
         <el-aside width="200px" class="main">
@@ -50,7 +48,6 @@
           <router-view></router-view>
         </el-main>
 
-      </el-container>
 
       <!--            &lt;!&ndash; 底部 &ndash;&gt;-->
       <!--            <el-footer class="el-footer" height="60px">-->
@@ -112,6 +109,8 @@ export default {
 .main {
   background-color: #edfff3;
   border: 1px solid black;
+  height: 90vh;
+  overflow-y:auto ;
 }
 
 .wrapper {
@@ -125,13 +124,13 @@ export default {
 }
 
 .logo {
-  width: 150px;
+  width: 180px;
   padding: 10px;
 }
 
 .l-head-zj {
   text-align: center;
-  height: 65px;
+  height: 10vh;
   line-height: 65px;
 }
 

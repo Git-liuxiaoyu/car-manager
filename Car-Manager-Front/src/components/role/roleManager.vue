@@ -23,11 +23,14 @@
     <br/>
 
     <template>
-      <el-table :data="tableData" border style="width: 100%" height="400"
+      <el-table :data="tableData" border style="width: 100%" max-height="377"
                 :header-cell-style="{background:'#eef1f6',color:'#606266'}">
-        <el-table-column fixed prop="id" label="编号" width="550%"></el-table-column>
-        <el-table-column fixed prop="name" label="角色名称" width="550%"></el-table-column>
-        <el-table-column fixed label="操作" width="200%">
+
+        <el-table-column prop="id" label="编号" min-width></el-table-column>
+
+        <el-table-column prop="name" label="角色名称" min-width></el-table-column>
+
+        <el-table-column label="操作" width="170">
           <template slot-scope="scope">
             <el-tooltip content="编辑" placement="bottom" effect="light">
               <el-button type="primary" icon="el-icon-edit" circle @click="doUpdate(scope.row)"></el-button>
@@ -76,8 +79,8 @@
     </el-dialog>
     <el-dialog title="分配权限" :visible.sync="menuRoleFormVisible" center width="20%">
       <el-tree :data="data" show-checkbox
-        default-expand-all node-key="id" ref="tree"
-        highlight-current :props="defaultProps">
+               default-expand-all node-key="id" ref="tree"
+               highlight-current :props="defaultProps">
       </el-tree>
       <span slot="footer" class="dialog-footer">
         <el-button @click="menuRoleFormVisible = false">取 消</el-button>
@@ -85,6 +88,9 @@
       </span>
     </el-dialog>
 
+    <br/>
+    <br/>
+    <br/>
     <el-row>
       <el-col :span="10" :push="6">
         <el-pagination
@@ -125,7 +131,7 @@ export default {
         name: '',
       },
       //树状图的数据
-      data:[],
+      data: [],
       defaultProps: {
         children: 'children',
         label: 'name'
@@ -151,13 +157,13 @@ export default {
     },
     //编辑角色
     doUpdate(row) {
-      this.updateRoleFormVisible=true;
-      this.update.id=row.id;
-      this.update.name=row.name;
+      this.updateRoleFormVisible = true;
+      this.update.id = row.id;
+      this.update.name = row.name;
     },
     //编辑角色确定
     updateRole() {
-      this.updateRoleFormVisible=false;
+      this.updateRoleFormVisible = false;
       this.$axios.post("role/update", this.update).then(r => {
         if (r.data.code = 200) {
           this.$message.success("修改成功");
@@ -191,7 +197,7 @@ export default {
     },
     //分配权限
     doMenuRole(row) {
-      this.menuRoleFormVisible=true;
+      this.menuRoleFormVisible = true;
       this.$axios.get("menu/list").then(r => {
         this.data = r.data.data;
         console.log(r)
@@ -203,7 +209,8 @@ export default {
     },
     //分页的角色列表
     findRole() {
-      this.$axios.get("role/list", {params: {p: this.p, searchText: this.searchText, size: this.size}}).then(r => {
+      this.$axios.get("role/list",
+        {params: {p: this.p, searchText: this.searchText, size: this.size}}).then(r => {
         this.tableData = r.data.data.list
         this.total = r.data.data.total
       })

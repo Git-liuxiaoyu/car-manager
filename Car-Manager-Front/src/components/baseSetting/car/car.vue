@@ -6,6 +6,8 @@
       <el-breadcrumb-item>车辆档案</el-breadcrumb-item>
     </el-breadcrumb>
     <br/>
+    <br/>
+
     <el-row :gutter="20">
       <el-col :span="6">
         <el-input placeholder="请输入车牌号码" v-model="searchText" class="input-with-select">
@@ -17,58 +19,63 @@
       </el-col>
     </el-row>
     <br/>
+    <br/>
 
     <template>
-      <el-table :data="carData" style="width: 100%" height="470">
-        <el-table-column fixed prop="id" label="id" width="100">
+      <el-table :data="carData" border style="width: 100%" max-height="377"
+                :header-cell-style="{background:'#eef1f6',color:'#606266'}">
+        <el-table-column  prop="id" label="id" min-width>
 
         </el-table-column>
-         <el-table-column fixed prop="carNum" label="车牌号码" width="100">
+        <el-table-column  prop="carNum" label="车牌号码" min-width>
 
         </el-table-column>
-        <el-table-column fixed prop="brandId" label="车牌品牌" width="100">
+        <el-table-column  prop="brandId" label="车牌品牌" min-width>
 
         </el-table-column>
-        <el-table-column fixed prop="type" label="车辆型号" width="100">
+        <el-table-column  prop="type" label="车辆型号" min-width>
 
         </el-table-column>
-        <el-table-column fixed prop="color" label="车辆颜色" width="100">
+        <el-table-column  prop="color" label="车辆颜色" min-width>
 
         </el-table-column>
-         <el-table-column fixed prop="seatNum" label="座位数" width="100">
+        <el-table-column  prop="seatNum" label="座位数" min-width>
 
         </el-table-column>
-        <el-table-column fixed prop="deptId" label="部门" width="100">
+        <el-table-column  prop="deptId" label="部门" min-width>
 
         </el-table-column>
-        <el-table-column fixed prop="carStatus" label="车辆状态" width="100">
+        <el-table-column  prop="carStatus" label="车辆状态" min-width>
 
         </el-table-column>
-        <el-table-column fixed prop="status" label="是否启用" width="100">
+        <el-table-column  prop="status" label="是否启用" min-width>
 
         </el-table-column>
-        <el-table-column  label="操作" >
-            <!-- element ui  table表格的自定义列 -->
-            <template slot-scope="scope">
-                <!-- element -ui  button   plain属性，鼠标放上去变蓝色  size="mini" -->
-                <el-button type="primary" icon="el-icon-edit" circle plain
-                    @click="showEditCarDialog(scope.row)"
-                ></el-button>
-                <el-button type="primary" icon="el-icon-share" circle plain
-                    @click="ManageCarImgDialog(scope.row)"
-                ></el-button>
-                <el-button type="primary" icon="el-icon-view" circle plain
-                    @click="showCarView(scope.row)"
-                ></el-button>
-                <el-button type="danger" icon="el-icon-delete" circle plain
-                    @click="delCar(scope.row.id)"
-                ></el-button>
-            </template>
+
+        <el-table-column label="操作" width="230">
+          <!-- element ui  table表格的自定义列 -->
+          <template slot-scope="scope">
+            <!-- element -ui  button   plain属性，鼠标放上去变蓝色  size="mini" -->
+            <el-button type="primary" icon="el-icon-edit" circle plain
+                       @click="showEditCarDialog(scope.row)"
+            ></el-button>
+            <el-button type="primary" icon="el-icon-share" circle plain
+                       @click="ManageCarImgDialog(scope.row)"
+            ></el-button>
+            <el-button type="primary" icon="el-icon-view" circle plain
+                       @click="showCarView(scope.row)"
+            ></el-button>
+            <el-button type="danger" icon="el-icon-delete" circle plain
+                       @click="delCar(scope.row.id)"
+            ></el-button>
+          </template>
         </el-table-column>
+
       </el-table>
     </template>
     <br/>
-
+    <br/>
+    <br/>
     <el-row>
       <el-col :span="10" :push="8">
         <el-pagination
@@ -82,453 +89,455 @@
         </el-pagination>
       </el-col>
     </el-row>
-     <!-- 添加车辆 对话框
-    :visible 是否显示对话框，如果 dialogFormVisible：true 就显示  否则就不显示
-    rules 就是表单每项的数据校验  ref  就是将来可以通过 this.$ref.addCar
-    el-form-item :就是el-form表单里面的每项-->
+    <!-- 添加车辆 对话框
+   :visible 是否显示对话框，如果 dialogFormVisible：true 就显示  否则就不显示
+   rules 就是表单每项的数据校验  ref  就是将来可以通过 this.$ref.addCar
+   el-form-item :就是el-form表单里面的每项-->
     <el-dialog title="添加车辆" :visible.sync="addDialogFormVisible"
-        ref = "addCar" center width="80%">
-        <el-form :model="insertCar" label-width="150px">
-            <el-row :gutter="20">
-                <el-col :span="6">
-                    <el-form-item label="车牌号码：" prop="carNum">
-                        <el-input v-model="insertCar.carNum"></el-input>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                    <el-form-item label="品牌：" prop="brandId">
-                        <el-select v-model="value" placeholder="请选择">
-                            <el-option
-                            v-for="item in options"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="insertCar.brandId">
-                            </el-option>
-                       </el-select>
-                     </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                    <el-form-item label="型号：" prop="type">
-                        <el-select v-model="value" placeholder="请选择">
-                            <el-option
-                            v-for="item in options"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="insertCar.type">
-                            </el-option>
-                       </el-select>
-                    </el-form-item>
-                </el-col>
-                
-                <el-col :span="6">
-            <el-form-item label="颜色：" prop="color">
-                <el-select v-model="value" placeholder="请选择">
-                        <el-option
-                        v-for="item in options"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="insertCar.color">
-                        </el-option>
-                </el-select>
+               ref="addCar" center width="80%">
+      <el-form :model="insertCar" label-width="150px">
+        <el-row :gutter="20">
+          <el-col :span="6">
+            <el-form-item label="车牌号码：" prop="carNum">
+              <el-input v-model="insertCar.carNum"></el-input>
             </el-form-item>
-                </el-col>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="品牌：" prop="brandId">
+              <el-select v-model="value" placeholder="请选择">
+                <el-option
+                  v-for="item in options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="insertCar.brandId">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="型号：" prop="type">
+              <el-select v-model="value" placeholder="请选择">
+                <el-option
+                  v-for="item in options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="insertCar.type">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
 
-                <el-col :span="6">
-                 <el-form-item label="载重（吨）：" prop="carrying">
-                <el-input v-model="insertCar.carrying"></el-input>
+          <el-col :span="6">
+            <el-form-item label="颜色：" prop="color">
+              <el-select v-model="value" placeholder="请选择">
+                <el-option
+                  v-for="item in options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="insertCar.color">
+                </el-option>
+              </el-select>
             </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                                <el-form-item label="座位数：" prop="seatNum">
-                <el-input v-model="insertCar.seatNum"></el-input>
+          </el-col>
+
+          <el-col :span="6">
+            <el-form-item label="载重（吨）：" prop="carrying">
+              <el-input v-model="insertCar.carrying"></el-input>
             </el-form-item>
-                </el-col>
-                <el-col :span="6">
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="座位数：" prop="seatNum">
+              <el-input v-model="insertCar.seatNum"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
             <el-form-item label="油耗（百公里）：" prop="oilConsume">
-                <el-input v-model="insertCar.oilConsume"></el-input>
+              <el-input v-model="insertCar.oilConsume"></el-input>
             </el-form-item>
-                </el-col>
-                <el-col :span="6">
+          </el-col>
+          <el-col :span="6">
             <el-form-item label="初始里程（公里）：" prop="initialMileage">
-                <el-input v-model="insertCar.initialMileage"></el-input>
+              <el-input v-model="insertCar.initialMileage"></el-input>
             </el-form-item>
-                </el-col>
-                <el-col :span="6">
+          </el-col>
+          <el-col :span="6">
             <el-form-item label="保养里程（公里）：" prop="curingMileage">
-                <el-input v-model="insertCar.curingMileage"></el-input>
+              <el-input v-model="insertCar.curingMileage"></el-input>
             </el-form-item>
-                </el-col>
-                <el-col :span="6">
+          </el-col>
+          <el-col :span="6">
             <el-form-item label="保养周期（公里）：" prop="curingCycle">
-                <el-input v-model="insertCar.curingCycle"></el-input>
+              <el-input v-model="insertCar.curingCycle"></el-input>
             </el-form-item>
-                </el-col>
-                <el-col :span="6">
+          </el-col>
+          <el-col :span="6">
 
             <el-form-item label="发动机号码：" prop="engineNum">
-                <el-input v-model="insertCar.engineNum"></el-input>
+              <el-input v-model="insertCar.engineNum"></el-input>
             </el-form-item>
-                </el-col>
-                <el-col :span="6">
+          </el-col>
+          <el-col :span="6">
             <el-form-item label="车架号：" prop="serialNumber">
-                <el-input v-model="insertCar.serialNumber"></el-input>
+              <el-input v-model="insertCar.serialNumber"></el-input>
             </el-form-item>
-                </el-col>
-                <el-col :span="6">
+          </el-col>
+          <el-col :span="6">
             <el-form-item label="供应商：" prop="oppositeCompanyId">
-                <el-select v-model="value" placeholder="请选择">
-                    <el-option
-                    v-for="item in options"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="insertCar.oppositeCompanyId">
-                    </el-option>
-                </el-select>
+              <el-select v-model="value" placeholder="请选择">
+                <el-option
+                  v-for="item in options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="insertCar.oppositeCompanyId">
+                </el-option>
+              </el-select>
             </el-form-item>
-            </el-col>
-            <el-col :span="6">
-                <el-form-item label="购买价格：" prop="price">
-                    <el-input v-model="insertCar.price"></el-input>
-                </el-form-item>
-            </el-col>
-            <el-col :span="6">
-                    <el-form-item label="购买价格：" prop="price">
-                        <el-input v-model="insertCar.price"></el-input>
-                    </el-form-item>
-            </el-col>
-            <el-col :span="6">
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="购买价格：" prop="price">
+              <el-input v-model="insertCar.price"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="购买价格：" prop="price">
+              <el-input v-model="insertCar.price"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
             <el-form-item label="购买日期：" prop="boughtDate">
-                <el-date-picker v-model="insertCar.boughtDate"  format="yyyy-MM-dd" value-format="yyyy-MM-dd" clearable style="width: 100%"
-                :picker-options="startDatePicker" :disabled="dialogStatus=='view'" type="date"  :placeholder="dialogStatus=='view'?'':'请输入购买时间'"></el-date-picker>
+              <el-date-picker v-model="insertCar.boughtDate" format="yyyy-MM-dd" value-format="yyyy-MM-dd" clearable
+                              style="width: 100%"
+                              :picker-options="startDatePicker" :disabled="dialogStatus=='view'" type="date"
+                              :placeholder="dialogStatus=='view'?'':'请输入购买时间'"></el-date-picker>
             </el-form-item>
-            </el-col>
-            <el-col :span="6">
+          </el-col>
+          <el-col :span="6">
 
             <el-form-item label="部   门：" prop="deptId">
-                <el-select v-model="value" placeholder="请选择">
-                    <el-option
-                    v-for="item in options"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="insertCar.deptId">
-                    </el-option>
-                </el-select>
+              <el-select v-model="value" placeholder="请选择">
+                <el-option
+                  v-for="item in options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="insertCar.deptId">
+                </el-option>
+              </el-select>
             </el-form-item>
-                </el-col>
-            <el-col :span="6">
-                <el-form-item label="车辆状态：" prop="carStatus">
-                    <el-select v-model="value" placeholder="请选择">
-                        <el-option
-                        v-for="item in options"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="insertCar.carStatus">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
-            </el-col>
-             <el-col :span="6">
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="车辆状态：" prop="carStatus">
+              <el-select v-model="value" placeholder="请选择">
+                <el-option
+                  v-for="item in options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="insertCar.carStatus">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
             <el-form-item label="备注：" prop="remarks">
-                <el-input v-model="insertCar.remarks"></el-input>
+              <el-input v-model="insertCar.remarks"></el-input>
             </el-form-item>
-            </el-col>
-            <el-col :span="6">
-                <el-form-item label="状态：" prop="status">
-                    <el-radio v-model="radio" label="1">启用</el-radio>
-                    <el-radio v-model="radio" label="2">禁用</el-radio>
-                 </el-form-item>
-            </el-col>
-            </el-row>
-        </el-form>
-        <div slot="footer" class="dialog-footer">
-            <el-button @click="addDialogFormVisible = false">取 消</el-button>
-            <el-button type="primary" @click="addCar()">确 定</el-button>
-        </div>
-     </el-dialog>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="状态：" prop="status">
+              <el-radio v-model="radio" label="1">启用</el-radio>
+              <el-radio v-model="radio" label="2">禁用</el-radio>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="addDialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="addCar()">确 定</el-button>
+      </div>
+    </el-dialog>
     <!-- 修改车辆对话框 -->
-     <el-dialog title="编辑车辆" :visible.sync="dialogEditCarVisible" center width="80%">
-        <el-form :model="editCar"  label-width="150px">
-            <el-row :gutter="20">
-                <el-col :span="6">
-                    <el-form-item label="车牌号码：" prop="carNum">
-                        <el-input v-model="editCar.carNum"></el-input>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                    <el-form-item label="品牌：" prop="brandId">
-                        <el-select v-model="value" placeholder="请选择">
-                            <el-option
-                            v-for="item in options"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="editCar.brandId">
-                            </el-option>
-                       </el-select>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                    <el-form-item label="型号：" prop="type">
-                        <el-select v-model="value" placeholder="请选择">
-                            <el-option
-                            v-for="item in options"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="editCar.type">
-                            </el-option>
-                       </el-select>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                    <el-form-item label="颜色：" prop="color">
-                       <el-select v-model="value" placeholder="请选择">
-                            <el-option
-                            v-for="item in options"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="editCar.color">
-                            </el-option>
-                       </el-select>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                    <el-form-item label="载重（吨）：" prop="carrying">
-                        <el-input v-model="editCar.carrying"></el-input>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                    <el-form-item label="座位数：" prop="seatNum">
-                         <el-input v-model="editCar.seatNum"></el-input>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                    <el-form-item label="油耗（百公里）：" prop="oilConsume">
-                        <el-input v-model="editCar.oilConsume"></el-input>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                    <el-form-item label="初始里程（公里）：" prop="initialMileage">
-                        <el-input v-model="editCar.initialMileage"></el-input>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                    <el-form-item label="保养里程（公里）：" prop="curingMileage">
-                        <el-input v-model="editCar.curingMileage"></el-input>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                    <el-form-item label="保养周期（公里）：" prop="curingCycle">
-                        <el-input v-model="editCar.curingCycle"></el-input>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                    <el-form-item label="发动机号码：" prop="engineNum">
-                        <el-input v-model="editCar.engineNum"></el-input>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                    <el-form-item label="车架号：" prop="serialNumber">
-                        <el-input v-model="editCar.serialNumber"></el-input>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                    <el-form-item label="供应商：" prop="deptId">
-                         <el-select v-model="value" placeholder="请选择">
-                            <el-option
-                            v-for="item in options"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="editCar.oppositeCompanyId">
-                            </el-option>
-                       </el-select>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                    <el-form-item label="购买价格：" prop="price">
-                        <el-input v-model="editCar.price"></el-input>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                    <el-form-item label="购买日期：" prop="boughtDate">
-                        <el-input v-model="editCar.boughtDate"></el-input>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                    <el-form-item label="部   门：" prop="deptId">
-                         <el-select v-model="value" placeholder="请选择">
-                            <el-option
-                            v-for="item in options"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="editCar.deptId">
-                            </el-option>
-                       </el-select>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                    <el-form-item label="车辆状态：" prop="carStatus">
-                        <el-select v-model="value" placeholder="请选择">
-                            <el-option
-                            v-for="item in options"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="editCar.carStatus">
-                            </el-option>
-                       </el-select>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                    <el-form-item label="备注：" prop="remarks">
-                        <el-input v-model="editCar.remarks"></el-input>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                    <el-form-item label="状态：" prop="status">
-                        <el-radio v-model="radio" label="1">启用</el-radio>
-                        <el-radio v-model="radio" label="2">禁用</el-radio>
-                    </el-form-item>
-                </el-col>
-            </el-row>
-        </el-form>
-        <div slot="footer" class="dialog-footer">
+    <el-dialog title="编辑车辆" :visible.sync="dialogEditCarVisible" center width="80%">
+      <el-form :model="editCar" label-width="150px">
+        <el-row :gutter="20">
+          <el-col :span="6">
+            <el-form-item label="车牌号码：" prop="carNum">
+              <el-input v-model="editCar.carNum"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="品牌：" prop="brandId">
+              <el-select v-model="value" placeholder="请选择">
+                <el-option
+                  v-for="item in options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="editCar.brandId">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="型号：" prop="type">
+              <el-select v-model="value" placeholder="请选择">
+                <el-option
+                  v-for="item in options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="editCar.type">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="颜色：" prop="color">
+              <el-select v-model="value" placeholder="请选择">
+                <el-option
+                  v-for="item in options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="editCar.color">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="载重（吨）：" prop="carrying">
+              <el-input v-model="editCar.carrying"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="座位数：" prop="seatNum">
+              <el-input v-model="editCar.seatNum"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="油耗（百公里）：" prop="oilConsume">
+              <el-input v-model="editCar.oilConsume"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="初始里程（公里）：" prop="initialMileage">
+              <el-input v-model="editCar.initialMileage"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="保养里程（公里）：" prop="curingMileage">
+              <el-input v-model="editCar.curingMileage"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="保养周期（公里）：" prop="curingCycle">
+              <el-input v-model="editCar.curingCycle"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="发动机号码：" prop="engineNum">
+              <el-input v-model="editCar.engineNum"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="车架号：" prop="serialNumber">
+              <el-input v-model="editCar.serialNumber"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="供应商：" prop="deptId">
+              <el-select v-model="value" placeholder="请选择">
+                <el-option
+                  v-for="item in options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="editCar.oppositeCompanyId">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="购买价格：" prop="price">
+              <el-input v-model="editCar.price"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="购买日期：" prop="boughtDate">
+              <el-input v-model="editCar.boughtDate"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="部   门：" prop="deptId">
+              <el-select v-model="value" placeholder="请选择">
+                <el-option
+                  v-for="item in options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="editCar.deptId">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="车辆状态：" prop="carStatus">
+              <el-select v-model="value" placeholder="请选择">
+                <el-option
+                  v-for="item in options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="editCar.carStatus">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="备注：" prop="remarks">
+              <el-input v-model="editCar.remarks"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="状态：" prop="status">
+              <el-radio v-model="radio" label="1">启用</el-radio>
+              <el-radio v-model="radio" label="2">禁用</el-radio>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
         <el-button @click="dialogEditCarVisible = false">取 消</el-button>
         <el-button type="primary" @click="updateCar">确 定</el-button>
-        </div>
+      </div>
     </el-dialog>
     <!--图片对话框-->
     <el-dialog title="车辆图片管理" :visible.sync="manageCarImgVisible" center width="80%">
-        <el-form :model="manageCar" label-width="150px">
-            <el-upload
-            class="upload-demo"
-            ref="upload"
-            action="https://jsonplaceholder.typicode.com/posts/"
-            :on-preview="handlePreview"
-            :on-remove="handleRemove"
-            :file-list="fileList"
-            :auto-upload="false">
-            <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
-            <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
-            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-            </el-upload>
-            <el-form-item label="描述：" prop="status">
-                <el-input v-model="editCar.remarks"></el-input>
-            </el-form-item>
-        </el-form>
-        <div slot="footer" class="dialog-footer">
+      <el-form :model="manageCar" label-width="150px">
+        <el-upload
+          class="upload-demo"
+          ref="upload"
+          action="https://jsonplaceholder.typicode.com/posts/"
+          :on-preview="handlePreview"
+          :on-remove="handleRemove"
+          :file-list="fileList"
+          :auto-upload="false">
+          <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
+          <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
+          <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+        </el-upload>
+        <el-form-item label="描述：" prop="status">
+          <el-input v-model="editCar.remarks"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
         <el-button @click="manageCarImgVisible = false">取 消</el-button>
         <el-button type="primary" @click="updateCar">确 定</el-button>
-        </div>
+      </div>
     </el-dialog>
 
 
     <!--车辆详情对话框-->
     <el-dialog title="车辆详情" :visible.sync="showCarViewVisible" center width="80%">
-        <el-form :model="viewCar" label-width="150px">
-             <el-row :gutter="20">
-                <el-col :span="6">
-                    <el-form-item label="车牌号码：" prop="carNum">
-                        {{viewCar.carNum}}
-                    </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                    <el-form-item label="品牌：" prop="brandId">
-                        {{viewCar.brandId}}
-                    </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                    <el-form-item label="型号：" prop="type">
-                       {{viewCar.type}}
-                    </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                    <el-form-item label="颜色：" prop="color">
-                        {{viewCar.color}}
-                    </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                    <el-form-item label="载重（吨）：" prop="carrying">
-                        {{viewCar.carrying}}
-                    </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                    <el-form-item label="座位数：" prop="seatNum">
-                         {{viewCar.seatNum}}
-                    </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                    <el-form-item label="油耗（百公里）：" prop="oilConsume">
-                        {{viewCar.oilConsume}}
-                    </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                    <el-form-item label="初始里程（公里）：" prop="initialMileage">
-                        {{viewCar.initialMileage}}
-                    </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                    <el-form-item label="保养里程（公里）：" prop="curingMileage">
-                        {{viewCar.curingMileage}}
-                    </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                    <el-form-item label="保养周期（公里）：" prop="curingCycle">
-                        {{viewCar.curingCycle}}
-                    </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                    <el-form-item label="发动机号码：" prop="engineNum">
-                        {{viewCar.engineNum}}
-                    </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                    <el-form-item label="车架号：" prop="serialNumber">
-                        {{viewCar.serialNumber}}
-                    </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                    <el-form-item label="购买价格：" prop="price">
-                        {{viewCar.price}}
-                    </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                    <el-form-item label="购买日期：" prop="boughtDate">
-                        {{viewCar.boughtDate}}
-                    </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                    <el-form-item label="部   门：" prop="deptId">
-                        {{viewCar.deptId}}
-                    </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                    <el-form-item label="车辆状态：" prop="carStatus">
-                        {{viewCar.carStatus}}
-                    </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                    <el-form-item label="备注：" prop="remarks">
-                        {{viewCar.remarks}}
-                    </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                    <el-form-item label="状态：" prop="status">
-                        {{viewCar.status}}
-					</el-form-item>
-                </el-col>
-            </el-row>
-        </el-form>
+      <el-form :model="viewCar" label-width="150px">
+        <el-row :gutter="20">
+          <el-col :span="6">
+            <el-form-item label="车牌号码：" prop="carNum">
+              {{ viewCar.carNum }}
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="品牌：" prop="brandId">
+              {{ viewCar.brandId }}
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="型号：" prop="type">
+              {{ viewCar.type }}
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="颜色：" prop="color">
+              {{ viewCar.color }}
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="载重（吨）：" prop="carrying">
+              {{ viewCar.carrying }}
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="座位数：" prop="seatNum">
+              {{ viewCar.seatNum }}
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="油耗（百公里）：" prop="oilConsume">
+              {{ viewCar.oilConsume }}
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="初始里程（公里）：" prop="initialMileage">
+              {{ viewCar.initialMileage }}
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="保养里程（公里）：" prop="curingMileage">
+              {{ viewCar.curingMileage }}
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="保养周期（公里）：" prop="curingCycle">
+              {{ viewCar.curingCycle }}
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="发动机号码：" prop="engineNum">
+              {{ viewCar.engineNum }}
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="车架号：" prop="serialNumber">
+              {{ viewCar.serialNumber }}
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="购买价格：" prop="price">
+              {{ viewCar.price }}
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="购买日期：" prop="boughtDate">
+              {{ viewCar.boughtDate }}
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="部   门：" prop="deptId">
+              {{ viewCar.deptId }}
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="车辆状态：" prop="carStatus">
+              {{ viewCar.carStatus }}
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="备注：" prop="remarks">
+              {{ viewCar.remarks }}
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="状态：" prop="status">
+              {{ viewCar.status }}
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
     </el-dialog>
   </div>
 </template>
 
 
-<script >
+<script>
 export default {
   data() {
     return {
       total: 0,
       p: 1,
       searchText: "",
-      size:5,
+      size: 5,
       carData: [
         {
           id: "",
@@ -572,7 +581,6 @@ export default {
         deptId: "",
         carStatus: "",
         remarks: "",
-        deptId: "",
         status: "",
         images: ""
       },
@@ -580,7 +588,7 @@ export default {
         id: "",
         images: ""
       },
-      images:[],//车辆图片集合
+      images: [],//车辆图片集合
       viewCar: {
         id: "",
         carNum: "",
@@ -601,7 +609,6 @@ export default {
         deptId: "",
         carStatus: "",
         remarks: "",
-        deptId: "",
         status: "",
         images: ""
       }
@@ -726,15 +733,15 @@ export default {
     },
     //删除车辆
     delCar(id) {
-     this.$confirm("此操作将删除该车辆,是否继续?", "提示", {
+      this.$confirm("此操作将删除该车辆,是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
       }).then(res => {
         this.$axios.post("car/delete?id=" + id).then(r => {
-          this.p=1,
-          //重新加载页面
-          this.loadCars();
+          this.p = 1,
+            //重新加载页面
+            this.loadCars();
           this.$message.success("删除成功");
         })
       }).catch(res => {
@@ -747,5 +754,5 @@ export default {
   }
 };
 </script>
-<style >
+<style>
 </style>

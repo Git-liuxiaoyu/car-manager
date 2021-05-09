@@ -21,14 +21,14 @@
     <br/>
     <br/>
     <template>
-      <el-table :data="tableData" border style="width: 100%" height="400"
+      <el-table :data="tableData" border style="width: 100%" max-height="377"
                 :header-cell-style="{background:'#eef1f6',color:'#606266'}">
-        <el-table-column fixed prop="level" label="级别" width="380%"></el-table-column>
-        <el-table-column fixed prop="text" label="字段" width="380%"></el-table-column>
-        <el-table-column fixed prop="isDisable" label="字段状态" width="380%">
+        <el-table-column  prop="level" label="级别" min-width></el-table-column>
+        <el-table-column  prop="text" label="字段" min-width></el-table-column>
+        <el-table-column  prop="isDisable" label="字段状态" min-width>
           <template slot-scope="scope">{{ scope.row.isDisable == '1' ? '启动' : '禁用' }}</template>
         </el-table-column>
-        <el-table-column fixed label="操作" width="160%">
+        <el-table-column  label="操作" width="120">
           <template slot-scope="scope">
             <el-tooltip content="编辑" placement="bottom" effect="light">
               <el-button type="primary" icon="el-icon-edit" circle @click="doUpdate(scope.row)"></el-button>
@@ -44,8 +44,6 @@
     <br/>
     <br/>
     <br/>
-
-
     <el-row>
       <el-col :span="10" :push="6">
         <el-pagination

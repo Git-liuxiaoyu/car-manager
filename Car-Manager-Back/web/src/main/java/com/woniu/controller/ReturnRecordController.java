@@ -18,16 +18,6 @@ public class ReturnRecordController {
     @Autowired
     private DepartureRecordService departureRecordService;
 
-
-    @RequestMapping("/list")
-    public List<DepartureRecord> list(){
-//        List<Role> roles = roleService.roles();
-        List<DepartureRecord> departureRecords = departureRecordService.departureRecordList();
-//        List<DriverPo> driverPos = driverService.driverList();
-        return departureRecords;
-
-    }
-
     @RequestMapping("/add")
     public ResponseResult add(){
         ReturnRecord returnRecord = new ReturnRecord();
@@ -38,9 +28,5 @@ public class ReturnRecordController {
         return ResponseResult.SUCCESS;
 
     }
-
-
-
-
 
 }

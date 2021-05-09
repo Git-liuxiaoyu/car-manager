@@ -1,39 +1,50 @@
 package com.woniu.controller;
 
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.woniu.domain.DepartureRecord;
 import com.woniu.domain.Driver;
+import com.woniu.domain.Employee;
 import com.woniu.service.DepartureRecordService;
 import com.woniu.service.DriverService;
 import com.woniu.util.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/departureRecord")
 public class DepartureRecordController {
 
     @Autowired
     private DepartureRecordService departureRecordService;
 
-
+    //分页查询
     @RequestMapping("/list")
-    public List<DepartureRecord> list(){
-//        List<Role> roles = roleService.roles();
-        List<DepartureRecord> departureRecords = departureRecordService.departureRecordList();
-//        List<DriverPo> driverPos = driverService.driverList();
-        return departureRecords;
-
+    public ResponseResult<List<DepartureRecord>> departureRecordList(Integer p, String searchText, Integer size) {
+        int pageIndex = 1;
+        int pageSize = 5;
+        if (p >= 1) {
+            pageIndex = p;
+        }
+        if (pageSize >= 5) {
+            pageSize = size;
+        }
+        Integer total = departureRecordService.count(searchText);
+        PageHelper.startPage(pageIndex, pageSize);
+        List<DepartureRecord> departureRecordList = departureRecordService.findAll(searchText, pageIndex, pageSize);
+        PageInfo<DepartureRecord> pageInfo = new PageInfo<>(departureRecordList);
+        pageInfo.setTotal(total);
+        return new ResponseResult(pageInfo);
     }
 
     @RequestMapping("/add")
-    public ResponseResult add(){
-//        List<Role> roles = roleService.roles();
-//        List<Driver> drivers = driverService.driverList();
-
+    public ResponseResult add() {
         DepartureRecord departureRecord = new DepartureRecord();
         departureRecord.setDeptId(1);
         departureRecord.setDestination("武汉");
@@ -50,9 +61,7 @@ public class DepartureRecordController {
     }
 
     @RequestMapping("/update")
-    public ResponseResult updated(){
-//        List<Role> roles = roleService.roles();
-//        List<Driver> drivers = driverService.driverList();
+    public ResponseResult updated() {
         DepartureRecord departureRecord = new DepartureRecord();
         departureRecord.setId(2);
         departureRecord.setDeptId(1);
@@ -70,19 +79,18 @@ public class DepartureRecordController {
     }
 
     @RequestMapping("delete")
-    public ResponseResult delete(){
+    public ResponseResult delete() {
 
         departureRecordService.delete(2);
         return ResponseResult.SUCCESS;
     }
 
     @RequestMapping("getById")
-    public DepartureRecord getById(){
+    public DepartureRecord getById() {
 
 
         return departureRecordService.getById(1);
     }
-
 
 
 }

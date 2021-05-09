@@ -19,20 +19,25 @@ let router = new Router({
       path: '/home',
       component: () => import('@/components/home/home'),
       children: [
+
+        {path: '/index', component: () => import('@/components/index')},
+
         {path: '/roleManager', component: () => import('@/components/role/roleManager.vue')},
         {path: '/userManager', component: () => import('@/components/role/userManager.vue')},
         {path: '/changePassword', component: () => import('@/components/role/changePassword.vue')},
-        {path: '/index', component: () => import('@/components/index')},
+
         {path: '/car', component: () => import('@/components/baseSetting/car/car')},
         {path: '/opposite', component: () => import('@/components/baseSetting/opposite/oppositeCompany')},
         {path: '/driver', component: () => import('@/components/baseSetting/driver/driver')},
         {path: '/dictionary', component: () => import('@/components/baseSetting/dictionary/dictionary.vue')},
+
         {path: '/repairRecord', component: () => import('@/components/dailyProcess/repairRecord/repairRecord')},
-        {path: '/oilrecord', component: () => import('@/components/dailyProcess/oilrecord/oilrecord')},
-        {path: '/fee', component: () => import('@/components/dailyProcess/fee/fee')},
-        {path: '/keeprecord', component: () => import('@/components/baseSetting/keeprecord/keeprecord')},
+        {path: '/oilrecord', component: () => import('@/components/dailyProcess/oilRecord/oilRecord')},
+        {path: '/fee', component: () => import('@/components/dailyProcess/feeRecord/feeRecord')},
+        {path: '/keepRecord', component: () => import('@/components/dailyProcess/keepRecord/keepRecord')},
         {path: '/violationRecord', component: () => import('@/components/dailyProcess/violationRecord/violationRecord')},
         {path: '/accidentRecord', component: () => import('@/components/dailyProcess/accidentRecord/accidentRecord')},
+        {path: '/departureRecord', component: () => import('@/components/dailyProcess/departureRecord/departureRecord')},
       ]
     },
   ]

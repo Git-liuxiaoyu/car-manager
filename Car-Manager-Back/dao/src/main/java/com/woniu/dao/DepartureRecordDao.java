@@ -21,4 +21,8 @@ public interface DepartureRecordDao {
     int delete(Integer id);
     //根据id查寻
     DepartureRecordPo getById(Integer id);
+
+    Integer count(String searchText);
+
+    List<DepartureRecordPo> findList(String searchText);
 }

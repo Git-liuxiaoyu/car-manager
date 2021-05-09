@@ -8,8 +8,6 @@ import java.util.List;
 
 public interface DepartureRecordService {
 
-    public List<DepartureRecord> departureRecordList();
-
     int add(DepartureRecord departureRecord);
 
     int update(DepartureRecord departureRecord);
@@ -17,4 +15,8 @@ public interface DepartureRecordService {
     int delete(Integer id);
 
     DepartureRecord getById(Integer id);
+
+    Integer count(String searchText);
+
+    List<DepartureRecord> findAll(String searchText, int pageIndex, int pageSize);
 }

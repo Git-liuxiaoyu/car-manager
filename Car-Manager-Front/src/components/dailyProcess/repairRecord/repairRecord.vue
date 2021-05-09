@@ -22,31 +22,31 @@
     <br/>
 
     <template>
-      <el-table :data="tableData" border style="width: 100%" height="400"
+      <el-table :data="tableData" border style="width: 100%" max-height="377"
                 :header-cell-style="{background:'#eef1f6',color:'#606266'}">
-        <el-table-column fixed prop="carNum" label="车牌号码" width="100"></el-table-column>
-        <el-table-column fixed prop="repairName" label="修理厂" width="100"></el-table-column>
-        <el-table-column fixed prop="sendTime" label="送修时间" width="200">
+        <el-table-column  prop="carNum" label="车牌号码" min-width></el-table-column>
+        <el-table-column  prop="repairName" label="修理厂" min-width></el-table-column>
+        <el-table-column  prop="sendTime" label="送修时间" min-width :show-overflow-tooltip="true">
           <template slot-scope="scope">
             <i class="el-icon-time"></i>
             {{ scope.row.sendTime | timeConvert() }}
           </template>
         </el-table-column>
-        <el-table-column fixed prop="preGetTime" label="预计取时间" width="200">
+        <el-table-column  prop="preGetTime" label="预计取时间" min-width :show-overflow-tooltip="true">
           <template slot-scope="scope">
             <i class="el-icon-time"></i>
             {{ scope.row.preGetTime | timeConvert() }}
           </template>
         </el-table-column>
-        <el-table-column fixed prop="getTime" label="取车时间" width="200">
+        <el-table-column  prop="getTime" label="取车时间" min-width :show-overflow-tooltip="true">
                       <template slot-scope="scope">
             <i class="el-icon-time"></i>
             {{ scope.row.getTime | timeConvert() }}
           </template>
         </el-table-column>
-        <el-table-column fixed prop="driverName" label="经办人" width="100"></el-table-column>
-        <el-table-column fixed prop="repairFee" label="维修金额" width="100"></el-table-column>
-        <el-table-column fixed label="操作" width="300">
+        <el-table-column  prop="driverName" label="经办人" min-width></el-table-column>
+        <el-table-column  prop="repairFee" label="维修金额" min-width></el-table-column>
+        <el-table-column  label="操作" width="230">
           <template slot-scope="scope">
             <el-tooltip content="送修信息更改" placement="bottom" effect="light">
               <el-button type="primary" icon="el-icon-edit" circle @click="showUpdateDialog(scope.row)"></el-button>
@@ -68,6 +68,7 @@
     <br/>
     <br/>
     <br/>
+
     <!--添加维修信息-->
     <el-dialog title="维修信息登记" :visible.sync="addDialogFormVisible" center width="80%">
       <el-form :model="addData" label-width="100px">

@@ -22,33 +22,36 @@
     <br/>
 
     <template>
-      <el-table :data="tableData" border style="width: 100%" height="400"
+      <el-table :data="tableData" border style="width: 100%" max-height="377"
                 :header-cell-style="{background:'#eef1f6',color:'#606266'}">
-        <el-table-column fixed prop="name" label="姓名" width="100%"></el-table-column>
-        <el-table-column fixed prop="age" label="年龄" width="100%"></el-table-column>
-        <el-table-column fixed prop="gender" label="性别" width="100%">
+        <el-table-column  prop="name" label="姓名" width="100"></el-table-column>
+        <el-table-column  prop="age" label="年龄" width="80"></el-table-column>
+
+        <el-table-column  prop="gender" label="性别" width="80">
           <template slot-scope="scope">{{ scope.row.gender == '0' ? '男' : '女' }}</template>
         </el-table-column>
-        <el-table-column fixed prop="address" label="地址" width="100%"></el-table-column>
-        <el-table-column fixed prop="telephone" label="电话" width="150%"></el-table-column>
-        <el-table-column fixed prop="birthday" label="生日" width="150%">
+
+        <el-table-column  prop="address" label="地址" min-width></el-table-column>
+        <el-table-column  prop="telephone" label="电话" width="120"></el-table-column>
+<!--        :show-overflow-tooltip="true" -->
+        <el-table-column  prop="birthday" label="生日" width="120">
           <template slot-scope="scope">
             <i class="el-icon-time"></i>
             {{ scope.row.birthday | dateConvert() }}
           </template>
         </el-table-column>
-        <el-table-column fixed prop="idCard" label="身份证" width="150%"></el-table-column>
-        <el-table-column fixed prop="entryDate" label="入职日期" width="150%">
+        <el-table-column  prop="idCard" label="身份证" min-width></el-table-column>
+        <el-table-column  prop="entryDate" label="入职日期" width="120">
           <template slot-scope="scope">
             <i class="el-icon-time"></i>
             {{ scope.row.entryDate | dateConvert() }}
           </template>
         </el-table-column>
-        <el-table-column fixed prop="status" label="账号状态" width="100%">
+        <el-table-column  prop="status" label="账号状态" width="80">
           <template slot-scope="scope">{{ scope.row.status == '0' ? '锁定' : '正常' }}</template>
         </el-table-column>
 
-        <el-table-column fixed label="操作" width="200%">
+        <el-table-column  label="操作" width="170">
           <template slot-scope="scope">
             <el-tooltip content="编辑" placement="bottom" effect="light">
               <el-button type="primary" icon="el-icon-edit" circle @click="doUpdate(scope.row)"></el-button>

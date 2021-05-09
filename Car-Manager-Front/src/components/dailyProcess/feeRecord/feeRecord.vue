@@ -7,6 +7,7 @@
     </el-breadcrumb>
 
     <br/>
+    <br/>
 
     <el-row :gutter="20">
       <el-col :span="6">
@@ -15,28 +16,23 @@
         </el-input>
       </el-col>
       <el-col :span="18">
-        <!-- <el-button type="danger">批量删除</el-button> -->
         <el-button type="primary" @click="addFees()">规费信息登记</el-button>
       </el-col>
     </el-row>
     <br/>
-
+    <br/>
     <template>
-      <el-table :data="feeData" style="width: 100%" height="470">
-        <el-table-column fixed prop="id" label="编号" width="100"></el-table-column>
-        <el-table-column  prop="car.carNum" label="车牌号码" width="100"></el-table-column>
-        <el-table-column  prop="feeName" label="规费名称" width="150"></el-table-column>
-        <el-table-column  prop="payTime" label="缴费时间" width="180"></el-table-column>
-        <el-table-column  prop="fee" label="缴费金额" width="100"></el-table-column>
-        <el-table-column  prop="oppositeName" label="收费单位" width="150"></el-table-column>
-        <el-table-column  prop="driverName" label="经办人" width="100"></el-table-column>
-        <el-table-column  prop="remarks" label="备注" width="150"></el-table-column>
-        <el-table-column   label="操作" width="150" >
-            <!-- <template slot-scope="scoped">
-                <el-button type="primary" circle plain
-                @click="showDriverDialog(scoped.row)"
-                >查看详细</el-button>
-            </template> -->
+        <el-table :data="feeData" border style="width: 100%" max-height="377"
+                  :header-cell-style="{background:'#eef1f6',color:'#606266'}">
+        <el-table-column  prop="id" label="编号" min-width></el-table-column>
+        <el-table-column  prop="car.carNum" label="车牌号码" min-width></el-table-column>
+        <el-table-column  prop="feeName" label="规费名称" min-width></el-table-column>
+        <el-table-column  prop="payTime" label="缴费时间" min-width :show-overflow-tooltip="true"></el-table-column>
+        <el-table-column  prop="fee" label="缴费金额" min-width></el-table-column>
+        <el-table-column  prop="oppositeName" label="收费单位" min-width></el-table-column>
+        <el-table-column  prop="driverName" label="经办人" min-width></el-table-column>
+        <el-table-column  prop="remarks" label="备注" min-width></el-table-column>
+        <el-table-column   label="操作" width="120" >
             <template slot-scope="scoped">
             <el-tooltip content="编辑" placement="bottom" effect="light">
             <el-button type="primary" icon="el-icon-edit" circle @click="updateFee(scoped.row)"></el-button>
@@ -51,6 +47,8 @@
       </el-table>
     </template>
 
+    <br/>
+    <br/>
     <br/>
 
     <el-row>

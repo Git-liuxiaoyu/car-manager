@@ -7,6 +7,7 @@
     </el-breadcrumb>
 
     <br/>
+    <br/>
 
     <el-row :gutter="20">
       <el-col :span="6">
@@ -19,77 +20,79 @@
       </el-col>
     </el-row>
     <br/>
+    <br/>
 
     <template>
-      <el-table :data="oilrecords" style="width: 100%" height="470">
+        <el-table :data="oilrecords" border style="width: 100%" max-height="377"
+                  :header-cell-style="{background:'#eef1f6',color:'#606266'}">
 
-        <el-table-column prop="carNum" label="车牌号" width="90">
-
-        </el-table-column>
-
-        <el-table-column prop="oppositename" label="往来单位" width="90">
-
+        <el-table-column prop="carNum" label="车牌号" min-width>
 
         </el-table-column>
 
-        <el-table-column prop="addTime" label="加油时间" width="180">
+        <el-table-column prop="oppositename" label="往来单位"min-width>
+
+
+        </el-table-column>
+
+        <el-table-column prop="addTime" label="加油时间" min-width :show-overflow-tooltip="true">
           <template slot-scope="scope">
             <i class="el-icon-time"></i>
             {{ scope.row.addTime | timeConvert() }}
           </template>
         </el-table-column>
 
-        <el-table-column prop="oilTypename" label="油料标号" width="90">
+        <el-table-column prop="oilTypename" label="油料标号" min-width>
 
         </el-table-column>
 
-        <el-table-column prop="prePrice" label="油料单价" width="90">
+        <el-table-column prop="prePrice" label="油料单价" min-width>
 
         </el-table-column>
 
-        <el-table-column prop="thisOilVolume" label="本次加油" width="90">
+        <el-table-column prop="thisOilVolume" label="本次加油" min-width>
 
         </el-table-column>
 
-        <el-table-column prop="lastOilVolume" label="上次加油" width="90">
+        <el-table-column prop="lastOilVolume" label="上次加油" min-width>
 
         </el-table-column>
 
-        <el-table-column prop="price" label="加油总价" width="80">
+        <el-table-column prop="price" label="加油总价" min-width>
 
         </el-table-column>
 
-        <el-table-column prop="thisMileage" label="本次里程" width="80">
+        <el-table-column prop="thisMileage" label="本次里程" min-width>
 
         </el-table-column>
 
-        <el-table-column prop="lastMileage" label="上次里程" width="80">
+        <el-table-column prop="lastMileage" label="上次里程" min-width>
 
         </el-table-column>
 
-        <el-table-column prop="remarks" label="备注" width="100">
+        <el-table-column prop="remarks" label="备注" min-width :show-overflow-tooltip="true">
 
         </el-table-column>
 
-        <el-table-column prop="drivername" label="加油人员" width="80">
+        <el-table-column prop="drivername" label="加油人员" min-width>
 
         </el-table-column>
 
-        <el-table-column prop="" label="操作" width="300">
+        <el-table-column prop="" label="操作" width="120">
           <template slot-scope="scope">
-            <!-- element -ui  button   plain属性，鼠标放上去变蓝色  size="mini" -->
             <el-button type="primary" icon="el-icon-edit" circle plain
                        @click="goupdate(scope.row.id)"
             ></el-button>
             <el-button type="danger" icon="el-icon-delete" circle plain
                        @click="del(scope.row.id)"
             ></el-button>
-            <!-- <el-button type="success" icon="el-icon-check" circle plain size="mini">分配角色</el-button> -->
           </template>
         </el-table-column>
       </el-table>
     </template>
 
+    <br/>
+    <br/>
     <br/>
 
     <!--分页组件-->

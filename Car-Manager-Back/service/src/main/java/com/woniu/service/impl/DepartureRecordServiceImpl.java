@@ -17,16 +17,8 @@ import java.util.List;
 @Transactional
 public class DepartureRecordServiceImpl implements DepartureRecordService {
 
-
     @Autowired
     private DepartureRecordAdapter departureRecordAdapter;
-
-
-    @Override
-    public List<DepartureRecord> departureRecordList() {
-
-        return departureRecordAdapter.findDriverLists();
-    }
 
     @Override
     public int add(DepartureRecord departureRecord) {
@@ -47,5 +39,15 @@ public class DepartureRecordServiceImpl implements DepartureRecordService {
     @Override
     public DepartureRecord getById(Integer id) {
         return departureRecordAdapter.getById(id);
+    }
+
+    @Override
+    public Integer count(String searchText) {
+        return departureRecordAdapter.count(searchText);
+    }
+
+    @Override
+    public List<DepartureRecord> findAll(String searchText, int pageIndex, int pageSize) {
+        return departureRecordAdapter.findAll(searchText,pageIndex,pageSize);
     }
 }
