@@ -70,15 +70,4 @@ public class KeeRecordRedisDao {
     }
 
 
-//    //更新redis
-//    public void addRedisUserList(List<KeepRecordPo> lists) {
-//
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        BoundValueOperations<String, String> boundValueOps = redisTemplate.boundValueOps("keerecordlist");
-//        try {
-//            String temp = objectMapper.writeValueAsString(lists);
-//            //3、然后把查到的结果存到redis里面
-//            boundValueOps.set(temp);
-//        } catch (Exception exception) {  }
-//    }
 }

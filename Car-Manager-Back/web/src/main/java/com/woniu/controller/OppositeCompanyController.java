@@ -115,6 +115,7 @@ public class OppositeCompanyController {
     @RequestMapping("getoppolist")
     public List<OppositeCompanyPo> oppolist(Integer type){
         List<OppositeCompanyPo> oppolist = oilRecordService.oppolist(type);
+        System.out.println("查询到的往来单位"+oppolist);
         return oppolist;
     }
 

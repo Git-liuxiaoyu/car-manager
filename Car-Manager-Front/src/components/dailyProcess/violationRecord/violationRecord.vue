@@ -231,7 +231,7 @@
 
 <script>
 export default {
-  name: "roleManager",
+  name: "violationRecord",
   data() {
     return {
       // 查

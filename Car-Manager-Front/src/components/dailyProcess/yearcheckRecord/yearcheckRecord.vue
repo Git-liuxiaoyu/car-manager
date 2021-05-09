@@ -230,7 +230,7 @@
 
 <script>
 export default {
-  name: "roleManager",
+  name: "yearCheckRecord",
   data() {
     return {
       // 查

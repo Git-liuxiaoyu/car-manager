@@ -201,7 +201,7 @@
         </el-form-item>
 
         <el-form-item label="单位类型" prop="type">
-          <el-select v-model="updates.type" placeholder="请选择">
+          <el-select v-model="updates.type" placeholder="请选择" :disabled="true">
             <el-option label="请选择" value="0"></el-option>
             <el-option :label="types.text" :value="types.id"
                        v-for="types in types" :key="types.id">
