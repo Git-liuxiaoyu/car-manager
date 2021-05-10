@@ -8,6 +8,7 @@ import com.woniu.domain.Employee;
 import com.woniu.po.DriverPo;
 import com.woniu.po.EmployeePo;
 import com.woniu.service.DriverService;
+import com.woniu.service.EmployeeService;
 import com.woniu.util.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -24,7 +25,8 @@ public class DriverController {
 
     @Autowired
     private DriverService driverService;
-
+    @Autowired
+    private EmployeeService employeeService;
 
     @RequestMapping("/list")
     public ResponseResult<PageInfo<Driver>> list(Integer p, String searchText,Integer size){
@@ -58,32 +60,36 @@ public class DriverController {
 //        driver.setType(1);
 //        driver.setEmployeeId(1);
         driver.setEmployeeId(driver.getEmployee().getId());
-        //修改用户的角色为驾驶员（2）
-        driverService.updateRole(driver.getEmployee().getId(),2);
+        //添加一条用户的角色为驾驶员
+//        driverService.updateRole(driver.getEmployee().getId(),2);
+        driverService.addDriverRole(driver.getEmployeeId());
         driverService.addDriver(driver);
         return ResponseResult.SUCCESS;
 
     }
 
     @RequestMapping("/updated")
-    public ResponseResult updated(){
+    public ResponseResult updated(@RequestBody Driver driver){
 //        List<RolePo> roles = roleService.roles();
 //        List<Driver> drivers = driverService.driverList();
-        Driver driver = new Driver();
-        driver.setId(1);
-        driver.setDriverNum("999");
-        driver.setStatus(1);
-        driver.setType(1);
-        driver.setEmployeeId(1);
+//        Driver driver = new Driver();
+//        driver.setId(1);
+//        driver.setDriverNum("999");
+//        driver.setStatus(1);
+//        driver.setType(1);
+//        driver.setEmployeeId(1);
         driverService.updateDriver(driver);
+        driver.getEmployee().setId(driver.getEmployeeId());
+        employeeService.update(driver.getEmployee());
         return ResponseResult.SUCCESS;
 
     }
 
     @RequestMapping("del")
-    public ResponseResult del(){
+    public ResponseResult del(@RequestBody Driver driver){
 
-        driverService.delDriver(4);
+        driverService.delDriver(driver.getId());
+        driverService.delDriverRole(driver.getEmployeeId());
         return ResponseResult.SUCCESS;
     }
 

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.woniu.dao.ReportCarDao">
+
+    <resultMap type="ReportCarPo" id="reportCarPosResultMap">
+        <id column="id" property="id" />
+        <result column="carId" property="carId" />
+        <result column="totalMoney" property="totalMoney" />
+        <result column="carNum" property="carNum" />
+    </resultMap>
+
+    <select id="getAll" resultMap="reportCarPosResultMap" >
+        select rc.*,c.carNum  carNum from report_carfee rc,car c where rc.carId=c.id
+    </select>
+
+
+    <resultMap type="ReportCarPo" id="reportCarPoResultMap">
+        <id column="id" property="id" />
+        <result column="carId" property="carId" />
+<!--        <result column="totalMoney" property="totalMoney" />-->
+        <result column="carNum" property="carNum" />
+        <result column="oilFee" property="oilFee" />
+        <result column="repairFee" property="repairFee" />
+        <result column="chargesFee" property="chargesFee" />
+        <result column="keepFee" property="keepFee" />
+        <result column="violationFee" property="violationFee" />
+        <result column="accidentFee" property="accidentFee" />
+        <result column="yearCheckFee" property="yearCheckFee" />
+        <result column="insureFee" property="insureFee" />
+    </resultMap>
+
+    <select id="getOne" resultMap="reportCarPoResultMap" >
+        select c.carNum carNum,o.price oilFee,rr.repairFee repairFee,ar.selfCost accidentFee,fr.fee chargesFee,ir.cost insureFee,vr.fee violationFee,yr.cost yearCheckFee,kr.fee keepFee from report_form rf,car c,oil_record o,repair_record rr,accident_record ar,fee_record fr,insure_record ir,keep_record kr,violation_record vr,yearcheck_record yr
+        <where> rf.carId=c.id and o.id=rf.oilId and  rr.id=rf.repairId and ar.id=rf.accidentId and fr.id=rf.chargesId and ir.id=rf.insureId and kr.id=rf.keepId and
+        vr.id=rf.violationId and yr.id=rf.yearCheckId
+        <if test="carNum!=null and carNum!=''">
+            and c.carNum=#{carNum}
+        </if>
+        </where>
+    </select>
+
+
+
+</mapper>

@@ -24,7 +24,7 @@
     <template>
       <el-table :data="feeData" border style="width: 100%" max-height="377"
                 :header-cell-style="{background:'#eef1f6',color:'#606266'}">
-        <el-table-column prop="id" label="编号" min-width></el-table-column>
+        <!-- <el-table-column prop="id" label="编号" min-width></el-table-column> -->
         <el-table-column prop="car.carNum" label="车牌号码" min-width></el-table-column>
         <el-table-column prop="feeName" label="规费名称" min-width></el-table-column>
         <el-table-column prop="payTime" label="缴费时间" min-width :show-overflow-tooltip="true">
@@ -177,8 +177,18 @@
           </el-col>
 
           <el-col :span="8">
-            <el-form-item label="缴费时间">
+            <!-- <el-form-item label="缴费时间">
               <el-input type="datetime" v-model="editFee.payTime"></el-input>
+            </el-form-item> -->
+
+            <el-form-item label="缴费时间:">
+              <el-date-picker
+                v-model="editFee.payTime"
+                type="datetime"
+                placeholder="选择日期时间"
+                value-format="yyyy-MM-dd HH:mm:SS"
+              >
+              </el-date-picker>
             </el-form-item>
           </el-col>
 
@@ -317,8 +327,8 @@ export default {
     // 打开添加框
     addFees() {
       this.addDialogFormVisible = true;
-      this.getCarList();
-      this.loadDriverName();
+      // this.getCarList();
+      // this.loadDriverName();
     },
     //调用添加方法
     toAddFees() {
@@ -341,7 +351,7 @@ export default {
     },
     // 去修改
     toUpdateFee() {
-
+        this.getCarList()
       this.$axios.post("feerecord/update", this.editFee).then(r => {
         console.log(r);
         if (r.data.code == 200) {
@@ -379,6 +389,10 @@ export default {
   created() {
     this.findFee();
     this.getOpposite();
+
+  },mounted(){
+    this.getCarList();
+    this.loadDriverName();
   }
 }
 </script>

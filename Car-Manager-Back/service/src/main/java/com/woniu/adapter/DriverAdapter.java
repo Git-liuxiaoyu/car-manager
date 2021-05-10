@@ -112,6 +112,13 @@ public class DriverAdapter {
        return driverList;
 
     }
+    public int addDriverRole(Integer employeeId){
+        return driverDao.addDriverRole(employeeId);
+    }
+
+    public int delDriverRole(Integer employeeId){
+        return driverDao.delDriverRole(employeeId);
+    }
 
     /**
      * 更新redis
