@@ -10,8 +10,9 @@
         <result column="type" property="type" />
         <result column="status" property="status" />
         <result column="remarks" property="remarks" />
+        <result column="employeeId" property="employeeId" />
         <association property="employeePo" javaType="EmployeePo">
-            <id column="employeeId" property="id"/>
+<!--            <id column="employeeId" property="id"/>-->
             <result column="name" property="name"/>
             <result column="deptId" property="deptId"/>
             <result column="gender" property="gender"/>
@@ -25,7 +26,7 @@
     </resultMap>
     <select id="findDriverList" resultMap="driverPoResultMap" >
         --         select * from driver
-        select d.*,e.name, e.deptId,e.gender,e.telephone,e.entryDate,e.address,e.birthday,e.idCard from driver d , employee e,employee_role er
+        select d.*,e.id employeeId,e.name, e.deptId,e.gender,e.telephone,e.entryDate,e.address,e.birthday,e.idCard from driver d , employee e,employee_role er
         <where>
             d.employeeId=e.id and er.employeeId=e.id and er.roleId=2
             <if test="searchText!=null and searchText!='' ">
@@ -38,8 +39,15 @@
         insert into driver(driverNum,type ,status,employeeId,remarks) values(#{driverNum},#{type },#{status},#{employeeId},#{remarks})
     </insert>
 
+    <insert id="addDriverRole" >
+        insert into employee_role(employeeId,roleId) values(#{employeeId},2);
+    </insert>
+
     <delete id="delDriver" parameterType="Integer">
         delete from driver where id=#{id}
+    </delete>
+    <delete id="delDriverRole" >
+        delete from employee_role where employeeId=#{employeeId} and roleId=2;
     </delete>
 
     <update id="updateDriver" parameterType="DriverPo">
@@ -47,7 +55,7 @@
     <set>
         <if test="driverNum!=null and driverNum!=''" > driverNum = #{driverNum},</if>
         <if test="type!=null and type!=''" > type = #{type},</if>
-        <if test="status!=null and status!=''" > status = #{status},</if>
+        <if test="status!=null " > status = #{status},</if>
         <if test="employeeId!=null and employeeId!=''" > employeeId = #{employeeId},</if>
     </set>
             where id = #{id}

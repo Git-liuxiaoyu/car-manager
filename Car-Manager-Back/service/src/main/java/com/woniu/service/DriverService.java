@@ -12,9 +12,13 @@ public interface DriverService {
 
     int addDriver(Driver driver);
 
+    int addDriverRole(Integer employeeId);
+
     int updateDriver(Driver driver);
 
     int delDriver(Integer id);
+
+    int delDriverRole(Integer employeeId);
 
     int updateRole(Integer employeeId,Integer roleId);
     //获取驾驶员的中员工列表的信息
