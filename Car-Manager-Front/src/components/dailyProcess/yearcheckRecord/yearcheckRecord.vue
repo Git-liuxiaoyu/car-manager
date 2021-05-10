@@ -25,7 +25,7 @@
       <el-table :data="tableData" border style="width: 100%"  max-height="377"
                 :header-cell-style="{background:'#eef1f6',color:'#606266'}">
         <el-table-column  prop="carNum" label="车牌号码" min-width :show-overflow-tooltip="true"></el-table-column>
-        <el-table-column  prop="checkNum" label="年检标号"min-width :show-overflow-tooltip="true"></el-table-column>
+        <el-table-column  prop="checkNum" label="年检标号" min-width :show-overflow-tooltip="true"></el-table-column>
         <el-table-column  prop="checkDate" label="年检时间" min-width :show-overflow-tooltip="true">
           <template slot-scope="scope">
             <i class="el-icon-time"></i>
@@ -95,8 +95,8 @@
           <el-col :span="8">
             <el-form-item label="年检单位">
                 <el-select v-model="addData.oppositeCompanyId" placeholder="请选择">
-                    <el-option v-for="opposite in oppositeList" :key="opposite.type"
-                                :label="opposite.name" :value="opposite.type">
+                    <el-option v-for="opposite in oppositeList" :key="opposite.id"
+                                :label="opposite.name" :value="opposite.id">
                     </el-option>
                 </el-select>
             </el-form-item>
@@ -172,8 +172,8 @@
           <el-col :span="8">
             <el-form-item label="年检单位:">
                  <el-select v-model="updateData.oppositeCompanyId" placeholder="请选择">
-                    <el-option v-for="opposite in oppositeList" :key="opposite.type"
-                                :label="opposite.name" :value="opposite.type">
+                    <el-option v-for="opposite in oppositeList" :key="opposite.id"
+                                :label="opposite.name" :value="opposite.id">
                     </el-option>
                 </el-select>
             </el-form-item>
@@ -264,7 +264,7 @@ export default {
             }
           })
         this.oppositeList.forEach(e3=>{
-            if(e1.oppositeCompanyId===e3.type){
+            if(e1.oppositeCompanyId===e3.id){
               e1.oppositeName = e3.name
             }
           })
@@ -361,9 +361,10 @@ export default {
   ,
   created() {
     this.getMenu()
+    this.getOppositeList()
     this.getCarList()
     this.getDriverList()
-    this.getOppositeList()
+
     this.loadList()
   }
 }

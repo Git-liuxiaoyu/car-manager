@@ -25,7 +25,7 @@
       <el-table :data="tableData" border style="width: 100%" max-height="377"
                 :header-cell-style="{background:'#eef1f6',color:'#606266'}">
         <el-table-column  prop="carNum" label="车牌号码" min-width></el-table-column>
-        <el-table-column  prop="repairName" label="修理厂" min-width></el-table-column>
+        <el-table-column  prop="oppositeName" label="修理厂" min-width></el-table-column>
         <el-table-column  prop="sendTime" label="送修时间" min-width :show-overflow-tooltip="true">
           <template slot-scope="scope">
             <i class="el-icon-time"></i>
@@ -86,6 +86,11 @@
 
           <el-col :span="8">
             <el-form-item label="修理厂:">
+                <el-select v-model="addData.oppositeCompanyId" placeholder="请选择">
+                    <el-option v-for="opposite in oppositeList" :key="opposite.id"
+                                :label="opposite.name" :value="opposite.id">
+                    </el-option>
+                </el-select>
             </el-form-item>
           </el-col>
 
@@ -155,6 +160,11 @@
 
           <el-col :span="8">
             <el-form-item label="修理厂:">
+                <el-select v-model="updateData.oppositeCompanyId" placeholder="请选择">
+                    <el-option v-for="opposite in oppositeList" :key="opposite.id"
+                                :label="opposite.name" :value="opposite.id">
+                    </el-option>
+                </el-select>
             </el-form-item>
           </el-col>
 
@@ -223,6 +233,11 @@
           </el-col>
           <el-col :span="8">
             <el-form-item label="修理厂:">
+                <el-select v-model="updateData.oppositeCompanyId" placeholder="请选择">
+                    <el-option v-for="opposite in oppositeList" :key="opposite.id"
+                                :label="opposite.name" :value="opposite.id">
+                    </el-option>
+                </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -283,7 +298,7 @@
           </el-col>
           <el-col :span="8">
             <el-form-item label="修理厂:">
-                {{updateData.oppositeCompanyId}}
+                {{updateData.oppositeName}}
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -387,8 +402,8 @@ export default {
 
       carList:[],// 车辆集合
       driverList:[], // 驾驶员集合
-      violationType: [],// 违章类别
-      repairItemType:[] // 维修类别集合
+      repairItemType:[],// 维修类别集合
+      oppositeList:[], // 往来单位集合
     }
   },
   methods: {
@@ -397,11 +412,6 @@ export default {
       this.$axios.get("repairRecord/list", {params: {p: this.p, searchText: this.searchText, size: this.size}}).then(r => {
         this.tableData = r.data.data.list
         this.tableData.forEach(e1 => {
-          this.violationType.forEach(e2=>{
-            if(e1.type===e2.id){
-              e1.violationName = e2.text
-            }
-          })
           this.repairItemType.forEach(e3=>{
             if(e1.repairType===e3.id){
               e1.repairItemName = e3.text
@@ -410,6 +420,11 @@ export default {
           this.driverList.forEach(e4=>{
             if(e1.driverId===e4.id){
               e1.driverName = e4.employeeName
+            }
+          })
+          this.oppositeList.forEach(e6=>{
+            if(e1.oppositeCompanyId===e6.id){
+              e1.oppositeName = e6.name
             }
           })
         });
@@ -498,7 +513,7 @@ export default {
           }
           if (totalTree[i].id == 39) {
             this.repairItemType = totalTree[i].children;
-            console.log(this.repairItemType)
+            
           }
         }
       })
@@ -512,11 +527,18 @@ export default {
         this.$axios.get("driver/getAll").then(r => {
         this.driverList = r.data.data
       })
+    },
+    getOppositeList(){
+        this.$axios.get("opposite/getoppolist?type=" + 34).then(r => {
+        this.oppositeList = r.data
+      })
+      console.log(this.oppositeList)
     }
   }
   ,
   created() {
     this.getMenu()
+    this.getOppositeList()
     this.getCarList()
     this.getDriverList()
     this.loadList()
