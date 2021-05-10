@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper
-  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.woniu.dao.ReturnRecordDao">
 
-    <select id="findList" resultType="ReturnRecordPo">
-        select * from return_record
-    </select>
-
-    <!--新增出车记录-->
+    <!--新增回车记录-->
     <insert id="add" parameterType="ReturnRecordPo">
-        insert into return_record(inTime,returnMileage,stopPosition,remarks)
-        values(#{inTime},#{returnMileage},#{stopPosition},#{remarks})
+        insert into return_record
+            value (null,#{id},#{returnMileage},#{zongMileage},#{stopPosition},#{remarks})
     </insert>
 
-
-
+<!--根据dictionaryId查询回车信息-->
+    <select id="getByDictionaryId" resultType="ReturnRecordPo">
+        select * from return_record where dictionaryId=#{id}
+    </select>
 
 </mapper>

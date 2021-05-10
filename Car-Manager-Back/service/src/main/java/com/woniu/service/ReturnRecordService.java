@@ -10,7 +10,8 @@ public interface ReturnRecordService {
 
 
 
-    int add(ReturnRecord returnRecord);
+    void add(ReturnRecord returnRecord);
 
 
+    ReturnRecord getByDictionaryId(Integer id);
 }

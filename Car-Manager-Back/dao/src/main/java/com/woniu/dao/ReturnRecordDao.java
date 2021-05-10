@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ReturnRecordDao {
      //回车信息登记
-    int add(ReturnRecordPo returnRecordPo);
+    void add(ReturnRecordPo returnRecordPo);
 
-    List<ReturnRecordPo> findList();
+    ReturnRecordPo getByDictionaryId(Integer id);
 }

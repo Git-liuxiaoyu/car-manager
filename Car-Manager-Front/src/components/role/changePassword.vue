@@ -60,7 +60,6 @@ export default {
       let account = localStorage.getItem("account");
       this.$axios.get("employee/getByAccount?account=" + account).then(r => {
         this.employee = r.data.data
-        console.log(this.employee)
       })
     },
     compare() {

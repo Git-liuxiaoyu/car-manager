@@ -22,25 +22,13 @@ public class ReturnRecordServiceImpl implements ReturnRecordService {
     private ReturnRecordAdapter returnRecordAdapter;
 
 
-//    @Override
-//    public List<DepartureRecord> departureRecordList() {
-//
-//        return departureRecordAdapter.findDriverLists();
-//    }
-
     @Override
-    public int add(ReturnRecord returnRecord) {
-        return returnRecordAdapter.add(returnRecord);
-
+    public void add(ReturnRecord returnRecord) {
+       returnRecordAdapter.add(returnRecord);
     }
 
-//    @Override
-//    public int update(DepartureRecord departureRecord) {
-//        return departureRecordAdapter.update(departureRecord);
-//    }
-//
-//    @Override
-//    public int delete(Integer id) {
-//        return departureRecordAdapter.delete(id);
-//    }
+    @Override
+    public ReturnRecord getByDictionaryId(Integer id) {
+        return returnRecordAdapter.getByDictionaryId(id);
+    }
 }

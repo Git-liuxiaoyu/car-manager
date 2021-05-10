@@ -21,4 +21,6 @@ public interface CarDao {
     Integer count(String searchText);
     // 删除
     void delete(Integer id);
+
+    CarPo getById(Integer id);
 }

@@ -2,6 +2,7 @@ package com.woniu.dao;
 
 import com.woniu.po.DepartureRecordPo;
 import com.woniu.po.DriverPo;
+import com.woniu.po.ReturnRecordPo;
 
 import java.util.List;
 
@@ -12,7 +13,7 @@ public interface DepartureRecordDao {
     List<DepartureRecordPo> findList();
 
     //添加出车信息
-    int add(DepartureRecordPo departureRecordPo);
+    void add(DepartureRecordPo departureRecordPo);
     //
     //修改出车信息
     int update(DepartureRecordPo departureRecordPo);
@@ -25,4 +26,5 @@ public interface DepartureRecordDao {
     Integer count(String searchText);
 
     List<DepartureRecordPo> findList(String searchText);
+
 }

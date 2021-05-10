@@ -109,7 +109,7 @@ public class EmployeeController {
     @RequestMapping("/getByAccount")
     public ResponseResult getByAccount(String account){
         Employee e=employeeService.getByAccount(account);
-        return new ResponseResult(e);
+        return new ResponseResult( );
     }
 
     //修改用户的密码

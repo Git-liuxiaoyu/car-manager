@@ -4,6 +4,7 @@ import com.woniu.adapter.DepartureRecordAdapter;
 import com.woniu.adapter.DriverAdapter;
 import com.woniu.domain.DepartureRecord;
 import com.woniu.domain.Driver;
+import com.woniu.domain.ReturnRecord;
 import com.woniu.service.DepartureRecordService;
 import com.woniu.service.DriverService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,14 +22,13 @@ public class DepartureRecordServiceImpl implements DepartureRecordService {
     private DepartureRecordAdapter departureRecordAdapter;
 
     @Override
-    public int add(DepartureRecord departureRecord) {
-        return departureRecordAdapter.add(departureRecord);
-//     return 1;
+    public void add(DepartureRecord departureRecord) {
+        departureRecordAdapter.add(departureRecord);
     }
 
     @Override
-    public int update(DepartureRecord departureRecord) {
-        return departureRecordAdapter.update(departureRecord);
+    public void update(DepartureRecord departureRecord) {
+        departureRecordAdapter.update(departureRecord);
     }
 
     @Override

@@ -49,4 +49,9 @@ public class CarServiceImpl implements CarService {
     public void delete(Integer id) {
         carAdapter.delete(id);
     }
+
+    @Override
+    public Car getById(Integer id) {
+        return carAdapter.getById(id);
+    }
 }

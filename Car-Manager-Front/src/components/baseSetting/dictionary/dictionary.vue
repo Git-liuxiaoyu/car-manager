@@ -82,7 +82,7 @@
 
         <el-form-item label="二级菜单" v-if="two">
           <el-select v-model="twoId" clearable placeholder="请选择">
-            <el-option v-for="item in childrentow" :label="item.text" :key="item.id" :value="item.id">
+            <el-option v-for="item in childrenTow" :label="item.text" :key="item.id" :value="item.id">
             </el-option>
           </el-select>
         </el-form-item>
@@ -143,7 +143,7 @@ export default {
       children: [],
       oneId: '',
       twoId: '',
-      childrentow: [],
+      childrenTow: [],
       parentId: '',
       updateDictionary: {
         id: '',
@@ -157,17 +157,17 @@ export default {
   },
   methods: {
     add() {
-      this.addDialogFormVisible = true;
       this.$axios.get("dictionary/menu").then(r => {
         this.children = r.data.data
       })
+        this.addDialogFormVisible = true;
     },
     onemenu(id) {
       for (let i = 0; i < this.children.length; i++)
         if (this.children[i].id == id) {
-          this.childrentow = this.children[i].children;
+          this.childrenTow = this.children[i].children;
         }
-      this.twoId = this.childrentow[0].id
+      this.twoId = this.childrenTow[0].id
     },
     addRole() {
       if (this.two) {
@@ -257,13 +257,7 @@ export default {
       }
     },
     findDictionary() {
-      this.$axios.get("dictionary/list", {
-        params: {
-          p: this.p,
-          searchText: this.searchText,
-          size: this.size
-        }
-      }).then(r => {
+      this.$axios.get("dictionary/list").then(r => {
         this.tableData = r.data.data.list
         this.total = r.data.data.total
       })

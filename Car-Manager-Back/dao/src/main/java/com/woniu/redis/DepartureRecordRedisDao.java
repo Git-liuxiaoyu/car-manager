@@ -12,6 +12,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
@@ -59,5 +60,11 @@ public class DepartureRecordRedisDao {
             //3、然后把查到的结果存到redis里面
             boundValueOps.set(temp);
         } catch (Exception exception) {  }
+    }
+
+    //清除redis的数据
+    public void updateRedis(){
+        Set<String> keys=redisTemplate.keys("departureRecordList*");
+        redisTemplate.delete(keys);
     }
 }

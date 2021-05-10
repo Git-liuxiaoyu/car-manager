@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper
-  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.woniu.dao.CarDao">
     <!--sql片段-->
     <sql id="columns">
-        id,carNum,brandId,type,color,carrying,seatNum,oilConsume,initialMileage,
+        id
+        ,carNum,brandId,type,color,carrying,seatNum,oilConsume,initialMileage,
         curingMileage,curingCycle,engineNum,serialNumber,oppositeCompanyId,price,
         boughtDate,deptId,carStatus,remarks,status,images
     </sql>
@@ -45,7 +46,7 @@
         where id=#{id}
     </update>
     <!--动态分页查询-->
-    <select id="list"  resultType="CarPo">
+    <select id="list" resultType="CarPo">
         select * from car
         <where>
             <if test="searchText!=null and searchText!='' ">and carNum like concat('%',#{searchText},'%')</if>
@@ -59,10 +60,18 @@
     </select>
     <!--删除修理信息-->
     <delete id="delete" parameterType="Integer">
-        delete from car where id=#{id}
+        delete
+        from car
+        where id = #{id}
     </delete>
     <!--查询所有-->
     <select id="getAll" resultType="CarPo">
-        select * from car
+        select *
+        from car
+    </select>
+    <!--根据id查看car-->
+    <select id="getById" resultType="CarPo">
+        select *
+        from car where id=#{id}
     </select>
 </mapper>

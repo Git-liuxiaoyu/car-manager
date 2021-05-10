@@ -52,12 +52,6 @@
       <el-main class="main">
         <router-view></router-view>
       </el-main>
-
-
-      <!--            &lt;!&ndash; 底部 &ndash;&gt;-->
-      <!--            <el-footer class="el-footer" height="60px">-->
-      <!--              <h3 id="h2">2021 &copy;版权所有&nbsp;蜗牛学院</h3>-->
-      <!--            </el-footer>-->
     </el-container>
   </div>
 </template>

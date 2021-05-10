@@ -19,10 +19,8 @@
     </select>
     <!--新增出车记录-->
     <insert id="add" parameterType="DepartureRecordPo">
-        insert into departure_record(deptId, carId, outTime, preInTime, inTime, followPerson, driverId, destination,
-                                     mileage, employeeId)
-        values (#{deptId}, #{carId}, #{outTime}, #{preInTime}, #{inTime}, #{followPerson}, #{driverId}, #{destination},
-                #{mileage}, #{employeeId})
+        insert into departure_record value (null,#{deptId}, #{carId}, #{outTime}, #{preInTime}, #{inTime}, #{followPerson}, #{driverId}, #{destination},
+            #{mileage}, #{employeeId},#{outCarReason})
     </insert>
     <!--    根据id查询-->
     <select id="getById" resultType="DepartureRecordPo">
@@ -36,15 +34,13 @@
         update departure_record
         <set>
             <if test="deptId!=null and deptId!=''">deptId = #{deptId},</if>
-
             <if test="outTime!=null and outTime!=''">outTime = #{outTime},</if>
             <if test="preInTime!=null and preInTime!=''">preInTime = #{preInTime},</if>
-            <if test="inTime!=null and inTime!=''">inTime = #{inTime},</if>
             <if test="followPerson!=null and followPerson!=''">followPerson = #{followPerson},</if>
-
             <if test="destination!=null and destination!=''">destination = #{destination},</if>
             <if test="mileage!=null and mileage!=''">mileage = #{mileage},</if>
             <if test="employeeId!=null and employeeId!=''">employeeId = #{employeeId},</if>
+            <if test="outCarReason!=null and outCarReason!=''">outCarReason = #{outCarReason}</if>
         </set>
         where id = #{id}
     </update>

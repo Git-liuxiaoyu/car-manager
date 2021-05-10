@@ -24,45 +24,16 @@ public class ReturnRecordAdapter {
     @Autowired
     private ReturnRecordRedisDao returnRecordRedisDao;
 
-//    public List<DepartureRecord> findDriverLists(){
-//        List<DepartureRecordPo> departureRecordPoList = departureRecordRedisDao.list();
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        if(departureRecordPoList.size() == 0){
-//            //从数据库查数据
-//            departureRecordPoList = departureRecordDao.findList();
-////            driverList = list
-//            //存入redis的缓存中
-//            departureRecordRedisDao.addRedisDriverList(departureRecordPoList);
-//        }
-//        //把dao的 RoleList RolePo --- 转成  List<Role>
-//        List<DepartureRecord> departureRecords = new ArrayList<DepartureRecord>();
-//        for(DepartureRecordPo departureRecordPo : departureRecordPoList) {
-//            DepartureRecord item = new DepartureRecord();
-//            BeanUtils.copyProperties(departureRecordPo, item);
-//            departureRecords.add(item);
-//        }
-//        return departureRecords;
-//    }
-
-
-    /**
-     * 添加驾驶员档案
-     * @param returnRecord
-     * @return
-     */
-    public int add(ReturnRecord returnRecord){
-
+    public void add(ReturnRecord returnRecord){
         ReturnRecordPo item = new ReturnRecordPo();
         BeanUtils.copyProperties(returnRecord, item);
-        int i = returnRecordDao.add(item);
-        if (i>0){
-
-            List<ReturnRecordPo> returnRecordPos = returnRecordDao.findList();
-            //存入redis的缓存中
-            returnRecordRedisDao.addRedisList(returnRecordPos);
-        }
-        return i;
+        returnRecordDao.add(item);
     }
 
-
+    public ReturnRecord getByDictionaryId(Integer id) {
+        ReturnRecordPo returnRecordPo=returnRecordDao.getByDictionaryId(id);
+        ReturnRecord returnRecord=new ReturnRecord();
+        BeanUtils.copyProperties(returnRecordPo, returnRecord);
+        return returnRecord;
+    }
 }

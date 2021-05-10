@@ -24,4 +24,7 @@ public interface CarService {
     int count(String searchText);
     // 删除
     void delete(Integer id);
+
+    // 根据CarId查询车信息
+    Car getById(Integer id);
 }

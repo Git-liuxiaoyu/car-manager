@@ -23,7 +23,8 @@ public class CarAdapter {
 
     @Autowired
     private CarRedisDao carRedisDao;
-    public List<Car> getAll(){
+
+    public List<Car> getAll() {
         List<CarPo> carList = carDao.getAll();
         List<Car> cars = new ArrayList<>();
         for (CarPo e : carList) {
@@ -33,15 +34,16 @@ public class CarAdapter {
         }
         return cars;
     }
-    public List<Car> list(String searchText, int pageIndex,int pageSize) {
+
+    public List<Car> list(String searchText, int pageIndex, int pageSize) {
         //查询的list
-        List<CarPo> carList = carRedisDao.list(pageIndex,searchText,pageSize);
+        List<CarPo> carList = carRedisDao.list(pageIndex, searchText, pageSize);
 
         if (carList.size() == 0) {
             //从数据库查数据
             carList = carDao.list(searchText);
             //存入redis的缓存中
-            carRedisDao.addRedisCarList(carList, pageIndex, searchText,pageSize);
+            carRedisDao.addRedisCarList(carList, pageIndex, searchText, pageSize);
         }
         //把dao的 RoleList RolePo --- 转成  List<RolePo>
         List<Car> cars = new ArrayList<>();
@@ -60,6 +62,7 @@ public class CarAdapter {
 
     /**
      * 删除加油信息
+     *
      * @param id
      * @return
      */
@@ -71,26 +74,34 @@ public class CarAdapter {
 
     /**
      * 添加驾驶员档案
+     *
      * @param car
      * @return
      */
-    public void add(Car car){
+    public void add(Car car) {
         CarPo item = new CarPo();
         BeanUtils.copyProperties(car, item);
         carDao.add(item);
         carRedisDao.updateRedis();
     }
+
     /**
      * 修改加油信息
+     *
      * @param car
      * @return
      */
-    public void update(Car car){
-
+    public void update(Car car) {
         CarPo item = new CarPo();
         BeanUtils.copyProperties(car, item);
         carDao.update(item);
         carRedisDao.updateRedis();
     }
 
+    public Car getById(Integer id) {
+        CarPo carPo = carDao.getById(id);
+        Car car = new Car();
+        BeanUtils.copyProperties(carPo, car);
+        return car;
+    }
 }

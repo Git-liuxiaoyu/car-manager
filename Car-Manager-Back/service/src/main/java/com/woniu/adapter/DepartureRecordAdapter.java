@@ -4,8 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woniu.dao.DepartureRecordDao;
 import com.woniu.domain.DepartureRecord;
 import com.woniu.domain.Driver;
+import com.woniu.domain.ReturnRecord;
 import com.woniu.po.DepartureRecordPo;
 import com.woniu.po.DriverPo;
+import com.woniu.po.ReturnRecordPo;
 import com.woniu.redis.DepartureRecordRedisDao;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,12 +47,11 @@ public class DepartureRecordAdapter {
      * @param departureRecord
      * @return
      */
-    public int add(DepartureRecord departureRecord) {
-
+    public void add(DepartureRecord departureRecord) {
         DepartureRecordPo item = new DepartureRecordPo();
         BeanUtils.copyProperties(departureRecord, item);
-        int i = departureRecordDao.add(item);
-        return i;
+        departureRecordDao.add(item);
+        departureRecordRedisDao.updateRedis();
     }
 
     /**
@@ -59,15 +60,11 @@ public class DepartureRecordAdapter {
      * @param departureRecord
      * @return
      */
-    public int update(DepartureRecord departureRecord) {
-
+    public void update(DepartureRecord departureRecord) {
         DepartureRecordPo item = new DepartureRecordPo();
         BeanUtils.copyProperties(departureRecord, item);
-        int i = departureRecordDao.update(item);
-        if (i > 0) {
-            List<DepartureRecordPo> departureRecordPos = departureRecordDao.findList();
-        }
-        return i;
+        departureRecordDao.update(item);
+        departureRecordRedisDao.updateRedis();
     }
 
     /**
@@ -98,5 +95,4 @@ public class DepartureRecordAdapter {
     public Integer count(String searchText) {
         return departureRecordDao.count(searchText);
     }
-
 }
