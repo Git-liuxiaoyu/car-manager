@@ -54,12 +54,12 @@ public class DictionaryController {
 
     //删除字典
     @RequestMapping("delete")
-    public ResponseResult delete(Integer id){
+    public ResponseResult delete(Integer id) {
         //先查询所有的列表看看此id的字段有没有儿子
-        List<Dictionary> dictionary=dictionaryService.listGetByParentId(id);
+        List<Dictionary> dictionary = dictionaryService.listGetByParentId(id);
 
-        if(dictionary.size()!=0){
-            return new ResponseResult(201,"此菜单拥有子菜单无法删除");
+        if (dictionary.size() != 0) {
+            return new ResponseResult(201, "此菜单拥有子菜单无法删除");
         }
         dictionaryService.delete(id);
         return ResponseResult.SUCCESS;
@@ -67,10 +67,11 @@ public class DictionaryController {
 
     //修改字典
     @RequestMapping("update")
-    public ResponseResult update(Dictionary updateDictionary){
+    public ResponseResult update(Dictionary updateDictionary) {
         dictionaryService.update(updateDictionary);
         return ResponseResult.SUCCESS;
     }
+
     //查询所有的字典
     @RequestMapping("menu")
     public ResponseResult<List<DictionaryPo>> menu() {

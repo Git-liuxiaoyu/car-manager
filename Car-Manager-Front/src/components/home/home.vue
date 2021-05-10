@@ -25,7 +25,7 @@
       <!-- 中左 -->
       <!-- default-active默认显示高亮 -->
       <el-aside width="200px" class="main">
-        <el-menu class="el-menu-vertical-demo" :router="true" background-color="#edfff3" :unique-opened="true"
+        <el-menu class="el-menu-vertical-demo" :router="true" background-color="white" :unique-opened="true"
                  default-active="index">
           <el-menu-item index="index">
             <i class="el-icon-s-home"></i>
@@ -106,7 +106,7 @@ export default {
 /*}*/
 
 .main {
-  background-color: #edfff3;
+  background-color: white;
   border: 1px solid black;
   height: 90vh;
   overflow-y: auto;
