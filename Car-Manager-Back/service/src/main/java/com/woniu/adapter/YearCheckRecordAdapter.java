@@ -13,6 +13,7 @@ import java.util.List;
 
 @Component
 public class YearCheckRecordAdapter {
+
     @Autowired
     private YearCheckRecordDao yearCheckRecordDao;
     @Autowired
@@ -75,6 +76,17 @@ public class YearCheckRecordAdapter {
         BeanUtils.copyProperties(yearCheckRecord, item);
         yearCheckRecordDao.update(item);
         yearCheckRecordRedisDao.updateRedis();
+    }
+
+    //根据id查询
+    public YearCheckRecordPo findbyid(YearCheckRecord yearCheckRecord){
+
+        YearCheckRecordPo ypo = new YearCheckRecordPo();
+        ypo.setId(yearCheckRecord.getId());
+
+        YearCheckRecordPo findbyid = yearCheckRecordDao.findbyid(ypo);
+
+        return findbyid;
     }
 
 

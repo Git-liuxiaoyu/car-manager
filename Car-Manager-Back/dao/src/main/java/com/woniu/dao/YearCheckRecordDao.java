@@ -19,4 +19,6 @@ public interface YearCheckRecordDao {
     Integer count(String searchText);
     // 删除
     void delete(Integer id);
+
+    YearCheckRecordPo findbyid(YearCheckRecordPo yearCheckRecordPo);
 }

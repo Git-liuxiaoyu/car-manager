@@ -2,6 +2,7 @@ package com.woniu.service.impl;
 
 import com.woniu.adapter.YearCheckRecordAdapter;
 import com.woniu.domain.YearCheckRecord;
+import com.woniu.po.YearCheckRecordPo;
 import com.woniu.service.YearCheckRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,5 +43,10 @@ public class YearCheckRecordServiceImpl implements YearCheckRecordService {
     @Override
     public void delete(Integer id) {
         yearCheckRecordAdapter.delete(id);
+    }
+
+    @Override
+    public YearCheckRecordPo findById(YearCheckRecord yearCheckRecord) {
+        return yearCheckRecordAdapter.findbyid(yearCheckRecord);
     }
 }

@@ -34,6 +34,7 @@ public class CarController {
         PageHelper.startPage(pageIndex,pageSize);
         List<Car> carList = carService.list(searchText,pageIndex,pageSize);
         PageInfo<Car> pageInfo = new PageInfo<>(carList);
+        System.out.println(carList);
         pageInfo.setTotal(total);
         return new ResponseResult<>(pageInfo);
     }

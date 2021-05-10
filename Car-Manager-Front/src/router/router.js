@@ -42,6 +42,10 @@ let router = new Router({
         {path: '/accidentRecord', component: () => import('@/components/dailyProcess/accidentRecord/accidentRecord')},
         {path: '/insureRecord', component: () => import('@/components/dailyProcess/insureRecord/insureRecord')},
         {path: '/reportForm', component: () => import('@/components/reportCenter/reportForm/reportForm')},
+
+        {path: '/outimeRemind', component: () => import('@/components/outimeRemind/outimeRemind/outimeRemind')},
+
+        {path: '/carState', component: () => import('@/components/carState/carState/carState')},
       ]
     },
   ]

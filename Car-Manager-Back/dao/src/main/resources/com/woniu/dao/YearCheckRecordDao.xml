@@ -8,16 +8,19 @@
         <id column="id" property="id" />
         <result column="carNum" property="carNum"/>
     </resultMap>
+    
     <select id="list" resultMap="YearCheckRecordPoResultMap">
         select y.* ,c.carNum  from yearCheck_record y,car c
         <where> y.carId = c.id
             <if test="searchText!=null and searchText!='' ">and c.carNum like concat('%',#{searchText},'%')</if>
         </where>
     </select>
+    
     <!--新增修理记录-->
     <insert id="add" parameterType="YearCheckRecordPo">
         insert into yearCheck_record values (null,#{carId},#{checkNum},#{checkDate},#{cost},#{oppositeCompanyId},#{nextCheckDate},#{driverId},#{remarks})
     </insert>
+    
     <!--修改修理列表-->
     <update id="update" parameterType="YearCheckRecordPo">
         update yearCheck_record
@@ -33,14 +36,24 @@
         </set>
         where id = #{id}
     </update>
+    
     <select id="count" parameterType="int" resultType="int">
         select count(0) from yearCheck_record y,car c
         <where> y.carId = c.id
             <if test="searchText!=null and searchText!='' ">and c.carNum like concat('%',#{searchText},'%')</if>
         </where>
     </select>
+    
+    
     <!--删除修理信息-->
     <delete id="delete" parameterType="Integer">
         delete from yearCheck_record where id=#{id}
     </delete>
+    
+    <!--根据id查询-->
+    <select id="findbyid" resultType="YearCheckRecordPo">
+        select * from yearCheck_record where id = #{id}
+    </select>
+    
+    
 </mapper>

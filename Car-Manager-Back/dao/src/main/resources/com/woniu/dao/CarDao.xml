@@ -44,9 +44,37 @@
         </set>
         where id=#{id}
     </update>
+    
+    
+    <resultMap type = "CarPo" id = "carMap">
+        <!-- id用于指定Cart中的主键 -->
+        <id column="id" property="id" />
+        <result column="carId" property="carId" />
+        <result column="carNum" property="carNum"/>
+        <result column="brandId" property="brandId"/>
+        <result column="type" property="type"/>
+        <result column="color" property="color"/>
+        <result column="carrying" property="carrying"/>
+        <result column="seatNum" property="seatNum"/>
+        <result column="oilConsume" property="oilConsume"/>
+        <result column="initialMileage" property="initialMileage"/>
+        <result column="curingMileage" property="curingMileage"/>
+        <result column="curingCycle" property="curingCycle"/>
+        <result column="engineNum" property="engineNum"/>
+        <result column="serialNumber" property="serialNumber"/>
+        <result column="oppositeCompanyId" property="oppositeCompanyId"/>
+        <result column="price" property="price"/>
+        <result column="boughtDate" property="boughtDate"/>
+        <result column="deptId" property="deptId"/>
+        <result column="carStatus" property="carStatus"/>
+        <result column="carStatusname" property="carStatusname"/>
+        <result column="remarks" property="remarks"/>
+        <result column="status" property="status"/>
+        <result column="images" property="images"/>
+    </resultMap>
     <!--动态分页查询-->
-    <select id="list"  resultType="CarPo">
-        select * from car
+    <select id="list" resultMap="carMap" resultType="CarPo">
+        select c.*,d.text carStatusname from car c,dictionary d where c.carStatus = d.id
         <where>
             <if test="searchText!=null and searchText!='' ">and carNum like concat('%',#{searchText},'%')</if>
         </where>

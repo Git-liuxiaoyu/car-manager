@@ -4,8 +4,11 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.woniu.domain.KeepRecord;
 import com.woniu.po.InsureRecordPo;
+import com.woniu.po.KeepRecordPo;
 import com.woniu.po.OppositeCompanyPo;
+import com.woniu.po.OutimeRemindPo;
 import com.woniu.service.InsureRecordService;
+import com.woniu.service.OutimeRemindService;
 import com.woniu.util.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -22,9 +25,22 @@ public class InsureRecordController {
     @Autowired
     private InsureRecordService insureRecordService;
 
+    //到期提醒
+    @Autowired
+    private OutimeRemindService outimeRemindService;
+
     @RequestMapping("/insureRecord/add")
     public int add(@RequestBody InsureRecordPo insureRecordPo){
         System.out.println("要添加的数据"+insureRecordPo);
+
+        OutimeRemindPo orpo = new OutimeRemindPo();
+        orpo.setCarId(insureRecordPo.getCardId());
+        orpo.setOutDate(insureRecordPo.getOutDate());
+        orpo.setType(insureRecordPo.getType());
+        System.out.println("要添加的保养到期数据"+orpo);
+
+        //添加到期提醒
+        outimeRemindService.add(orpo);
 
         return insureRecordService.add(insureRecordPo);
 
@@ -36,8 +52,24 @@ public class InsureRecordController {
         return insureRecordService.delete(inpo);
 
     }
+
+
     @RequestMapping("/insureRecord/update")
     public int update(@RequestBody InsureRecordPo insureRecordPo){
+        //查询对应id的原属性
+        InsureRecordPo findbyid = insureRecordService.findById(insureRecordPo);
+        System.out.println("修改原属性"+findbyid);
+
+        OutimeRemindPo orpo = new OutimeRemindPo();
+        orpo.setCarId(insureRecordPo.getCardId());//要修改的车牌id
+        orpo.setStartcarId(findbyid.getCardId());//设置原车牌id
+
+        orpo.setOutDate(insureRecordPo.getOutDate());//要修改的到期时间
+        orpo.setType(insureRecordPo.getType());//要修改的到期类别
+        orpo.setStarttype(findbyid.getType());//设置原到期类别
+        System.out.println("要修改的保养到期数据"+orpo);
+
+        outimeRemindService.update(orpo);//修改到期提醒
 
         return insureRecordService.update(insureRecordPo);
 
