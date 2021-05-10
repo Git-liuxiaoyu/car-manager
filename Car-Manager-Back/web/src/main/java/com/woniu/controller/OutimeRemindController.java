@@ -1,14 +1,24 @@
 package com.woniu.controller;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.woniu.po.InsureRecordPo;
 import com.woniu.po.OutimeRemindPo;
 import com.woniu.service.OutimeRemindService;
+import com.woniu.util.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 public class OutimeRemindController {
 
     @Autowired
@@ -29,10 +39,44 @@ public class OutimeRemindController {
         return outimeRemindService.update(outimeRemindPo);
 
     }
+
+
+    //分页查询列表
     @RequestMapping("/outimeRemind/list")
-    public List list(){
-        List<OutimeRemindPo> outimeReminds = outimeRemindService.outimeRemindList();
-        return outimeReminds;
+    public ResponseResult<PageInfo<OutimeRemindPo>> list(Integer p, Integer size) {
+        int pageIndex=1;
+        int pageSize=5;
+        if(p>=1){
+            pageIndex=p;
+        }
+        if(pageSize>=5){
+            pageSize=size;
+        }
+
+        //定义时间格式
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");//设置日期格式
+        Calendar calendar = new GregorianCalendar();//加日期对象
+
+        Date date = new Date();//当前系统时间
+        String thistime = df.format(date);// new Date()为获取当前系统时间
+        System.out.println("当前时间="+thistime);
+
+
+        calendar.setTime(date);
+        calendar.add(calendar.DATE,7);//把当前系统时间往后加7天
+        date = calendar.getTime();
+        String nexttime = df.format(date);//格式化日期格式把日期作为查询条件
+        System.out.println("加七天之后="+nexttime);
+
+
+        Integer total=outimeRemindService.count(nexttime,thistime);
+        PageHelper.startPage(pageIndex,pageSize);
+        List<OutimeRemindPo> outimeReminds = outimeRemindService.outimeRemindList(nexttime,thistime,pageIndex,pageSize);
+        PageInfo<OutimeRemindPo> pageInfo = new PageInfo<>(outimeReminds);
+        pageInfo.setTotal(total);
+
+
+        return new ResponseResult<>(pageInfo);
     }
 
 }

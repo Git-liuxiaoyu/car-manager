@@ -25,7 +25,7 @@
       <el-table :data="tableData" border style="width: 100%"  max-height="377"
                 :header-cell-style="{background:'#eef1f6',color:'#606266'}">
         <el-table-column  prop="carNum" label="车牌号码" min-width :show-overflow-tooltip="true"></el-table-column>
-        <el-table-column  prop="checkNum" label="年检标号"min-width :show-overflow-tooltip="true"></el-table-column>
+        <el-table-column  prop="checkNum" label="年检标号" min-width :show-overflow-tooltip="true"></el-table-column>
         <el-table-column  prop="checkDate" label="年检时间" min-width :show-overflow-tooltip="true">
           <template slot-scope="scope">
             <i class="el-icon-time"></i>

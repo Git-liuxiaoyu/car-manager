@@ -25,13 +25,11 @@ public class InsureRecordRedisDao {
     private RedisTemplate<String, String> redisTemplate;
 
     public List<InsureRecordPo> list(int pageIndex, String searchText, int pageSize) {
-
         List<InsureRecordPo> insureRecordList = new ArrayList<>();
         String key = "insureRecordList" + pageIndex+pageSize+searchText;
         if (searchText != null && !searchText.equals("")) {
             key += searchText;
         }
-
         BoundValueOperations<String, String> boundValueOps = redisTemplate.boundValueOps(key);
         String dataStr = boundValueOps.get();
         ObjectMapper objectMapper = new ObjectMapper();
@@ -50,7 +48,7 @@ public class InsureRecordRedisDao {
     //将查询的数据存入redis中
     public void addRedisInsureRecordList(List<InsureRecordPo> list, int pageIndex, String searchText, int pageSize) {
         ObjectMapper objectMapper = new ObjectMapper();
-        String key = "insureRecordlist" + pageIndex+pageSize;
+        String key = "insureRecordlist" + pageIndex+pageSize+searchText;
         if (searchText != null && !searchText.equals("")) {
             key += searchText;
         }

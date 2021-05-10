@@ -29,6 +29,7 @@ public class CarPo {
     private String boughtDate;
     private Integer deptId;
     private Integer carStatus;
+    private String carStatusname;//车辆状态名字
     private String remarks;
     private Integer status;
     private String images;

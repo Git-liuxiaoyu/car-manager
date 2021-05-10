@@ -1,6 +1,7 @@
 package com.woniu.service.impl;
 
 import com.woniu.adapter.OutimeRemindAdapter;
+import com.woniu.po.InsureRecordPo;
 import com.woniu.po.OutimeRemindPo;
 import com.woniu.service.OutimeRemindService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +17,19 @@ import java.util.List;
 public class OutimeRemindServiceImpl implements OutimeRemindService {
     @Autowired
     private OutimeRemindAdapter outimeRemindAdapter;
+
+
     @Override
-    public List<OutimeRemindPo> outimeRemindList() {
-        return outimeRemindAdapter.findOutimeRemindList();
+    public List<OutimeRemindPo> outimeRemindList(String nexttime,String thistime, int pageIndex, int pageSize) {
+        return outimeRemindAdapter.findOutimeRemindList(nexttime,thistime,pageIndex,pageSize);
     }
+
+    //总数
+    @Override
+    public int count(String nexttime,String thistime) {
+        return outimeRemindAdapter.count(nexttime,thistime);
+    }
+
 
     @Override
     public int add(OutimeRemindPo outimeRemindPo) {

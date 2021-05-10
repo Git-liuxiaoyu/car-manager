@@ -9,7 +9,7 @@ import java.util.List;
 public interface KeepRecordService {
 
 
-    //规费记录列表
+    //分页查询列表
     public List<KeepRecord> keepList(String searchText, int pageIndex, int pageSize);
 
     //添加规费记录
