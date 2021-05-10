@@ -15,7 +15,7 @@ public class Car {
     private String carNum;
     private Integer brandId;
     private Integer type;
-    private String color;
+    private Integer color;
     private String carrying;
     private Integer seatNum;
     private BigDecimal oilConsume;
@@ -25,8 +25,8 @@ public class Car {
     private String engineNum;
     private String serialNumber;
     private Integer oppositeCompanyId;
-    private  BigDecimal price;
-    private Date boughtDate;
+    private BigDecimal price;
+    private String boughtDate;
     private Integer deptId;
     private Integer carStatus;
     private String carStatusname;//车辆状态名字

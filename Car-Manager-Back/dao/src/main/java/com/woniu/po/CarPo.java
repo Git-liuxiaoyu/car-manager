@@ -15,7 +15,7 @@ public class CarPo {
     private String carNum;
     private Integer brandId;
     private Integer type;
-    private String color;
+    private Integer color;
     private String carrying;
     private Integer seatNum;
     private BigDecimal oilConsume;
