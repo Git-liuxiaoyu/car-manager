@@ -247,19 +247,21 @@ export default {
       p: 1,
       total: 0,
       size: 5,
-      feeData: [{
-        id: '',
-        carId: 0,
-        feeName: '',
-        payTime: '',
-        fee: '',
-        oppositeCompanyId: '',
-        driverId: '',
-        remarks: '',
-        car: {carNum: ''},
-        oppositeName: '',
-        driverName: ''
-      }],
+      feeData: [
+        // {
+        // id: '',
+        // carId: 0,
+        // feeName: '',
+        // payTime: '',
+        // fee: '',
+        // oppositeCompanyId: '',
+        // driverId: '',
+        // remarks: '',
+        // car: {carNum: ''},
+        // oppositeName: '',
+        // driverName: ''
+      // }
+      ],
       fees: {},
       //控制新增弹框
       addDialogFormVisible: false,
@@ -278,11 +280,11 @@ export default {
   methods: {
     findFee() {
       this.$axios.get("feerecord/list", {params: {p: this.p, searchText: this.searchText, size: this.size}}).then(r => {
-        console.log(r);
+        // console.log(r);
         //   this.feeData=r.data;
         this.feeData = r.data.data.list
         this.total = r.data.data.total
-        console.log(r)
+        
       })
     },
     // 获取车牌信息
@@ -347,6 +349,16 @@ export default {
     // 进入修改框
     updateFee(row) {
       this.dialogEditFeeVisible = true;
+      this.findFee();
+      // console.log(this.feeData); 
+      // console.log(row.id)
+
+      // for(let fee in this.feeData){
+      //   if(fee.id==row.id){
+      //     this.editFee=fee
+      //   }
+      // }
+
       this.editFee = row;
     },
     // 去修改

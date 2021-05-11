@@ -1,11 +1,26 @@
 <template>
   <div>
-      <!-- 柱状图 -->
+    <!-- 柱状图 -->
     <div
       class="HelloWorld echart-box"
-      id="myChart1" :style="{width: '1000px', height: '500px'}"></div>
+      id="myChart1"
+      :style="{width: '1000px', height: '500px'}"
+    ></div>
+    <div>
 
+      <el-form :inline="true" class="demo-form-inline">
+        <el-form-item label="" prop="carId">
+          <el-select v-model="reportCarDate.carId" placeholder="鄂A88888" @change="handleCommand(reportCarDate.carId)">
+            <!-- <el-option label="请选择" value="0"></el-option> -->
+            <el-option :label="reportCar.carNum" :value="reportCar.carId"
+                       v-for="reportCar in reportCarDate" :key="reportCar.id" >
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <!-- <el-button type="primary" @click="handleCommand(reportCarDate.carId)">确 定</el-button>  -->
+      </el-form>
 
+    </div>
     <div
       class="HelloWorld echart-box"
       id="myChart2"
@@ -21,7 +36,8 @@ export default {
   data() {
     return {
       // 定义图表，各种参数
-    //   msg: "柱状图",
+      //   msg: "柱状图",
+      reportCarDate:[],
       opinion: [],
       opinionData: [],
       datas: [
@@ -39,47 +55,42 @@ export default {
   },
   created() {
     this.$axios.get("reportCar/all").then(r=>{
-        console.log(r);
-        this.reportCarDate=r.data.data;
-        this.opinion.length = 0; //清空数组
-        this.opinionData.length = 0; //清空数组
+      // console.log(r);
+      this.reportCarDate=r.data.data;
+      console.log(this.reportCarDate);
+      this.opinion.length = 0; //清空数组
+      this.opinionData.length = 0; //清空数组
 
-        for (let i = 0; i < r.data.data.length; i++) {
-            this.opinion.push(r.data.data[i].carNum);
-            this.opinionData.push(r.data.data[i].totalMoney);
-        }
+      for (let i = 0; i < r.data.data.length; i++) {
+        this.opinion.push(r.data.data[i].carNum);
+        this.opinionData.push(r.data.data[i].totalMoney);
+      }
 
-        //  console.log(this.opinion);
-        //  console.log(this.opinionData);
+      console.log(this.opinion);
+      console.log(this.opinionData);
 
-        });
-        this.$axios.get("reportCar/one?carNum=鄂A88888").then(r=>{
-        console.log(r);
-        console.log(this.datas);
-        this.datas.length = 0; //清空数组
-        // for (let i = 0; i < r.data.data.length; i++) {
-        //     var item = {
-        //     fee: r.data.data.fee[i],
-        //     name: r.data.data.name[i],
-        //     };
-        //   this.datas.push(item);
+    });
+    this.loadPie(1);
+    //     this.$axios.get("reportCar/one?carNum=鄂A88888").then(r=>{
+    //     console.log(r);
+    //     console.log(this.datas);
+    //     this.datas.length = 0; //清空数组
 
-        // }
-         for (let key in r.data.data) {
-          var item = {
-            value: r.data.data[key],
-            name: key,
-          };
+    //      for (let key in r.data.data) {
+    //       var item = {
+    //         value: r.data.data[key],
+    //         name: key,
+    //       };
 
-          this.datas.push(item);
-          this.names.push(key);
-        }
-    //    console.log(this.datas);
-       console.log(item.value);
-        console.log(item.name);
+    //       this.datas.push(item);
+    //       this.names.push(key);
+    //     }
+    // //    console.log(this.datas);
+    //    console.log(item.value);
+    //     console.log(item.name);
 
 
-        });
+    //     });
 
   },
   watch: {
@@ -101,6 +112,26 @@ export default {
 
 
   methods: {
+    loadPie(id){
+      this.$axios.get("reportCar/one?carId="+id).then(r=>{
+        // console.log(r);
+        // console.log(this.datas);
+        this.datas.length = 0; //清空数组
+
+        for (let key in r.data.data) {
+          var item = {
+            value: r.data.data[key],
+            name: key,
+          };
+
+          this.datas.push(item);
+          this.names.push(key);
+        }
+        //    console.log(this.datas);
+        //  console.log(item.value);
+        //   console.log(item.name);
+      });
+    },
     drawLine() {
       // 1、基于准备好的dom，初始化echarts实例
       let myChart = this.$echarts.init(document.getElementById("myChart1"));
@@ -112,18 +143,18 @@ export default {
           tooltip: {},
         },
         xAxis: {
-        //   data: [
-        //     "0~10",
-        //     "10~20",
-        //     "21~30",
-        //     "31~40",
-        //     "41~50",
-        //     "51~60",
-        //     "61~70",
-        //     "71~80",
-        //     "80以上",
-        //   ],
-        data:this.opinion,
+          //   data: [
+          //     "0~10",
+          //     "10~20",
+          //     "21~30",
+          //     "31~40",
+          //     "41~50",
+          //     "51~60",
+          //     "61~70",
+          //     "71~80",
+          //     "80以上",
+          //   ],
+          data:this.opinion,
         },
         yAxis: {},
         barWidth:"30%",
@@ -147,7 +178,7 @@ export default {
     },
 
 
-        drawLine1() {
+    drawLine1() {
       // 1、基于准备好的dom，初始化echarts实例
       let myChart = this.$echarts.init(document.getElementById("myChart2"));
       //2、构造图表数据
@@ -162,9 +193,9 @@ export default {
         },
         legend: {
           orient: "vertical",
-          left: "left",
-        //   data: ["男", "女", "未知"],
-        data: this.names,
+          left: "right",
+          //   data: ["男", "女", "未知"],
+          data: this.names,
         },
         series: [
           {
@@ -186,6 +217,10 @@ export default {
       // 3、绘制图表
       myChart.setOption(options);
     },
+    handleCommand(id){
+      //  alert(id);
+      this.loadPie(id);
+    }
 
   },
 };

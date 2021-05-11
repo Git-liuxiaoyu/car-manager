@@ -158,10 +158,6 @@
           </el-col>
 
           <el-col :span="8">
-            <!-- <el-form-item label="驾照类型" prop="type">
-              <el-input v-model="driver.type"></el-input>
-            </el-form-item> -->
-
             <el-form-item label="驾照类型" prop="type">
               <el-select v-model="driver.type" placeholder="请选择" >
                 <el-option label="请选择" value="0" ></el-option>
@@ -205,9 +201,6 @@
           </el-col>
 
           <el-col :span="8">
-            <!-- <el-form-item label="部门" prop="deptId">
-              <el-input v-model="showDriver.employee.deptId" readonly="readonly"></el-input>
-            </el-form-item> -->
 
             <el-form-item label="部门" prop="deptId">
               <el-input  v-model="showDriver.deptName" readonly="readonly"></el-input>
@@ -215,12 +208,12 @@
           </el-col>
 
           <el-col :span="8">
-            <el-form-item label="生日">
+            <el-form-item label="生日" >
               <el-date-picker
                 v-model="showDriver.employee.birthday"
                 align="right"
                 type="date"
-                placeholder="选择日期">
+                placeholder="选择日期" readonly="readonly">
               </el-date-picker>
             </el-form-item>
           </el-col>
@@ -238,16 +231,13 @@
           </el-col>
 
           <el-col :span="8">
-            <!-- <el-form-item label="入职时间" prop="entryDate">
-           <el-input v-model="showDriver.employee.entryDate" readonly="readonly"></el-input>
-           </el-form-item> -->
 
             <el-form-item label="入职时间">
               <el-date-picker
                 v-model="showDriver.employee.entryDate"
                 align="right"
                 type="date"
-                placeholder="选择日期">
+                placeholder="选择日期" readonly="readonly">
               </el-date-picker>
             </el-form-item>
           </el-col>
@@ -280,14 +270,14 @@
             <el-form-item label="状态" prop="status">
               <el-input v-model="showDriver.status" readonly="readonly">
               </el-input>
-              <!-- {{showDriver.status}} -->
+
             </el-form-item>
           </el-col>
 
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogshowDriverVisible = false">取 消</el-button>
+        <el-button @click="dialogshowDriverVisible = false">关 闭</el-button>
       </div>
     </el-dialog>
 
@@ -302,11 +292,6 @@
           </el-col>
 
           <el-col :span="8">
-            <!-- <el-form-item label="部门" prop="deptId">
-              <el-input v-model="showDriver.employee.deptId"></el-input>
-            </el-form-item> -->
-
-
             <el-form-item label="部门" prop="deptId">
               <el-select v-model="showDriver.employee.deptId" placeholder="请选择" >
                 <el-option label="请选择" value="0" ></el-option>
@@ -318,9 +303,6 @@
           </el-col>
 
           <el-col :span="8">
-            <!-- <el-form-item label="生日" prop="birthday">
-            <el-input type="date" v-model="showDriver.employee.birthday" readonly="readonly"></el-input>
-            </el-form-item> -->
             <el-form-item label="生日">
               <el-date-picker
                 v-model="showDriver.employee.birthday"
@@ -344,9 +326,6 @@
           </el-col>
 
           <el-col :span="8">
-            <!-- <el-form-item label="入职时间" prop="entryDate">
-           <el-input type="date" v-model="showDriver.employee.entryDate" readonly="readonly"></el-input>
-           </el-form-item> -->
             <el-form-item label="入职时间">
               <el-date-picker
                 v-model="showDriver.employee.entryDate"
@@ -371,9 +350,6 @@
           </el-col>
 
           <el-col :span="8">
-            <!-- <el-form-item label="驾照类型" prop="type">
-              <el-input v-model="showDriver.type"></el-input>
-            </el-form-item> -->
 
             <el-form-item label="驾照类型" prop="type">
               <el-select v-model="showDriver.type" placeholder="请选择" >
@@ -392,11 +368,7 @@
           </el-col>
 
           <el-col :span="8">
-            <!-- <el-form-item label="状态" prop="status">
-              <el-input v-model="showDriver.status">
-              </el-input>
 
-            </el-form-item> -->
             <el-form-item label="状态">
               <el-radio-group v-model="showDriver.status">
                 <el-radio  :label="0">禁用</el-radio>
@@ -505,13 +477,8 @@ export default {
               this.showDriver.driverType = e3.text;
             }
           })
-
-
         });
-
       });
-
-
     },
 
     //分页方法
@@ -570,9 +537,13 @@ export default {
         this.driver.status = 0;
       }
       this.$axios.post("driver/addDriver", this.driver).then(r => {
-        this.addDialogFormVisible = false;
-        this.loadDriver();
-
+        if (r.data.code == 200) {
+          this.$message({type: 'success', message: "修改成功", duration: 800});
+          this.addDialogFormVisible = false;
+         this.loadDriver();
+        } else {
+          this.$message({type: 'error', message: "修改失败", duration: 800});
+        }
       })
     },
 
@@ -602,13 +573,24 @@ export default {
 
     updateDriver(row) {
       this.dialogEdiDriverVisible = true;
+      this.loadDriver();
+      for(let driver in this.tableData){
+        if(driver.id==row.id){
+          this.showDriver=driver
+        }
+      }
       this.showDriver = row
     },
 
     toUpdateDriver() {
        this.$axios.post("driver/updated", this.showDriver).then(r => {
-        this.dialogEdiDriverVisible = false;
-        this.loadDriver();
+        if (r.data.code == 200) {
+          this.$message({type: 'success', message: "修改成功", duration: 800});
+         this.dialogEdiDriverVisible = false;
+          this.loadDriver();
+        } else {
+          this.$message({type: 'error', message: "修改失败", duration: 800});
+        }
       })
     },
     deleteDriver(row) {
@@ -633,13 +615,7 @@ export default {
   created() {
 
     this.loadDictionary();
-    // this.loadDriver();
-    // this.loadDept();
-  //  Promise.all([
-  //    this.loadDictionary()
-  //   ]).then(res => {
-  //     this.loadDriver();
-  //   })
+
   },
   mounted(){
     this.loadDriver();

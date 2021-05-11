@@ -8,5 +8,5 @@ public interface ReportCarDao {
 
     List<ReportCarPo> getAll();
 
-    ReportCarPo getOne(String carNum);
+    ReportCarPo getOne(Integer carId);
 }
