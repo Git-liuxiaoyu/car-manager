@@ -3,11 +3,9 @@
       <!-- 柱状图 -->
     <div
       class="HelloWorld echart-box"
-      id="myChart1"
-      :style="{width: '1000px', height: '500px'}"
-    ></div>
+      id="myChart1" :style="{width: '1000px', height: '500px'}"></div>
 
-    
+
     <div
       class="HelloWorld echart-box"
       id="myChart2"
@@ -53,7 +51,7 @@ export default {
 
         //  console.log(this.opinion);
         //  console.log(this.opinionData);
-         
+
         });
         this.$axios.get("reportCar/one?carNum=鄂A88888").then(r=>{
         console.log(r);
@@ -65,14 +63,14 @@ export default {
         //     name: r.data.data.name[i],
         //     };
         //   this.datas.push(item);
-             
+
         // }
          for (let key in r.data.data) {
           var item = {
             value: r.data.data[key],
             name: key,
           };
-          
+
           this.datas.push(item);
           this.names.push(key);
         }
@@ -80,7 +78,7 @@ export default {
        console.log(item.value);
         console.log(item.name);
 
-         
+
         });
 
   },

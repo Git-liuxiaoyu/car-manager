@@ -15,9 +15,9 @@ public interface DictionaryService {
 
     Integer count(String searchText);
 
-    List<Dictionary> findAll(String searchText, int pageIndex, int pageSize);
+    List<Dictionary> list(String searchText, int pageIndex, int pageSize);
 
-    List<DictionaryPo> list();
+    List<DictionaryPo> menuList();
 
     void add(Dictionary dictionary);
 
@@ -26,4 +26,5 @@ public interface DictionaryService {
     void delete(Integer id);
 
     void update(Dictionary dictionary);
+
 }

@@ -14,7 +14,7 @@
           <el-button slot="append" icon="el-icon-search" @click="findOutCar"></el-button>
         </el-input>
       </el-col>
-      <el-col :span="8">
+      <el-col :span="19">
         <el-button type="primary" @click="outCar">出车记录登记</el-button>
         <el-button type="success" @click="inCar">回车记录登记</el-button>
       </el-col>
@@ -523,7 +523,6 @@ export default {
         return;
       }
       this.addInCarFormVisible = true;
-      console.log(this.subInCar)
     },
     //查看回车记录
     showCar(row) {
@@ -544,13 +543,13 @@ export default {
         this.$message.error("回车不能小于出车时间");
         return;
       }
-      console.log(this.subInCar)
       this.$axios.post("returnRecord/add", this.subInCar).then(r => {
         if (r.data.code = 200) {
           this.addInCarFormVisible = false;
           this.$message.success("回车成功");
-          this.p = 1;
-          this.findOutCar();
+          setTimeout(() => {
+            this.$router.go(0);
+          }, 1000);
         }
       })
     },

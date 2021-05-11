@@ -306,7 +306,7 @@
               <el-input v-model="showDriver.employee.deptId"></el-input>
             </el-form-item> -->
 
-            
+
             <el-form-item label="部门" prop="deptId">
               <el-select v-model="showDriver.employee.deptId" placeholder="请选择" >
                 <el-option label="请选择" value="0" ></el-option>
@@ -492,10 +492,6 @@ export default {
       this.$axios.get("driver/list", {params: {p: this.p, searchText: this.searchText, size: this.size}}).then(r => {
         this.tableData = r.data.data.list
         this.total = r.data.data.total
-        console.log(r)
-        // this.driverData=r.data;
-        // console.log(this.driverData)
-        // let showDriver =  this.showDriver;
         this.tableData.forEach(e1 => {
           this.depts.forEach(e2 => {
             if (e1.employee.deptId === e2.id) {
@@ -503,8 +499,6 @@ export default {
               this.showDriver.deptName= e2.text;
             }
           })
-          // this.showDriver=showDriver;
-          // console.log(this.showDriver)
           this.driverTypes.forEach(e3=>{
             if(e1.type===e3.id){
               e1.driverType = e3.text;
@@ -515,39 +509,7 @@ export default {
 
         });
 
-
-        //  console.log(this.depts);
-        //   console.log(this.depts);
-        //     for(let i=0 ; i<this.depts.length; i++){
-        //       for(let j=0;j<this.driverData.length;j++){
-        //           if(this.driverData[j].employee.deptId === this.depts[i].id){
-        //             this.driverData[j].deptName = this.depts[i].text;
-        //           }
-        //       }
-        //     }
-
       });
-
-      //   this.$axios.get("dictionary/menu").then(r => {
-      //   this.dictionary = r.data.data;
-      //   //获取部门信息
-      //    console.log(this.dictionary);
-      //    console.log(this.dictionary[0]);
-      //   for (let i = 0; i < this.dictionary.length; i++) {
-      //     if (this.dictionary[i].id == 1) {
-      //       this.depts = this.dictionary[i].children;
-
-      //     }
-      //   }
-
-      //  console.log(this.depts);
-      //   console.log(this.depts[0]);
-
-
-      //   console.log(this.driverData[2]);
-      // // ]]
-
-      // });
 
 
     },
@@ -566,7 +528,6 @@ export default {
 
       this.$axios.get("dictionary/menu").then(r => {
         this.dictionary = r.data.data;
-        console.log(this.dictionary)
         //获取部门信息
         for (let i = 0; i < this.dictionary.length; i++) {
           if (this.dictionary[i].id === 1) {
@@ -586,20 +547,12 @@ export default {
     },
     addDriver() {
       this.addDialogFormVisible = true;
-      // this.$axios.get("driver/getName" ).then(r=>{
-      //       console.log(r)
-      //       this.employees=r.data.data;
-
-      //   })
-
-
     },
     //获取驾驶员的员工信息
     dname(event) {
       let name = event.target.value;
       // alert(name);
       this.$axios.get("driver/dname?name=" + name).then(r => {
-        console.log(r)
         if (r.data.code == 200) {
           this.driver.employee = r.data.data;
         } else {
@@ -617,7 +570,6 @@ export default {
         this.driver.status = 0;
       }
       this.$axios.post("driver/addDriver", this.driver).then(r => {
-        console.log(r)
         this.addDialogFormVisible = false;
         this.loadDriver();
 
@@ -654,14 +606,10 @@ export default {
     },
 
     toUpdateDriver() {
-      console.log(this.showDriver.status);
        this.$axios.post("driver/updated", this.showDriver).then(r => {
-        console.log(r)
         this.dialogEdiDriverVisible = false;
         this.loadDriver();
-
       })
-
     },
     deleteDriver(row) {
       this.$confirm("是否删除?", "提示", {
@@ -670,7 +618,6 @@ export default {
         type: "warning"
       }).then(res => {
         this.$axios.post("driver/del",row).then(r=>{
-          console.log(r);
           if(r.data.code==200){
             this.$message({type: 'success', message:"删除成功",  duration:800});
             this.loadDriver();
@@ -695,7 +642,6 @@ export default {
   //   })
   },
   mounted(){
-    // this.loadDictionary();
     this.loadDriver();
   }
 

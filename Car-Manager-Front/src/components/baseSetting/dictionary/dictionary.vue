@@ -326,7 +326,6 @@ export default {
       this.$axios.get("dictionary/list", {params: {p: this.p, searchText: this.searchText, size: this.size}}).then(r => {
         this.tableData = r.data.data.list;
         this.total = r.data.data.total;
-        console.log(r)
       });
     },
     //分页方法

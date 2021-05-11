@@ -7,7 +7,7 @@
     <!--新增回车记录-->
     <insert id="add" parameterType="ReturnRecordPo">
         insert into return_record
-            value (null,#{id},#{returnMileage},#{zongMileage},#{stopPosition},#{remarks})
+            value (null,#{id},#{returnMileage},#{mileage},#{stopPosition},#{remarks},#{zongMileage})
     </insert>
 
 <!--根据dictionaryId查询回车信息-->

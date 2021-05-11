@@ -44,7 +44,9 @@ public class ReturnRecordController {
         car.setCarStatus(38);
         //修改车的状态
         carService.update(car);
+
         DepartureRecord departureRecord=departureRecordService.getById(returnRecord.getId());
+
         departureRecord.setInTime(returnRecord.getInCarTime());
         //修改回车时间
         departureRecordService.update(departureRecord);

@@ -36,6 +36,7 @@
             <if test="deptId!=null and deptId!=''">deptId = #{deptId},</if>
             <if test="outTime!=null and outTime!=''">outTime = #{outTime},</if>
             <if test="preInTime!=null and preInTime!=''">preInTime = #{preInTime},</if>
+            <if test="inTime!=null and inTime!=''">inTime = #{inTime},</if>
             <if test="followPerson!=null and followPerson!=''">followPerson = #{followPerson},</if>
             <if test="destination!=null and destination!=''">destination = #{destination},</if>
             <if test="mileage!=null and mileage!=''">mileage = #{mileage},</if>

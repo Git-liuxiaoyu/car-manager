@@ -16,8 +16,10 @@ public interface DictionaryDao {
      */
     Integer count(String searchText);
 
+    //分页
     List<DictionaryPo> list(String searchText);
 
+    //查儿子
     List<DictionaryPo> menuList();
 
     void add(DictionaryPo dictionaryPo);

@@ -3,10 +3,11 @@ import App from './App'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import router from './router/router'
-// import echarts from 'echarts'
 import * as echarts from 'echarts';
 Vue.prototype.$echarts = echarts;
+import SlideVerify from 'vue-monoplasty-slide-verify';
 
+Vue.use(SlideVerify);
 Vue.use(ElementUI);
 Vue.config.productionTip = false
 
@@ -44,7 +45,7 @@ Vue.filter("dateConvert", function (str) {
   return time
 });
 
-//时间全局过滤器   
+//时间全局过滤器
 Vue.filter("timeConvert", function (str) {
   let date = new Date(str);
   let year = date.getFullYear().toString();

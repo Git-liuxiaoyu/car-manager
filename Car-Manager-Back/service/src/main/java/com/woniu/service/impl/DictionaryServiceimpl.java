@@ -26,13 +26,13 @@ public class DictionaryServiceimpl implements DictionaryService {
     }
 
     @Override
-    public List<Dictionary> findAll(String searchText, int pageIndex, int pageSize) {
+    public List<Dictionary> list(String searchText, int pageIndex, int pageSize) {
         return dictionaryAdapter.findDictionaryLists(searchText,pageIndex,pageSize);
     }
 
     @Override
-    public List<DictionaryPo> list() {
-        return dictionaryAdapter.list();
+    public List<DictionaryPo> menuList() {
+        return dictionaryAdapter.menuList();
     }
 
     @Override
@@ -54,4 +54,5 @@ public class DictionaryServiceimpl implements DictionaryService {
     public void update(Dictionary dictionary) {
         dictionaryAdapter.update(dictionary);
     }
+
 }

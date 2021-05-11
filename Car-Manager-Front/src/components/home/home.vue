@@ -2,55 +2,62 @@
   <div class="wrapper">
     <!-- 头部 -->
     <el-row class="l-head">
-      <el-col :span="8" class="l-img">
-        <img src="../../assets/image/logo.png" class="logo"/>
+      <el-col :span="10" class="l-head-zj">
+        <i class="el-icon-bicycle"></i>
+        <span>车辆管理系统</span>
       </el-col>
-      <el-col :span="8" class="l-head-zj">
-        <span class="span1">
-          车辆管理系统
-        </span>
-      </el-col>
-      <el-col :span="8" class="l-head-youbian">
-        <span class="span2">欢迎您&nbsp;&nbsp;<span v-text="userNamer"></span>&nbsp;&nbsp;&nbsp;
-          <el-tooltip placement="top">
-                  <div slot="content">退出</div>
-          <el-button type="danger" icon="el-icon-switch-button" circle @click.prevent="logout"></el-button>
-            </el-tooltip>
-        </span>
+
+      <el-col :span="13" class="l-head-youbian">
+        <el-dropdown @command="handleCommand">
+          <el-button style="background-color:  #438EB9;color: white">
+            个人中心<i class="el-icon-arrow-down el-icon--right"></i>
+          </el-button>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item icon="el-icon-user" disabled>{{ userNamer }}</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-user-solid" command="a">个人信息</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-key" command="b">修改密码</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-switch-button" command="c">退出系统</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
       </el-col>
     </el-row>
-
 
     <el-container>
       <!-- 中左 -->
       <!-- default-active默认显示高亮 -->
       <el-aside width="200px" class="main">
-        <el-menu class="el-menu-vertical-demo" :router="true" background-color="white" :unique-opened="true"
-                 default-active="index">
+        <el-menu
+          class="el-menu-vertical-demo"
+          :router="true"
+          background-color="#F5F5F5"
+          :unique-opened="true"
+          default-active="index"
+        >
           <el-menu-item index="index">
             <i class="el-icon-s-home"></i>
-            <span slot="title">首页</span>
+            <span slot="title">系统首页</span>
           </el-menu-item>
 
-          <el-submenu :index="item.id+''" v-for="item in menu" :key="item.id">
-
+          <el-submenu :index="item.id + ''" v-for="item in menu" :key="item.id">
             <template slot="title">
-              <i class="el-icon-menu"></i>
+              <i class="el-icon-set-up"></i>
               <span>{{ item.name }}</span>
             </template>
 
             <el-menu-item-group>
-              <el-menu-item :index="son.href" v-for="son in item.children" :key="son.id">{{ son.name }}</el-menu-item>
+              <el-menu-item :index="son.href"
+                            v-for="son in item.children" :key="son.id">
+                <i class="el-icon-turn-off"></i>
+                <span>{{ son.name }}</span>
+              </el-menu-item>
             </el-menu-item-group>
-
           </el-submenu>
-
         </el-menu>
       </el-aside>
 
       <!-- 中右 -->
-      <el-main class="main">
-        <router-view></router-view>
+      <el-main class="main1">
+        <router-view v-if="isRouterAlive"/>
       </el-main>
     </el-container>
   </div>
@@ -61,53 +68,73 @@ export default {
   data() {
     return {
       menu: [],
-      userNamer: ''
-    }
+      userNamer: "",
+      isRouterAlive: true
+    };
   },
   methods: {
-    add() {
-      alert(12)
+    reload () {
+      this.isRouterAlive = false
+      this.$nextTick(() => (this.isRouterAlive = true))
+    },
+    handleCommand(item) {
+      if (item == "a") {
+      }
+      if (item == "b") {
+        this.changePassword();
+      }
+      if (item == "c") {
+        this.logout();
+      }
+    },
+    changePassword() {
+      this.$router.push("/changePassword");
     },
     findPerms() {
-      this.$axios.get("employee/menu?token=" + localStorage.getItem("token")).then(r => {
-        this.menu = r.data.data;
-        this.userNamer = this.menu[0].userName
-      })
+      this.$axios
+        .get("employee/menu?token=" + localStorage.getItem("token"))
+        .then(r => {
+          this.menu = r.data.data;
+          this.userNamer = this.menu[0].userName;
+        });
     },
     logout() {
       this.$confirm("此操作将退出该账户,是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
-      }).then(res => {
-        localStorage.removeItem("token");
-        this.$router.push("/");
-        this.$message({
-          message: "退出成功",
-          type: "success"
-        });
-      }).catch(res => {
-        this.$message({
-          message: "退出取消",
-          type: "info"
-        });
       })
+        .then(res => {
+          localStorage.removeItem("token");
+          this.$router.push("/");
+          this.$message({
+            message: "退出成功",
+            type: "success"
+          });
+        })
+        .catch(res => {
+          this.$message({
+            message: "退出取消",
+            type: "info"
+          });
+        });
     }
   },
-  mounted() {
-    this.findPerms()
+  created() {
+    this.findPerms();
   }
-}
+};
 </script>
 
 <style scoped>
-/*.aside {*/
-/*  background-color: #fff9e6;*/
-/*}*/
-
 .main {
+  background-color: #F5F5F5;
+  height: 90vh;
+  overflow-y: auto;
+}
+
+.main1 {
   background-color: white;
-  border: 1px solid black;
   height: 90vh;
   overflow-y: auto;
 }
@@ -119,7 +146,7 @@ export default {
 }
 
 .l-head {
-  background-color: black;
+  background-color: #438EB9;
 }
 
 .logo {
@@ -128,16 +155,17 @@ export default {
 }
 
 .l-head-zj {
-  text-align: center;
-  height: 10vh;
+  font-size: 30px;
+  margin-left: 20px;
+  color: white;
   line-height: 65px;
+  height: 10vh;
 }
 
 .span1 {
   font-size: 30px;
   color: #ffffff;
   text-shadow: #ffffff 3px 3px 4px;
-
 }
 
 .l-head-youbian {
@@ -152,7 +180,6 @@ export default {
   color: #ffffff;
   text-shadow: #ffffff 3px 3px 4px;
   padding: 50px;
-
 }
 
 .el-footer {

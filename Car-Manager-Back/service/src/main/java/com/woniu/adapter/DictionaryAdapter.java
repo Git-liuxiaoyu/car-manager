@@ -49,7 +49,7 @@ public class DictionaryAdapter {
         return dictionaryDao.count(searchText);
     }
 
-    public List<DictionaryPo> list() {
+    public List<DictionaryPo> menuList() {
         return dictionaryDao.menuList();
     }
 
@@ -84,4 +84,5 @@ public class DictionaryAdapter {
         dictionaryDao.update(item);
         dictionaryRedisDao.updateRedis();
     }
+
 }

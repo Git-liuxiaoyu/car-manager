@@ -3,6 +3,7 @@ package com.woniu.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.woniu.dao.DictionaryDao;
 import com.woniu.domain.Dictionary;
 import com.woniu.domain.Employee;
 import com.woniu.po.DictionaryPo;
@@ -26,6 +27,10 @@ public class DictionaryController {
     @Autowired
     private DictionaryService dictionaryService;
 
+    @Autowired
+    private DictionaryDao dictionaryDao;
+
+
     //查询分页字典
     @RequestMapping("list")
     public ResponseResult<PageInfo<Dictionary>> type(Integer p, String searchText, Integer size) {
@@ -39,9 +44,10 @@ public class DictionaryController {
         }
         Integer total = dictionaryService.count(searchText);
         PageHelper.startPage(pageIndex, pageSize);
-        List<Dictionary> dictionaryList = dictionaryService.findAll(searchText, pageIndex, pageSize);
+        List<Dictionary> dictionaryList = dictionaryService.list(searchText, pageIndex, pageSize);
+//        List<DictionaryPo> dictionaryList = dictionaryDao.list(searchText);
+        //测试
         PageInfo<Dictionary> pageInfo = new PageInfo<>(dictionaryList);
-        pageInfo.setTotal(total);
         return new ResponseResult<>(pageInfo);
     }
 
@@ -75,7 +81,7 @@ public class DictionaryController {
     //查询所有的字典
     @RequestMapping("menu")
     public ResponseResult<List<DictionaryPo>> menu() {
-        List<DictionaryPo> mens = dictionaryService.list();
+        List<DictionaryPo> mens = dictionaryService.menuList();
 
         List<DictionaryPo> dictionaryPos = new ArrayList<>();//定义一个父列表的集合
 
