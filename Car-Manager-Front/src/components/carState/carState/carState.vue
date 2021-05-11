@@ -16,7 +16,7 @@
       </el-table>
     </template> -->
 <div>
-    <div class="demo-image">
+   <div class="demo-image">
         <div class="block" v-for="fit in outtimelist" :key="fit.id">
             <img src="@/assets/image/chuche.jpg" alt="123" style="width:210px;height:130px"  v-if="fit.carStatus==36">
             <img src="@/assets/image/weixiu.jpg" alt="123" style="width:210px;height:130px" v-if="fit.carStatus==37"> 
@@ -26,7 +26,7 @@
             <br/>
             <span class="demonstration" style="center">{{fit.carNum}}&nbsp;&nbsp;【{{fit.carStatusname}}】</span>
         </div>
-    </div>
+   </div>
 </div>
     <br/>
     <br/>

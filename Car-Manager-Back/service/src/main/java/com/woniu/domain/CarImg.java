@@ -11,5 +11,5 @@ public class CarImg {
     private Integer id;
     private Integer carId;
     private String imgName;
-    private Integer direction;
+    private String description;
 }

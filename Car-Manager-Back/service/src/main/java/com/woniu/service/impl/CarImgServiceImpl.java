@@ -4,18 +4,22 @@ import com.woniu.adapter.CarImgAdapter;
 import com.woniu.domain.CarImg;
 import com.woniu.service.CarImgService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @Author Administrator
  * @Date 2021/5/10 21:23
  */
-
+@Service
 public class CarImgServiceImpl implements CarImgService {
     @Autowired
     private CarImgAdapter carImgAdapter;
+
     @Override
-    public CarImg query(CarImg carImg) {
-        return carImgAdapter.query(carImg);
+    public List<CarImg> queryByCarId(Integer carId) {
+        return carImgAdapter.queryByCarId(carId);
     }
 
     @Override
@@ -29,7 +33,7 @@ public class CarImgServiceImpl implements CarImgService {
     }
 
     @Override
-    public void delete(CarImg carImg) {
-        carImgAdapter.delete(carImg);
+    public void delete(Integer id) {
+        carImgAdapter.delete(id);
     }
 }

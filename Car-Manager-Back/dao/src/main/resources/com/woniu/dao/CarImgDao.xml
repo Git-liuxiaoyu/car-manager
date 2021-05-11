@@ -5,12 +5,12 @@
 <mapper namespace="com.woniu.dao.CarImgDao">
     <!--sql片段-->
     <sql id="columns">
-        id,carId,imgName,direction
+        id,carId,imgName,description
     </sql>
     <!--添加-->
     <insert id="add" parameterType="CarImgPo">
         insert into car_img(<include refid="columns"></include>)
-        values(null,#{carId},#{imgName},#{direction})
+        values(null,#{carId},#{imgName},#{description})
     </insert>
     <!--修改-->
     <update id="update" parameterType="CarImgPo">
@@ -18,27 +18,19 @@
         <set>
             <if test="carId!=null">carId=#{carId},</if>
             <if test="imgName!=null">imgName=#{imgName},</if>
-            <if test="direction!=null">direction=#{direction},</if>
+            <if test="description!=null">description=#{description},</if>
         </set>
         where id=#{id}
     </update>
     <!--删除-->
-    <delete id="delete" parameterType="CarImgPo">
+    <delete id="delete" parameterType="Integer">
         delete from car_img
         <where>
-            carId = #{carId} and direction = #{direction}
+            id = #{id}
         </where>
     </delete>
     <!--查询-->
-    <select id="query" parameterType="CarImgPo">
-        select * from  car_img
-        <where>
-            <if test="carId!=null">
-                carId = #{carId}
-            </if>
-            <if test="carId!=null">
-                and direction = #{direction}
-            </if>
-        </where>
+    <select id="queryByCarId" resultType="CarImgPo">
+        select * from  car_img where carId = #{carId}
     </select>
 </mapper>

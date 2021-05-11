@@ -334,29 +334,47 @@
       </span>
     </el-dialog>
     <!--图片管理-->
-    <el-dialog title="车辆图片管理" :visible.sync="manageCarImgVisible" center width="80%">
+    <el-dialog :title="updateData.carNum+'图片管理'" :visible.sync="manageCarImgVisible" center width="80%">
+      <!-- <el-tag center>{{updateData.carNum}}</el-tag> -->
+      <!-- 图片展示 -->
+      <div>
+          <div class="demo-image">
+            <div v-for="img in imgList" :key="img.id" style="text-align:center">
+              <div class="block" style="width:200px;height:200px;display: inline-block;float:left;text-align:center" >
+                    <el-image
+                      style="width:100px;height:100px;"
+                      class="table-td-thumb"
+                      :src="img.imgName">
+                    </el-image>
+                    <br/>
+                    <br/>
+                    {{img.description}}
+                    <br/>
+                    <br/>
+                    <el-button type="danger" icon="el-icon-delete" circle @click="delImg(img)"></el-button>
+              </div>
+            </div>
+          </div>
+      </div>
+      <!--图片上传-->
+      <!-- action="http://localhost:8888/carImg/upload" -->
       <el-upload
-        :headers= {Authorization:this.token}
-        action="http://localhost:8888/carImg/upload"
-        :data="uploadData"
-        list-type="picture-card">
-        <i class="el-icon-plus"></i>
+          style="clear:both"
+          class="upload-demo"
+          ref="upload"
+          action="http://localhost:8888/carImg/upload"
+          accept="image/jpeg,image/gif,image/png,image/jpg"
+          :file-list="fileList"
+          :headers= {Authorization:this.token}
+          :data=uploadData
+          :before-upload=handleBefore
+          :auto-upload="false">
+          <el-button slot="trigger" size="small" type="primary">选取图片</el-button>
+          <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传图片</el-button>
+          <div slot="tip" class="el-upload__tip">只能上传jpeg/gif/png/jpg文件</div>
       </el-upload>
-        <!-- <el-upload
-            class="upload-demo"
-            ref="upload"
-            accept="image/jpeg,image/gif,image/png"
-            multiple
-            action="http://localhost:8888/carImg/upload"
-
-            :headers= {Authorization:this.token}
-            :on-preview="handlePreview"
-            :on-remove="handleRemove"
-            :file-list="fileList"
-            :auto-upload="false">
-            <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
-            <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
-        </el-upload> -->
+      <br/>
+      <el-input placeholder="请输入上传图片描述" v-model="uploadData.description" width="40px" ></el-input>
     </el-dialog>
     <!--详细-->
     <el-dialog title="维修信息详细" :visible.sync="ViewDialogFormVisible" center width="80%">
@@ -457,8 +475,6 @@
         </el-row>
       </el-form>
     </el-dialog>
-
-
     <el-row>
       <el-col :span="10" :push="6">
         <el-pagination
@@ -503,12 +519,13 @@ export default {
       deptType: [], // 部门集合
       carStatusType: [], // 车辆状态集合
       oppositeList: [], // 往来单位集合
-      fileList: [], // 图片文件集合
+      imgList:[], // 图片集合
+      fileList:[],
       token: "",
       uploadData: {
-        carId: "2",
-        imgName: "2.jpg",
-        direction: 1
+        carId: 0,
+        imgName: "",
+        description: ""
       }
     };
   },
@@ -611,16 +628,43 @@ export default {
     // 图片管理
     showImgManageDialog(row) {
       this.manageCarImgVisible = true;
+      this.updateData = row;
+      this.getCarImgList(this.updateData.id);
     },
-    handleRemove(file, fileList) {
-      console.log(file, fileList);
-    },
-    handlePreview(file) {
-      console.log(file);
-    },
-    manageCarImg() {},
     submitUpload() {
-      this.$refs.upload.submit();
+        this.uploadData.carId=this.updateData.id
+        this.uploadData.imgName=this.updateData.carNum+this.uploadData.description;
+        this.$refs.upload.submit();
+        this.$router.go(0);
+    },
+    handleBefore(file) {
+        this.fileList = []
+        var testmsg = file.name.substring(file.name.lastIndexOf(".") + 1);
+        const extension = testmsg === "jpg"|testmsg ==="gif"|testmsg==="png"|testmsg==="jpeg";
+        if (!extension ) {
+          this.$message({
+            message: "上传文件只能图片格式!",
+            type: "warning",
+          });
+        }
+        return extension;
+    },
+    delImg(img) {
+      this.$confirm("此操作将删除该图片,是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(res => {
+          this.$axios.get("carImg/delete?id=" + img.id).then(r => {
+            (this.p = 1), this.loadList();
+            this.$message.success("删除成功");
+            app.$data.imgList = this.getCarImgList(img.carId)
+          });
+        })
+        .catch(res => {
+          this.$message.info("取消删除");
+        });
     },
     // 删
     del(row) {
@@ -670,7 +714,13 @@ export default {
       this.$axios.get("opposite/getoppolist?type=32").then(r => {
         this.oppositeList = r.data;
       });
-    }
+    },
+    getCarImgList(carId){
+        this.$axios.get("carImg/getByCarId?carId=" +carId).then(r => {
+        this.imgList = r.data.data
+        return this.imgList;
+      })
+    },
   },
   created() {
     Promise.all([
