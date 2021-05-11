@@ -532,7 +532,7 @@ export default {
         this.$axios.get("opposite/getoppolist?type=" + 34).then(r => {
         this.oppositeList = r.data
       })
-      console.log(this.oppositeList)
+      
     }
   }
   ,

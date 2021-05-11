@@ -443,8 +443,7 @@ export default {
 
         this.keeplist = r.data.data.list
         this.total = r.data.data.total
-        console.log("列表的数据")
-        console.log(r)
+        
       })
 
     },
@@ -464,14 +463,13 @@ export default {
       //查询车牌号下拉框
       this.$axios.post("oilrecord/carlist").then(r => {
         this.cars = r.data
-        //console.log(r)
+        
       })
 
       //查询往来单位下拉框
       this.$axios.post("opposite/getoppolist?type=32").then(r => {
         this.opposites = r.data
-        //console.log("往来单位对话框")
-        // console.log(r)
+        
       })
 
       //查询加油人员下拉框

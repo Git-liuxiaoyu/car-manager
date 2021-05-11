@@ -517,7 +517,7 @@ export default {
         type: "warning"
       }).then(res => {
         this.$axios.post("insureRecord/delete?id=" + id).then(r => {
-          console.log(r)
+          
           if (r.data == 1) {
             this.$message({type: 'success', message: "删除成功", duration: 800});
             //重新加载页面

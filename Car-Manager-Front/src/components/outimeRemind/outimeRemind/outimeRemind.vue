@@ -79,8 +79,7 @@ export default {
           size: this.size
         }
       }).then(r => {
-          console.log("分页数据")
-          console.log(r)
+         
         this.outtimelist = r.data.data.list
         this.total = r.data.data.total
       })

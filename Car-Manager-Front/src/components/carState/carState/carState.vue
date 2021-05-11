@@ -1,20 +1,13 @@
 <template>
     
-   <div>
-        <el-breadcrumb separator="/">
-      <el-breadcrumb-item :to="{ path: 'index' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>车辆状态</el-breadcrumb-item>
-      <el-breadcrumb-item>车辆状态</el-breadcrumb-item>
+<div>
+    <el-breadcrumb separator="/">
+        <el-breadcrumb-item :to="{ path: 'index' }">首页</el-breadcrumb-item>
+        <el-breadcrumb-item>车辆状态</el-breadcrumb-item>
+        <el-breadcrumb-item>车辆状态</el-breadcrumb-item>
     </el-breadcrumb>
     <br/>
     <br/>
-
-    <!-- <template>
-      <el-table :data="outtimelist" border style="width: 100%" max-height="377"
-                :header-cell-style="{background:'#eef1f6',color:'#606266'}">
-
-      </el-table>
-    </template> -->
 <div>
     <div class="demo-image">
         <div class="block" v-for="fit in outtimelist" :key="fit.id">
@@ -45,13 +38,7 @@
         </el-pagination>
       </el-col>
     </el-row>
-
-
-    
-
    </div>
-   
-
 </template>
 
 
@@ -88,8 +75,6 @@ export default {
           size: this.size
         }
       }).then(r => {
-          console.log("分页数据")
-          console.log(r)
         this.outtimelist = r.data.data.list
         this.total = r.data.data.total
         for(var i = 0;i<this.outtimelist.size;i++){
@@ -101,8 +86,7 @@ export default {
                 this.outtimelist[i].carStatus = '可用';
             }    
         }
-        console.log("分页数据后")
-        console.log(this.outtimelist)
+
       })
     },
     //分页方法
@@ -131,13 +115,13 @@ export default {
     }
     .demo-image{
         margin-top: 50px;
-        /* border: 1px solid black; */
+
         width: 1200px;
         height: 300px;
         
     }
     .demonstration{
-        margin-left: 40px;
+        margin-left: 35px;
     }
 
 </style>

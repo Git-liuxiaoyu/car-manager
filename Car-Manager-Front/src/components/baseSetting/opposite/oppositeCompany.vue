@@ -25,7 +25,7 @@
 
       <el-table :data="oppos" border style="width: 100%" max-height="377"
                 :header-cell-style="{background:'#eef1f6',color:'#606266'}">
-        <el-table-column fixed prop="id" label="id" min-width>
+        <el-table-column fixed prop="id" label="编号" min-width>
 
         </el-table-column>
 
@@ -99,43 +99,43 @@
       <el-form :model="editoppo" label-width="80px">
         <el-form-item label="单位名称" prop="name">
 
-          <el-input v-model="editoppo.name"></el-input>
+          <el-input v-model="editoppo.name" @focus="addressdow()"></el-input>
 
         </el-form-item>
 
         <el-form-item label="单位类型" prop="type">
-          <el-select v-model="editoppo.type" placeholder="请选择">
-            <el-option label="请选择" value="0"></el-option>
+          <el-select v-model="editoppo.type" placeholder="请选择" @focus="addressdow()">
             <el-option :label="types.text" :value="types.id"
                        v-for="types in types" :key="types.id">
             </el-option>
           </el-select>
         </el-form-item>
 
-        <el-form-item label="地址" prop="address">
-          <el-input v-model="editoppo.address"></el-input>
+        <el-form-item label="地址" prop="address">           
+          <el-input v-model="editoppo.address" @focus="addressshow()" @blur="luxian()"></el-input>
         </el-form-item>
+        <div id="container" style="display:none;"></div>
 
         <el-form-item label="电话" prop="phone">
-          <el-input v-model="editoppo.phone"></el-input>
+          <el-input v-model="editoppo.phone" @focus="addressdow()"></el-input>
         </el-form-item>
 
         <el-form-item label="联系人" prop="linkName">
-          <el-input v-model="editoppo.linkName"></el-input>
+          <el-input v-model="editoppo.linkName" @focus="addressdow()"></el-input>
         </el-form-item>
 
         <el-form-item label="备注" prop="remarks">
-          <el-input v-model="editoppo.remarks"></el-input>
+          <el-input v-model="editoppo.remarks" @focus="addressdow()"></el-input>
         </el-form-item>
 
         <el-form-item label="是否锁定" prop="status">
           <!-- element-ui 的 开关 switch -->
-          <el-switch v-model="editoppo.status"></el-switch>
+          <el-switch v-model="editoppo.status" @focus="addressdow()"></el-switch>
         </el-form-item>
 
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="oppoVisible = false">取 消</el-button>
+        <el-button @click="outoppo">取 消</el-button>
         <el-button type="primary" @click="addoppo">确 定</el-button>
       </div>
     </el-dialog>
@@ -252,6 +252,9 @@ import axios from 'axios';
 export default {
   data() {
     return {
+      
+      map:null,
+      
       oppos: [
         {
           id: "",
@@ -329,8 +332,7 @@ export default {
 
         this.oppos = r.data.data.list
         this.total = r.data.data.total
-        console.log("列表的数据")
-        console.log(r)
+
       })
 
     },
@@ -348,12 +350,76 @@ export default {
 
     //显示新增对话框
     showEditoppo() {
-      this.oppoVisible = true;
+      this.oppoVisible = true;//显示新增对话框
+
+      //地图
+      window.onLoad  = function(){
+              var map = new AMap.Map('container', {
+                  zoom:12,//级别
+                  //center: [114.31, 30.52],//武汉坐标
+                  viewMode:'3D'//使用3D视图
+              });
+              this.map = map;
+
+              //初始化toolbar插件
+              var toolbar = new AMap.ToolBar();
+              //调用插件
+              map.addControl(toolbar);
+              // 创建一个 Marker 实例：
+              // var marker = new AMap.Marker({
+              //     position: new AMap.LngLat(116.39, 39.9),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+              //     title: '北京'
+              // });
+              
+                  // 将创建的点标记添加到已有的地图实例：
+                  //map.add(marker);
+
+              
+
+
+
+          }
+                var key = "ba9419462964ab1cb3aea92b4d1d12e6"
+                var url = `https://webapi.amap.com/maps?v=1.4.15&key=${key}&callback=onLoad&plugin=AMap.ToolBar,AMap.Driving`;
+                var jsapi = document.createElement('script');
+                jsapi.charset = 'utf-8';
+                jsapi.src = url;
+                document.head.appendChild(jsapi);
+
+
+
+
+
+
+
       this.$axios.post("dictionary/menu").then(r => {
-        console.log("新增对话框")
-        console.log(r)
+
         this.types = r.data.data[3].children
       })
+    },
+    //地址失去焦点事件
+    luxian(){
+
+            this.map = new AMap.Map('container', {
+                  zoom:12,//级别
+                  //center: [114.31, 30.52],//武汉坐标
+                  viewMode:'3D'//使用3D视图
+              });
+            //驾车路线规划
+                  var driving = new AMap.Driving({
+                  // 驾车路线规划策略，AMap.DrivingPolicy.LEAST_TIME是最快捷模式
+                  policy: AMap.DrivingPolicy.LEAST_TIME,
+                  map:this.map,
+                })
+                //alert(this.editoppo.address)
+                var points = [
+                   {keyword: '蜗牛学院',city:'武汉'},
+                    {keyword: this.editoppo.address,city:'武汉'}
+                ]
+                driving.search(points, function (status, result) {
+                // 未出错时，result即是对应的路线规划方案
+
+                })
     },
     //添加往来单位
     addoppo() {
@@ -364,11 +430,12 @@ export default {
         this.editoppo.status = '1'
       }
       this.$axios.post("opposite/add", this.editoppo).then(r => {
-        //console.log(r)
+
         if (r.data.code == 200) {
           this.$message({type: 'success', message: "添加成功", duration: 800});
           this.oppoVisible = false;
-
+          //获得焦点显示地图div
+          document.getElementById('container').style.display="none";
           //循环清空editoppo集合中的值
           for (var i in this.editoppo) {
             this.editoppo[i] = "";
@@ -381,12 +448,19 @@ export default {
         }
       })
     },
+    //取消添加框
+    outoppo(){
+        this.oppoVisible = false;
+        //获得焦点显示地图div
+        document.getElementById('container').style.display="none";
+
+    },
     //往来单位详情
     detail(id, type) {
 
       this.oppodetail = true;
       this.$axios.post("opposite/findbyid?id=" + id).then(r => {
-        //console.log(r)
+
         this.details = r.data.data
         if (this.details.status == 1) {
           this.details.status = "启用";
@@ -395,8 +469,7 @@ export default {
         }
       })
        this.$axios.post("dictionary/menu").then(r => {
-        console.log("详情对话框")
-        console.log(r)
+
         this.types = r.data.data[3].children
             for (var i in this.types) {
             if(this.types[i].id==type){
@@ -410,8 +483,7 @@ export default {
     goupdate(id, type) {
       this.oppoupdate = true;
       this.$axios.post("opposite/findbyid?id=" + id).then(r => {
-        console.log("查询的修改数据")
-        console.log(r)
+
         this.updates = r.data.data
         if (this.updates.status == 0) {
           this.updates.status = true;
@@ -420,8 +492,7 @@ export default {
         }
       })
        this.$axios.post("dictionary/menu").then(r => {
-        console.log("修改对话框")
-        console.log(r)
+
         this.types = r.data.data[3].children
 
       })
@@ -472,6 +543,16 @@ export default {
       }).catch(res => {
         this.$message.info("取消删除");
       })
+    },
+    //控制地图显示
+    addressshow(){
+        //获得焦点显示地图div
+        document.getElementById('container').style.display="block";
+    },
+    //控制地图关闭
+    addressdow(){
+        //获得焦点关闭地图div
+        document.getElementById('container').style.display="none";
     }
   },
   created() {
@@ -483,5 +564,11 @@ export default {
 </script>
 
 <style>
+#container{
+    width: 600px;
+    height: 300px;
+    margin-left:78px;
+    margin-bottom: 20px;
+}
 
 </style>
