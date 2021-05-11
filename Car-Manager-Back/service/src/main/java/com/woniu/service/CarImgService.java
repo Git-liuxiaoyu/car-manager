@@ -1,6 +1,7 @@
 package com.woniu.service;
 
 import com.woniu.domain.CarImg;
+import java.util.List;
 
 /**
  * @Author Administrator
@@ -9,11 +10,11 @@ import com.woniu.domain.CarImg;
 
 public interface CarImgService {
     // 查询
-    CarImg query(CarImg carImg);
+    List<CarImg> queryByCarId(Integer carId);
     // 添加
     void add(CarImg carImg);
     // 修改
     void update(CarImg carImg);
     // 删除
-    void delete(CarImg carImg);
+    void delete(Integer id);
 }
