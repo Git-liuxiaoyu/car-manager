@@ -3,6 +3,7 @@ package com.woniu.adapter;
 import com.woniu.dao.RepairRecordDao;
 import com.woniu.domain.RepairRecord;
 import com.woniu.po.RepairRecordPo;
+import com.woniu.redis.CarRedisDao;
 import com.woniu.redis.RepairRecordRedisDao;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,9 @@ public class RepairRecordAdapter {
 
     @Autowired
     private RepairRecordRedisDao repairRecordRedisDao;
+
+    @Autowired
+    private CarRedisDao carRedisDao;
 
     public List<RepairRecord> list(String searchText, int pageIndex,int pageSize) {
         //查询的list
@@ -65,6 +69,7 @@ public class RepairRecordAdapter {
         BeanUtils.copyProperties(repairRecord, item);
         repairRecordDao.add(item);
         repairRecordRedisDao.updateRedis();
+        carRedisDao.updateRedis();//刷新车辆redis，车辆状态修改
     }
     /**
      * 修改加油信息
@@ -76,7 +81,9 @@ public class RepairRecordAdapter {
         RepairRecordPo item = new RepairRecordPo();
         BeanUtils.copyProperties(repairRecord, item);
         repairRecordDao.update(item);
-        repairRecordRedisDao.updateRedis();
+        repairRecordRedisDao.updateRedis();//刷新redis
+        carRedisDao.updateRedis();//刷新车辆redis，车辆状态修改
+
     }
 
 

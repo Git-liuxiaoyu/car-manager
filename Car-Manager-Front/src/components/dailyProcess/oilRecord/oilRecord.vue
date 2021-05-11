@@ -113,7 +113,7 @@
 
 
 
-    <!-- 添加车辆 对话框
+    <!-- 添加加油记录对话框
       :visible 是否显示对话框，如果 dialogFormVisible：true 就显示  否则就不显示
       rules 就是表单每项的数据校验  ref  就是将来可以通过 this.$ref.addCar
       el-form-item :就是el-form表单里面的每项-->
@@ -157,10 +157,9 @@
 
           <el-col :span="6">
             <el-form-item label="油料标号" prop="oppositeCompanyId">
-              <el-select v-model="editoilreadd.oilType" placeholder="请选择">
-                <el-option label="请选择" value="0" ></el-option>
+              <el-select v-model="editoilreadd.oilType" placeholder="请选择" :trigger-click="dnamead(editoilreadd.oilType)" >            
                 <el-option :label="oilTypes.text" :value="oilTypes.id"
-                           v-for="oilTypes in oilTypes" :key="oilTypes.id">
+                           v-for="oilTypes in oilTypes" :key="oilTypes.id" >
                 </el-option>
               </el-select>
             </el-form-item>
@@ -168,13 +167,15 @@
 
           <el-col :span="6">
             <el-form-item label="油料单价（每升）：" prop="prePrice">
-              <el-input v-model="editoilreadd.prePrice"></el-input>
+              <el-input v-model="editoilreadd.prePrice" @blur="dnameadd()"></el-input>
             </el-form-item>
           </el-col>
 
+
+
           <el-col :span="6">
             <el-form-item label="本次加油（升）：" prop="thisOilVolume">
-              <el-input v-model="editoilreadd.thisOilVolume"></el-input>
+              <el-input v-model="editoilreadd.thisOilVolume" @blur="dnameadd()"></el-input>
             </el-form-item>
           </el-col>
 
@@ -256,7 +257,7 @@
           <el-col :span="6">
             <el-form-item label="加油站" prop="oppositeCompanyId">
               <el-select v-model="updates.oppositeCompanyId" placeholder="请选择">
-                <el-option label="请选择" value="0" ></el-option>
+                
                 <el-option :label="opposites.name" :value="opposites.id"
                            v-for="opposites in opposites" :key="opposites.id">
                 </el-option>
@@ -276,8 +277,7 @@
 
           <el-col :span="6">
             <el-form-item label="油料标号" prop="oilType">
-              <el-select v-model="updates.oilType" placeholder="请选择">
-                <el-option label="请选择" value="0" ></el-option>
+              <el-select v-model="updates.oilType" placeholder="请选择" :trigger-click="dnameup(updates.oilType)">
                 <el-option :label="oilType.text" :value="oilType.id"
                            v-for="oilType in oilTypes" :key="oilType.id">
                 </el-option>
@@ -287,13 +287,13 @@
 
           <el-col :span="6">
             <el-form-item label="油料单价（每升）：" prop="prePrice">
-              <el-input v-model="updates.prePrice"></el-input>
+              <el-input v-model="updates.prePrice" @blur="dnameupdate()"></el-input>
             </el-form-item>
           </el-col>
 
           <el-col :span="6">
             <el-form-item label="本次加油（升）：" prop="thisOilVolume">
-              <el-input v-model="updates.thisOilVolume"></el-input>
+              <el-input v-model="updates.thisOilVolume" @blur="dnameupdate()"></el-input>
             </el-form-item>
           </el-col>
 
@@ -597,7 +597,52 @@ export default {
       }).catch(res => {
         this.$message.info("取消删除");
       })
+    },
+    //计算添加栏油料总价
+    dnameadd(){
+      var prePrice = this.editoilreadd.prePrice;
+      var thisOilVolume = this.editoilreadd.thisOilVolume;
+
+      this.editoilreadd.price = (prePrice*thisOilVolume).toFixed(2);
+
+    },//计算各类油料的单价添加栏
+    dnamead(event){
+      if(event == 59){//92#
+          this.editoilreadd.prePrice = 6.68      
+      }else if(event == 60){//柴油
+          this.editoilreadd.prePrice = 6.29        
+      }else if(event == 61){//98#
+          this.editoilreadd.prePrice = 8.06
+      }else if(event == 109){//95#
+          this.editoilreadd.prePrice = 7.16
+      }
+      this.dnameadd()
+      
+    },
+    //计算修改栏油料总价
+    dnameupdate(){
+      var prePrice = this.updates.prePrice;
+      var thisOilVolume = this.updates.thisOilVolume;
+
+      this.updates.price = (prePrice*thisOilVolume).toFixed(2);
+
+    },
+    //设置各类油料的单价 修改栏
+    dnameup(event){
+      
+      if(event == 59){//92#
+          this.updates.prePrice = 6.68      
+      }else if(event == 60){//柴油
+          this.updates.prePrice = 6.29        
+      }else if(event == 61){//98#
+          this.updates.prePrice = 8.06
+      }else if(event == 109){//95#
+          this.updates.prePrice = 7.16
+      }
+      this.dnameupdate()
     }
+
+
   },
   created(){
     this.oilrelist()
