@@ -39,9 +39,9 @@ public class ReportCarAdapter {
        return reportCarList;
    }
 
-    public ReportCar getOne(String carNum){
+    public ReportCar getOne(Integer carId){
 //          ReportCarPo reportCarPo = new ReportCarPo();
-        ReportCarPo reportCarPo = reportCarDao.getOne(carNum);
+        ReportCarPo reportCarPo = reportCarDao.getOne(carId);
         ReportCar reportCar = new ReportCar();
             BeanUtils.copyProperties(reportCarPo, reportCar);
 

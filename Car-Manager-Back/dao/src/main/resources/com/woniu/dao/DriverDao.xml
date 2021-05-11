@@ -85,6 +85,7 @@
     </select>
 
 
+
     <select id="count" parameterType="int" resultType="int">
         select count(0) from driver d,employee e
         <where>

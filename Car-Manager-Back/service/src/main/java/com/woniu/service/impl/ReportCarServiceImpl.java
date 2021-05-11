@@ -29,7 +29,7 @@ public class ReportCarServiceImpl implements ReportCarService {
     }
 
     @Override
-    public ReportCar getOne(String carNum) {
-        return reportCarAdapter.getOne(carNum);
+    public ReportCar getOne(Integer carId) {
+        return reportCarAdapter.getOne(carId);
     }
 }

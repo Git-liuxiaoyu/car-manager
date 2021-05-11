@@ -38,8 +38,11 @@
         <el-table-column prop="selfCost" label="我方承担金额" min-width></el-table-column>
         <el-table-column prop="oppoCost" label="对方承担金额" min-width></el-table-column>
         <el-table-column prop="insureCost" label="保险承担金额" min-width></el-table-column>
-        <el-table-column label="操作" width="120">
+        <el-table-column label="操作" width="180">
           <template slot-scope="scoped">
+            <el-tooltip content="事故信息详情" placement="bottom" effect="light">
+              <el-button type="primary" icon="el-icon-view" circle @click="showViewAccidentDialog(scoped.row)"></el-button>
+            </el-tooltip>
             <el-tooltip content="编辑" placement="bottom" effect="light">
               <el-button type="primary" icon="el-icon-edit" circle @click="updateAccident(scoped.row)"></el-button>
             </el-tooltip>
@@ -310,6 +313,122 @@
       </div>
     </el-dialog>
 
+
+
+    <!-- 查看详细 -->
+    <el-dialog title="事故信息详细" :visible.sync="dialogshowAccidentVisible" center width="80%">
+      <el-form :model="editAccident" label-width="100px">
+             <el-row :gutter="20">
+
+          <el-col :span="8">
+            <el-form-item label="车牌号:">
+              <el-input v-model="editAccident.carNum" readonly="readonly"></el-input>
+            </el-form-item>
+
+
+            <!-- <el-form-item label="车牌号" prop="carId">
+              <el-select v-model="editAccident.carId" placeholder="请选择" :disabled="true">
+                <el-option label="请选择" value="0" ></el-option>
+                <el-option :label="car.carNum" :value="car.id"
+                           v-for="car in cars" :key="car.id">
+                </el-option>
+              </el-select>
+            </el-form-item> -->
+          </el-col>
+
+
+
+          <el-col :span="8">
+
+            <!-- <el-form-item label="驾驶员" prop="driverId">
+              <el-select v-model="editAccident.driverId" placeholder="请选择">
+                <el-option label="请选择" value="0" ></el-option>
+                <el-option :label="driver.employeeName" :value="driver.id"
+                           v-for="driver in drivers" :key="driver.id">
+                </el-option>
+              </el-select>
+            </el-form-item> -->
+            <el-form-item label="驾驶员" >
+              <el-input v-model="editAccident.driverName" readonly="readonly"></el-input>
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="8">
+
+            <el-form-item label="事故时间" prop="time" >
+              <el-date-picker
+                v-model="editAccident.time"
+                type="datetime"
+                value-format="yyyy-MM-dd HH:mm:SS"
+                placeholder="选择日期" readonly="readonly">
+              </el-date-picker>
+            </el-form-item>
+
+
+          </el-col>
+
+          <el-col :span="12">
+            <el-form-item label="事故地点" prop="place" readonly="readonly">
+              <el-input v-model="editAccident.place"></el-input>
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="12">
+            <el-form-item label="事故说明"  prop="explain" readonly="readonly">
+              <el-input v-model="editAccident.explain"></el-input>
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="12">
+            <el-form-item label="我方情况" prop="selfCondition" readonly="readonly">
+              <el-input v-model="editAccident.selfCondition"></el-input>
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="12">
+            <el-form-item label="对方情况" prop="oppoCondition" readonly="readonly">
+              <el-input v-model="editAccident.oppoCondition"></el-input>
+            </el-form-item>
+          </el-col>
+
+
+          <el-col :span="12">
+            <el-form-item label="处理结果" prop="solveResult" readonly="readonly">
+              <el-input v-model="editAccident.solveResult"></el-input>
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="12">
+            <el-form-item label="我方承担金额" prop="selfCost" readonly="readonly">
+              <el-input v-model="editAccident.selfCost"></el-input>
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="12">
+            <el-form-item label="对方承但金额" prop="oppoCost" readonly="readonly">
+              <el-input v-model="editAccident.oppoCost"></el-input>
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="12">
+            <el-form-item label="保险承但金额" prop="insureCost" readonly="readonly">
+              <el-input v-model="editAccident.insureCost"></el-input>
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="12">
+            <el-form-item label="备注" prop="remarks" readonly="readonly">
+              <el-input v-model="editAccident.remarks"></el-input>
+            </el-form-item>
+          </el-col>
+
+        </el-row>
+      </el-form>
+      <div slot="footer" class="dialog-footer" >
+        <el-button @click="dialogshowAccidentVisible = false">关 闭</el-button>
+      </div>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -330,6 +449,8 @@ export default {
       // 编辑
       dialogEditVisible:false,
       editAccident:{},
+      //详细
+      dialogshowAccidentVisible:false,
 
     }
   },
@@ -388,8 +509,28 @@ export default {
         // this.drivers=r.data.data;
       })
     },
+    showViewAccidentDialog(row){
+       this.dialogshowAccidentVisible=true;
+      //  this.editAccident=row;
+
+      //  this.loadDriverName();
+      //  console.log(this.drivers);console.log(this.tableData);
+      //  for(let accident in this.tableData){
+      //    if(accident.driverId==this.drivers.id){
+      //      this.editAccident.driverName=this.drivers.employeeName;
+      //    }
+      //  }
+       this.editAccident=row;
+    },
     updateAccident(row){
       this.dialogEditVisible=true;
+      
+      this.loadAccident();
+      // for(let accident in this.tableData){
+      //   if(accident.id==row.id){
+      //      this.editAccident=accident;
+      //   }
+      // }
       this.editAccident=row;
       this.loadDriverName();
       this.getCarList()

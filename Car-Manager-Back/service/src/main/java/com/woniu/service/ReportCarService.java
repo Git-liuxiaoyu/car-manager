@@ -11,5 +11,5 @@ public interface ReportCarService {
 
     List<ReportCar> getAll();
 
-    ReportCar getOne(String carNum);
+    ReportCar getOne(Integer carId);
 }
