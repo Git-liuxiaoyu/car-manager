@@ -62,7 +62,7 @@
     </update>
 
    <select id="getEmployee" resultType="EmployeePo">
-       select * from employee e,employee_role er where e.id=er.employeeId and e.name=#{name} and er.roleId!=2
+       select * from employee e,employee_role er where e.id=er.employeeId and e.name=#{name} and er.roleId not in(2)
    </select>
 
     <update id="updateRole" >

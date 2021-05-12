@@ -9,4 +9,6 @@ public interface ReportCarDao {
     List<ReportCarPo> getAll();
 
     ReportCarPo getOne(Integer carId);
+    //查询出车次数
+    Integer getDepartureNum(Integer carId);
 }

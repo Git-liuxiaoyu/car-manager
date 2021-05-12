@@ -32,4 +32,9 @@ public class ReportCarServiceImpl implements ReportCarService {
     public ReportCar getOne(Integer carId) {
         return reportCarAdapter.getOne(carId);
     }
+
+    @Override
+    public Integer getDepartureNum(Integer carId) {
+        return reportCarAdapter.getDepartureNum(carId);
+    }
 }

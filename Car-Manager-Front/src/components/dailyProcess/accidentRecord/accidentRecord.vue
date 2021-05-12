@@ -11,7 +11,7 @@
 
     <el-row :gutter="20">
       <el-col :span="6">
-        <el-input placeholder="请输入内容" v-model="searchText" class="input-with-select">
+        <el-input placeholder="请输入车牌号码" v-model="searchText" class="input-with-select">
           <el-button slot="append" icon="el-icon-search" @click="loadAccident"></el-button>
         </el-input>
       </el-col>
@@ -368,57 +368,57 @@
           </el-col>
 
           <el-col :span="12">
-            <el-form-item label="事故地点" prop="place" readonly="readonly">
-              <el-input v-model="editAccident.place"></el-input>
+            <el-form-item label="事故地点" prop="place" >
+              <el-input v-model="editAccident.place" readonly="readonly"></el-input>
             </el-form-item>
           </el-col>
 
           <el-col :span="12">
-            <el-form-item label="事故说明"  prop="explain" readonly="readonly">
-              <el-input v-model="editAccident.explain"></el-input>
+            <el-form-item label="事故说明"  prop="explain" >
+              <el-input v-model="editAccident.explain" readonly="readonly"></el-input>
             </el-form-item>
           </el-col>
 
           <el-col :span="12">
-            <el-form-item label="我方情况" prop="selfCondition" readonly="readonly">
-              <el-input v-model="editAccident.selfCondition"></el-input>
+            <el-form-item label="我方情况" prop="selfCondition" >
+              <el-input v-model="editAccident.selfCondition" readonly="readonly"></el-input>
             </el-form-item>
           </el-col>
 
           <el-col :span="12">
-            <el-form-item label="对方情况" prop="oppoCondition" readonly="readonly">
-              <el-input v-model="editAccident.oppoCondition"></el-input>
+            <el-form-item label="对方情况" prop="oppoCondition" >
+              <el-input v-model="editAccident.oppoCondition" readonly="readonly"></el-input>
             </el-form-item>
           </el-col>
 
 
           <el-col :span="12">
-            <el-form-item label="处理结果" prop="solveResult" readonly="readonly">
-              <el-input v-model="editAccident.solveResult"></el-input>
+            <el-form-item label="处理结果" prop="solveResult" >
+              <el-input v-model="editAccident.solveResult" readonly="readonly"></el-input>
             </el-form-item>
           </el-col>
 
           <el-col :span="12">
-            <el-form-item label="我方承担金额" prop="selfCost" readonly="readonly">
-              <el-input v-model="editAccident.selfCost"></el-input>
+            <el-form-item label="我方承担金额" prop="selfCost" >
+              <el-input v-model="editAccident.selfCost" readonly="readonly"></el-input>
             </el-form-item>
           </el-col>
 
           <el-col :span="12">
-            <el-form-item label="对方承但金额" prop="oppoCost" readonly="readonly">
-              <el-input v-model="editAccident.oppoCost"></el-input>
+            <el-form-item label="对方承但金额" prop="oppoCost" >
+              <el-input v-model="editAccident.oppoCost" readonly="readonly"></el-input>
             </el-form-item>
           </el-col>
 
           <el-col :span="12">
-            <el-form-item label="保险承但金额" prop="insureCost" readonly="readonly">
-              <el-input v-model="editAccident.insureCost"></el-input>
+            <el-form-item label="保险承但金额" prop="insureCost" >
+              <el-input v-model="editAccident.insureCost" readonly="readonly"></el-input>
             </el-form-item>
           </el-col>
 
           <el-col :span="12">
-            <el-form-item label="备注" prop="remarks" readonly="readonly">
-              <el-input v-model="editAccident.remarks"></el-input>
+            <el-form-item label="备注" prop="remarks" >
+              <el-input v-model="editAccident.remarks" readonly="readonly"></el-input>
             </el-form-item>
           </el-col>
 
