@@ -11,7 +11,8 @@
     <select id="list" resultMap="RepairRecordPoResultMap">
         select r.* ,c.carNum from repair_record r,car c
         <where> r.carId = c.id
-            <if test="searchText!=null and searchText!='' ">and c.carNum like concat('%',#{searchText},'%')</if>
+            <if test="searchText!=null and searchText!=''">and c.carNum like concat('%',#{searchText},'%')</if>
+            <if test="searchText==null or searchText==''">and r.getTime="未取车"</if>
         </where>
     </select>
     <!--新增修理记录-->
@@ -42,6 +43,7 @@
         select count(0) from repair_record r,car c
         <where> r.carId = c.id
             <if test="searchText!=null and searchText!='' ">and c.carNum like concat('%',#{searchText},'%')</if>
+            <if test="searchText==null or searchText==''">and r.getTime="未取车"</if>
         </where>
     </select>
     <!--删除修理信息-->

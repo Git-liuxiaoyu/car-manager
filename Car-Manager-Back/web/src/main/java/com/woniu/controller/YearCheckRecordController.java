@@ -39,7 +39,6 @@ public class YearCheckRecordController {
             pageSize=size;
         }
         Integer total=yearCheckRecordService.count(searchText);
-        PageHelper.startPage(pageIndex,pageSize);
         List<YearCheckRecord> yearCheckRecordList = yearCheckRecordService.list(searchText,pageIndex,pageSize);
         PageInfo<YearCheckRecord> pageInfo = new PageInfo<>(yearCheckRecordList);
         pageInfo.setTotal(total);

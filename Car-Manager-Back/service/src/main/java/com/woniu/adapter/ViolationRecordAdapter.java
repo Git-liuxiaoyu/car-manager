@@ -1,5 +1,6 @@
 package com.woniu.adapter;
 
+import com.github.pagehelper.PageHelper;
 import com.woniu.dao.ViolationRecordDao;
 import com.woniu.domain.ViolationRecord;
 import com.woniu.po.ViolationRecordPo;
@@ -24,6 +25,7 @@ public class ViolationRecordAdapter {
 
         if (violationRecordList.size() == 0) {
             //从数据库查数据
+            PageHelper.startPage(pageIndex,pageSize);
             violationRecordList = violationRecordDao.list(searchText);
             //存入redis的缓存中
             violationRecordRedisDao.addRedisViolationRecordList(violationRecordList, pageIndex, searchText,pageSize);

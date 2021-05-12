@@ -87,7 +87,6 @@ public class InsureRecordController {
             pageSize=size;
         }
         Integer total=insureRecordService.count(searchText);
-        PageHelper.startPage(pageIndex,pageSize);
         List<InsureRecordPo> insurelist = insureRecordService.insureRecordList(searchText,pageIndex,pageSize);
         PageInfo<InsureRecordPo> pageInfo = new PageInfo<>(insurelist);
         pageInfo.setTotal(total);

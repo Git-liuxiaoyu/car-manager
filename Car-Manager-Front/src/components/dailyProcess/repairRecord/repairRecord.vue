@@ -10,12 +10,12 @@
 
     <el-row :gutter="20">
       <el-col :span="6">
-        <el-input placeholder="请输入车牌号码" v-model="searchText" class="input-with-select">
+        <el-input placeholder="请输入车牌号码,支持模糊查询" v-model="searchText" class="input-with-select">
           <el-button slot="append" icon="el-icon-search" @click="loadList"></el-button>
         </el-input>
       </el-col>
       <el-col :span="18">
-        <el-button type="primary" @click="showAddDialog">添加维修记录</el-button>
+        <el-button type="primary" @click="showAddDialog">送修信息登记</el-button>
       </el-col>
     </el-row>
     <br/>
@@ -39,19 +39,24 @@
           </template>
         </el-table-column>
         <el-table-column  prop="getTime" label="取车时间" min-width :show-overflow-tooltip="true">
-                      <template slot-scope="scope">
+          <template slot-scope="scope">
             <i class="el-icon-time"></i>
-            {{ scope.row.getTime | timeConvert() }}
+            {{ scope.row.getTime== "未取车" ? "未取车":scope.row.getTime }}
           </template>
         </el-table-column>
         <el-table-column  prop="driverName" label="经办人" min-width></el-table-column>
-        <el-table-column  prop="repairFee" label="维修金额" min-width></el-table-column>
+        <el-table-column  prop="repairFee" label="维修金额" min-width>
+              <template slot-scope="scope">
+                <i class="el-icon-time"></i>
+                {{ scope.row.repairFee== 0 ? "未结算":scope.row.repairFee}}
+              </template>
+        </el-table-column>
         <el-table-column  label="操作" width="230">
           <template slot-scope="scope">
             <el-tooltip content="送修信息更改" placement="bottom" effect="light">
               <el-button type="primary" icon="el-icon-edit" circle @click="showUpdateDialog(scope.row)"></el-button>
             </el-tooltip>
-            <el-tooltip content="取车信息登记" placement="bottom" effect="light">
+            <el-tooltip content="取车信息登记" placement="bottom" effect="light" v-if="scope.row.getTime==='未取车'">
               <el-button type="primary" icon="el-icon-check" circle @click="showGetCarRepairDialog(scope.row)"></el-button>
             </el-tooltip>
             <el-tooltip content="维修信息详情" placement="bottom" effect="light">
@@ -333,7 +338,7 @@
           </el-col>
          <el-col :span="8">
             <el-form-item label="取车时间">
-              {{updateData.getTime | timeConvert()}}
+              {{updateData.getTime}}
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -449,6 +454,8 @@ export default {
       this.updateData = row;
     },
     doAdd(){
+      this.addData.repairFee = 0;
+      this.addData.getTime = "未取车"
       this.$axios.post("repairRecord/add",this.addData).then(r=>{
         if (r.data.code = 200) {
           this.$message.success("添加成功");
@@ -461,10 +468,22 @@ export default {
     // 改
     showUpdateDialog(row){
         this.updateDialogFormVisible = true;
+        this.loadList();
+        for(let element in this.tableData){
+        if(element.id==row.id){
+          this.updateData=element
+        }
+      }
         this.updateData = row;
     },
     showGetCarRepairDialog(row){
       this.getCarDialogFormVisible = true;
+        this.loadList();
+        for(let element in this.tableData){
+        if(element.id==row.id){
+          this.updateData=element
+        }
+      }
       this.updateData = row;
     },
     doUpdate(){
@@ -478,7 +497,7 @@ export default {
       })
     },
     getCarRigister(){
-        this.$axios.post("repairRecord/update",this.updateData).then(r=>{
+        this.$axios.post("repairRecord/getCar",this.updateData).then(r=>{
         if (r.data.code = 200) {
           this.$message.success("取车成功");
           this.getCarDialogFormVisible = false;

@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -52,5 +54,24 @@ public class MenuController {
             return null;
         }
         return childList;
+    }
+    // 添加菜单
+    @RequestMapping("/add")
+    public ResponseResult addRights(String keys,Integer id){
+        // 根据id删除原有权限
+        String[] strings = keys.split(",");
+        menuService.deletePermsByRoleId(id);
+        for (int i = 0; i < strings.length; i++) {
+            Map<String,Integer> map = new HashMap<>();
+            map.put("roleId",id);
+            map.put("menuId",Integer.parseInt(strings[i]));
+            menuService.addRight(map);
+        }
+        return ResponseResult.SUCCESS;
+    }
+    // 根据角色id查权限
+    @RequestMapping("/getByRoleId")
+    public ResponseResult getPermsByUserId(Integer roleId){
+        return new ResponseResult(menuService.getPermsByRoleId(roleId));
     }
 }

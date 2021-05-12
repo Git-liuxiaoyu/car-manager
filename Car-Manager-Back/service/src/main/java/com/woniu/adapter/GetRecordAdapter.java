@@ -1,6 +1,7 @@
 package com.woniu.adapter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.pagehelper.PageHelper;
 import com.woniu.dao.GetRecordDao;
 import com.woniu.dao.OppositeCompanyDao;
 import com.woniu.domain.GetRecord;

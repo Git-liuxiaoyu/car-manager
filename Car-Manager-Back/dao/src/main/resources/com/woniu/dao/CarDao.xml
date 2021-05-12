@@ -47,7 +47,7 @@
     </update>
 
 
-    <resultMap type="CarPo" id="carMap">
+    <resultMap type="CarPo" id="CarMap">
         <!-- id用于指定Cart中的主键 -->
         <id column="id" property="id"/>
         <result column="carId" property="carId"/>
@@ -75,11 +75,9 @@
     </resultMap>
     <!--动态分页查询-->
 
-    <select id="list" resultMap="carMap" resultType="CarPo">
+    <select id="list" resultMap="CarMap">
         select c.*,d.text carStatusname from car c,dictionary d where c.carStatus = d.id
-        <where>
-            <if test="searchText!=null and searchText!='' ">and carNum like concat('%',#{searchText},'%')</if>
-        </where>
+        <if test="searchText!=null and searchText!='' ">and c.carNum like concat('%',#{searchText},'%')</if>
     </select>
 
     <select id="count" parameterType="int" resultType="int">

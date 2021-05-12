@@ -39,7 +39,6 @@ public class DriverController {
             pageSize=size;
         }
         Integer total=driverService.count(searchText);
-        PageHelper.startPage(pageIndex,pageSize);
         List<Driver> driverList = driverService.driverList(searchText,pageIndex,pageSize);
         PageInfo<Driver> pageInfo = new PageInfo<>(driverList);
         pageInfo.setTotal(total);

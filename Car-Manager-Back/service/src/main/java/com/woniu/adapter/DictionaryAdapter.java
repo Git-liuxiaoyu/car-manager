@@ -1,6 +1,7 @@
 package com.woniu.adapter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.pagehelper.PageHelper;
 import com.woniu.dao.DictionaryDao;
 import com.woniu.domain.Dictionary;
 import com.woniu.po.DictionaryPo;
@@ -30,6 +31,7 @@ public class DictionaryAdapter {
         ObjectMapper objectMapper = new ObjectMapper();
         if(dictionaryPoList.size() == 0){
             //从数据库查数据
+            PageHelper.startPage(pageIndex, pageSize);
             dictionaryPoList = dictionaryDao.list(searchText);
             //存入redis的缓存中
             dictionaryRedisDao.addRedisDriverList(dictionaryPoList,searchText,pageIndex,pageSize);

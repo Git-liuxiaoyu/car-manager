@@ -1,6 +1,7 @@
 package com.woniu.adapter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.pagehelper.PageHelper;
 import com.woniu.dao.OilRecordDao;
 import com.woniu.dao.OilRecordDao;
 import com.woniu.domain.Employee;
@@ -29,6 +30,7 @@ public class OilRecordAdapter {
 
         if (oilRecordPoList.size() == 0) {
             //从数据库查数据
+            PageHelper.startPage(pageIndex, pageSize);
             oilRecordPoList = oilRecordDao.findList(searchText);
             //存入redis的缓存中
             oilRecordRedisDao.addRedisList(oilRecordPoList, pageIndex, searchText,pageSize);

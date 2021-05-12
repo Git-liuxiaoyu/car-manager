@@ -10,7 +10,7 @@
 
     <el-row :gutter="20">
       <el-col :span="6">
-        <el-input placeholder="请输入车牌号码" v-model="searchText" class="input-with-select">
+        <el-input placeholder="请输入车牌号码,支持模糊查询" v-model="searchText" class="input-with-select">
           <el-button slot="append" icon="el-icon-search" @click="loadList"></el-button>
         </el-input>
       </el-col>
@@ -301,6 +301,12 @@ export default {
     // 改
     showUpdateDialog(row){
         this.updateDialogFormVisible = true;
+        this.loadList();
+        for(let element in this.tableData){
+          if(element.id==row.id){
+            this.updateData=element
+          }
+        }
         this.updateData = row;
     },
     doUpdate(row){

@@ -1,6 +1,7 @@
 package com.woniu.adapter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.pagehelper.PageHelper;
 import com.woniu.dao.EmployeeDao;
 import com.woniu.domain.Employee;
 import com.woniu.po.EmployeePo;
@@ -28,6 +29,7 @@ public class EmployeeAdapter {
 
         if (employeeList.size() == 0) {
             //从数据库查数据
+            PageHelper.startPage(pageIndex, pageSize);
             employeeList = employeeDao.list(searchText);
             //存入redis的缓存中
             employeeRedisDao.addRedisEmployeeList(employeeList, pageIndex, searchText,pageSize);

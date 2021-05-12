@@ -43,7 +43,7 @@ public class DictionaryController {
             pageSize = size;
         }
         Integer total = dictionaryService.count(searchText);
-        PageHelper.startPage(pageIndex, pageSize);
+
         List<Dictionary> dictionaryList = dictionaryService.list(searchText, pageIndex, pageSize);
 //        List<DictionaryPo> dictionaryList = dictionaryDao.list(searchText);
         //测试

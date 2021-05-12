@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -27,5 +28,20 @@ public class MenuServiceImpl implements MenuService {
     @Override
     public List<MenuPo> list() {
         return menuAdapter.list();
+    }
+
+    @Override
+    public void deletePermsByRoleId(Integer id) {
+        menuAdapter.deletePermsByRoleId(id);
+    }
+
+    @Override
+    public void addRight(Map<String, Integer> map) {
+        menuAdapter.addRight(map);
+    }
+
+    @Override
+    public List<Integer> getPermsByRoleId(Integer roleId) {
+        return menuAdapter.getPermsByRoleId(roleId);
     }
 }

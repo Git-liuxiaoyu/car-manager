@@ -80,7 +80,6 @@ public class EmployeeController {
             pageSize=size;
         }
         Integer total=employeeService.count(searchText);
-        PageHelper.startPage(pageIndex,pageSize);
         List<Employee> employeeList = employeeService.findAll(searchText,pageIndex,pageSize);
         PageInfo<Employee> pageInfo = new PageInfo<>(employeeList);
         pageInfo.setTotal(total);

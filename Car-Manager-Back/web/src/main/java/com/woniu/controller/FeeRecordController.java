@@ -49,7 +49,6 @@ public class FeeRecordController {
             pageSize=size;
         }
         Integer total=feeRecordService.count(searchText);
-        PageHelper.startPage(pageIndex,pageSize);
 //        List<Employee> employeeList = employeeService.findAll(searchText,pageIndex,pageSize);
         List<FeeRecord> feeRecordList = feeRecordService.list(searchText, pageIndex, pageSize);
         PageInfo<FeeRecord> pageInfo = new PageInfo<>(feeRecordList);

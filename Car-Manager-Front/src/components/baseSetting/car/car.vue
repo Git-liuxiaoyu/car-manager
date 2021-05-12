@@ -10,7 +10,7 @@
 
     <el-row :gutter="20">
       <el-col :span="6">
-        <el-input placeholder="请输入车牌号码" v-model="searchText" class="input-with-select">
+        <el-input placeholder="请输入车牌号码,支持模糊查询" v-model="searchText" class="input-with-select">
           <el-button slot="append" icon="el-icon-search" @click="loadList"></el-button>
         </el-input>
       </el-col>
@@ -95,12 +95,12 @@
           </el-col>
           <el-col :span="6">
             <el-form-item label="载重（吨）：" >
-              <el-input v-model="addData.carrying"></el-input>
+              <el-input v-model="addData.carrying" type=number></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
             <el-form-item label="座位数：" >
-              <el-input v-model="addData.seatNum"></el-input>
+              <el-input v-model="addData.seatNum" type=number></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
@@ -291,7 +291,8 @@
               <el-date-picker
                 v-model="updateData.boughtDate"
                 type="date"
-                placeholder="选择日期">
+                placeholder="选择日期"
+                value-format="yyyy-MM-dd">
               </el-date-picker>
             </el-form-item>
           </el-col>
@@ -342,6 +343,8 @@
             <div v-for="img in imgList" :key="img.id" style="text-align:center">
               <div class="block" style="width:200px;height:200px;display: inline-block;float:left;text-align:center" >
                     <el-image
+                      :preview-src-list=[img.imgName]
+                      z-index = 20000
                       style="width:100px;height:100px;"
                       class="table-td-thumb"
                       :src="img.imgName">
@@ -370,8 +373,8 @@
           :before-upload=handleBefore
           :auto-upload="false">
           <el-button slot="trigger" size="small" type="primary">选取图片</el-button>
-          <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传图片</el-button>
-          <div slot="tip" class="el-upload__tip">只能上传jpeg/gif/png/jpg文件</div>
+          <el-button style="margin-left: 10px;" size="large" type="success" @click="submitUpload">上传图片</el-button>
+          <div slot="tip" class="el-upload__tip">只能上传小于500kb的jpeg/gif/png/jpg文件</div>
       </el-upload>
       <br/>
       <el-input placeholder="请输入上传图片描述" v-model="uploadData.description" width="40px" ></el-input>
@@ -607,6 +610,12 @@ export default {
     // 改
     showUpdateDialog(row) {
       this.updateDialogFormVisible = true;
+      this.loadList();
+      for(let element in this.tableData){
+        if(element.id==row.id){
+          this.updateData=element
+        }
+      }
       this.updateData = row;
       this.oneId = row.brandId;
       this.twoId = row.type;
