@@ -15,10 +15,9 @@
           <el-col :span="5"><span>体重:</span></el-col>
           <el-col :span="19">
             <div class="progress progress-striped active">
-              <div class="progress-bar progress-bar-info" role="progressbar"
+              <div class="progress-bar progress-bar-danger" role="progressbar"
                    aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
-                   style="width: 90%;">
-                <span class="sr-only">40% 完成</span>
+                   style="width: 60%;">
               </div>
             </div>
           </el-col>
@@ -27,8 +26,7 @@
             <div class="progress progress-striped active">
               <div class="progress-bar progress-bar-success" role="progressbar"
                    aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
-                   style="width: 40%;">
-                <span class="sr-only">40% 完成</span>
+                   style="width: 50%;">
               </div>
             </div>
           </el-col>
