@@ -20,7 +20,7 @@
         <result column="status" property="status"/>
     </resultMap>
     <!--分页查询-->
-    <select id="list" resultMap="oppoResultMap" resultType="OppositeCompanypo">
+    <select id="list" resultMap="oppoResultMap">
         select o.*,dy.text typename from
         opposite_company o, dictionary dy where
         o.type = dy.id
