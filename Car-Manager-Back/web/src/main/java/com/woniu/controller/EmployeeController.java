@@ -43,11 +43,9 @@ public class EmployeeController {
     }
 
     @RequestMapping("/menu")
-    public ResponseResult<List<MenuPo>> menu(String token) {
+    public ResponseResult<List<MenuPo>> menu(String account) {
         //获取用户名
-        String name = JwtTokenUtil.getUserId(token);
-
-        List<MenuPo> mens = employeeService.mens(name);
+        List<MenuPo> mens = employeeService.mens(account);
 
         List<MenuPo> menuPos = new ArrayList<>();//定义一个父列表的集合
 

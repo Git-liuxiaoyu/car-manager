@@ -18,7 +18,9 @@ let router = new Router({
       path: '/home',
       component: () => import('@/components/home/home'),
       children: [
-
+        //个人资料
+        {path: '/userData', component: () => import('@/components/home/userData')},
+        //个人首页
         {path: '/index', component: () => import('@/components/index')},
 
         {path: '/roleManager', component: () => import('@/components/role/roleManager')},
@@ -34,11 +36,23 @@ let router = new Router({
         {path: '/oilRecord', component: () => import('@/components/dailyProcess/oilRecord/oilRecord')},
         {path: '/feeRecord', component: () => import('@/components/dailyProcess/feeRecord/feeRecord')},
         {path: '/keepRecord', component: () => import('@/components/dailyProcess/keepRecord/keepRecord')},
-        {path: '/violationRecord', component: () => import('@/components/dailyProcess/violationRecord/violationRecord')},
+        {
+          path: '/violationRecord',
+          component: () => import('@/components/dailyProcess/violationRecord/violationRecord')
+        },
         {path: '/accidentRecord', component: () => import('@/components/dailyProcess/accidentRecord/accidentRecord')},
-        {path: '/departureRecord', component: () => import('@/components/dailyProcess/departureRecord/departureRecord')},
-        {path: '/yearCheckRecord', component: () => import('@/components/dailyProcess/yearCheckRecord/yearCheckRecord')},
-        {path: '/violationRecord', component: () => import('@/components/dailyProcess/violationRecord/violationRecord')},
+        {
+          path: '/departureRecord',
+          component: () => import('@/components/dailyProcess/departureRecord/departureRecord')
+        },
+        {
+          path: '/yearCheckRecord',
+          component: () => import('@/components/dailyProcess/yearCheckRecord/yearCheckRecord')
+        },
+        {
+          path: '/violationRecord',
+          component: () => import('@/components/dailyProcess/violationRecord/violationRecord')
+        },
         {path: '/accidentRecord', component: () => import('@/components/dailyProcess/accidentRecord/accidentRecord')},
         {path: '/insureRecord', component: () => import('@/components/dailyProcess/insureRecord/insureRecord')},
         {path: '/reportForm', component: () => import('@/components/reportCenter/reportForm/reportForm')},

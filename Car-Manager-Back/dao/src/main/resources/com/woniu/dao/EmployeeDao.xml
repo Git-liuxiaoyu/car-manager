@@ -31,7 +31,7 @@
           and er.roleId = r.id
           and r.id = rm.roleId
           and rm.menuId = m.id
-          and e.`name` = #{name}
+          and e.`account` = #{account}
         order by m.id
     </select>
 

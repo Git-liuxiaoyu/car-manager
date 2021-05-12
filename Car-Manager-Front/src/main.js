@@ -6,6 +6,14 @@ import router from './router/router'
 import * as echarts from 'echarts';
 Vue.prototype.$echarts = echarts;
 import SlideVerify from 'vue-monoplasty-slide-verify';
+import $ from 'jquery';
+
+import BootstrapVue from 'bootstrap-vue'
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+
+Vue.use($);
+Vue.use(BootstrapVue)
 
 Vue.use(SlideVerify);
 Vue.use(ElementUI);
@@ -13,7 +21,7 @@ Vue.config.productionTip = false
 
 import axios from "axios";
 axios.defaults.baseURL = 'http://localhost:8888'
-Vue.prototype.$axios=axios
+Vue.prototype.$axios = axios
 
 
 axios.interceptors.request.use(
@@ -41,7 +49,7 @@ Vue.filter("dateConvert", function (str) {
   let hour = date.getHours().toString().padStart(2, 0);
   let minute = date.getMinutes().toString().padStart(2, 0);
   let second = date.getSeconds().toString().padStart(2, 0);
-  let time = year+'-'+month+'-'+day;
+  let time = year + '-' + month + '-' + day;
   return time
 });
 
