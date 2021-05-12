@@ -111,7 +111,7 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="地址" prop="address">           
+        <el-form-item label="地址" prop="address">
           <el-input v-model="editoppo.address" @focus="addressshow()" @blur="luxian()" id='address'></el-input>
         </el-form-item>
         <div id="container" style="display:none;"></div>
@@ -121,7 +121,7 @@
         <div class="input-item-prepend"><span class="input-item-text">经纬度</span></div>
         <input id='lnglat' type="text" >
         </div>
-        
+
 
 
 
@@ -154,47 +154,47 @@
 
 
 
-    
+
         <!-- 查看详细 -->
     <el-dialog title="往来单位详细信息" :visible.sync="oppodetail" center width="80%">
       <el-form :model="details" label-width="80px">
         <el-row :gutter="20">
           <el-col :span="8">
             <el-form-item label="单位名：" prop="name">
-              <el-input v-model="details.name" readonly="readonly"></el-input>
+              <el-input v-model="details.name" readonly="readonly" disabled></el-input>
             </el-form-item>
           </el-col>
 
           <el-col :span="8">
 
             <el-form-item label="单位类型" prop="typee">
-              <el-input  v-model="typee" readonly="readonly"></el-input>
+              <el-input  v-model="typee" readonly="readonly" disabled></el-input>
             </el-form-item>
           </el-col>
 
 
           <el-col :span="8">
             <el-form-item label="联系电话" prop="phone">
-              <el-input v-model="details.phone" readonly="readonly"></el-input>
+              <el-input v-model="details.phone" readonly="readonly" disabled></el-input>
             </el-form-item>
           </el-col>
 
           <el-col :span="8">
             <el-form-item label="联系人" prop="linkName">
-              <el-input v-model="details.linkName" readonly="readonly"></el-input>
+              <el-input v-model="details.linkName" readonly="readonly" disabled></el-input>
             </el-form-item>
           </el-col>
 
 
           <el-col :span="8">
             <el-form-item label="备注" prop="remarks">
-              <el-input v-model="details.remarks" readonly="readonly"></el-input>
+              <el-input v-model="details.remarks" readonly="readonly" disabled></el-input>
             </el-form-item>
           </el-col>
 
           <el-col :span="8">
             <el-form-item label="状态" prop="status">
-              <el-input v-model="details.status" readonly="readonly">
+              <el-input v-model="details.status" readonly="readonly" disabled>
               </el-input>
 
             </el-form-item>
@@ -203,7 +203,7 @@
 
           <el-col :span="14">
             <el-form-item label="单位地址" prop="address">
-              <el-input v-model="details.address" readonly="readonly">
+              <el-input v-model="details.address" readonly="readonly" disabled>
               </el-input>
 
             </el-form-item>
@@ -232,7 +232,7 @@
 
         <el-form-item label="单位类型" prop="type">
           <el-select v-model="updates.type" placeholder="请选择" :disabled="true" @focus="updateressdow()">
-            
+
             <el-option :label="types.text" :value="types.id"
                        v-for="types in types" :key="types.id">
             </el-option>
@@ -286,7 +286,7 @@ import axios from 'axios';
 export default {
   data() {
     return {
-      
+
       map:null,
       mapObj:null,
 
@@ -482,8 +482,8 @@ export default {
               thismap.addControl(toolbar);
 
 
-       
-       
+
+
        //点击地图回显地址
       var geocoder = new AMap.Geocoder({
         //city: "010", //城市设为北京，默认：“全国”
@@ -491,21 +491,21 @@ export default {
     });
 
       var marker = new AMap.Marker();
-     
+
     function regeoCode() {
-        
+
         var lnglat  = document.getElementById('lnglat').value.split(',');
         //alert(lnglat)
         thismap.add(marker);
         marker.setPosition(lnglat);
-        
+
        geocoder.getAddress(lnglat, function(status, result) {
             if (status === 'complete'&&result.regeocode) {
                 var address = result.regeocode.formattedAddress;
                 document.getElementById('address').value = address;
-               
+
             }
-            
+
         });
     }
 
@@ -524,7 +524,7 @@ export default {
                 // 未出错时，result即是对应的路线规划方案
 
                 })
-    
+
  thismap.on('click',function(e){
      document.getElementById('lnglat').value = e.lnglat;
      regeoCode();
@@ -552,13 +552,13 @@ export default {
      }
      return true;
  }
- 
+
 
 
 
     },
 
-    
+
 
     //添加往来单位
     addoppo() {
@@ -601,7 +601,7 @@ export default {
       //获得焦点显示地图div
         document.getElementById('container1').style.display="none";
     },
-    
+
     //往来单位详情
     detail(id, type) {
 
@@ -726,7 +726,7 @@ export default {
               });
           //this.updates.address = document.getElementById('address1').value
 
-              
+
             var thismap = this.updatemap;
              thismap.plugin('AMap.Geolocation', function () {
                  var geolocation = new AMap.Geolocation({
@@ -761,21 +761,21 @@ export default {
     });
 
       var marker = new AMap.Marker();
-     
+
     function regeoCode() {
-        
+
         var lnglat  = document.getElementById('lnglat1').value.split(',');
         //alert(lnglat)
         thismap.add(marker);
         marker.setPosition(lnglat);
-        
+
        geocoder.getAddress(lnglat, function(status, result) {
             if (status === 'complete'&&result.regeocode) {
                 var address = result.regeocode.formattedAddress;
                 document.getElementById('address1').value = address;
-               
+
             }
-            
+
         });
     }
 
@@ -794,11 +794,11 @@ export default {
                 // 未出错时，result即是对应的路线规划方案
 
                 })
-    
+
       thismap.on('click',function(e){
         document.getElementById('lnglat1').value = e.lnglat;
         regeoCode();
-                  
+
  })
 
  document.getElementById('lnglat1').onkeydown = function(e) {
