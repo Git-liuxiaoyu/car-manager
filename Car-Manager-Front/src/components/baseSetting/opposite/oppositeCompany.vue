@@ -112,9 +112,20 @@
         </el-form-item>
 
         <el-form-item label="地址" prop="address">           
-          <el-input v-model="editoppo.address" @focus="addressshow()" @blur="luxian()"></el-input>
+          <el-input v-model="editoppo.address" @focus="addressshow()" @blur="luxian()" id='address'></el-input>
         </el-form-item>
         <div id="container" style="display:none;"></div>
+
+
+        <div class="input-item" style="display:none;">
+        <div class="input-item-prepend"><span class="input-item-text">经纬度</span></div>
+        <input id='lnglat' type="text" >
+        </div>
+        
+
+
+
+
 
         <el-form-item label="电话" prop="phone">
           <el-input v-model="editoppo.phone" @focus="addressdow()"></el-input>
@@ -141,58 +152,73 @@
     </el-dialog>
 
 
-    <!--往来单位详情-->
-    <el-dialog title="往来单位详细信息" :visible.sync="oppodetail" center width="70%">
-      <el-form :model="details" label-width="150px">
+
+
+    
+        <!-- 查看详细 -->
+    <el-dialog title="往来单位详细信息" :visible.sync="oppodetail" center width="80%">
+      <el-form :model="details" label-width="80px">
         <el-row :gutter="20">
-          <el-col :span="6">
-            <el-form-item label="单位名称：" prop="name">
-              {{ details.name }}
+          <el-col :span="8">
+            <el-form-item label="单位名：" prop="name">
+              <el-input v-model="details.name" readonly="readonly"></el-input>
             </el-form-item>
           </el-col>
 
-          <el-col :span="6">
-            <el-form-item label="单位类型：" prop="typename">
-              {{ typee }}
+          <el-col :span="8">
+
+            <el-form-item label="单位类型" prop="typee">
+              <el-input  v-model="typee" readonly="readonly"></el-input>
             </el-form-item>
           </el-col>
 
-          <el-col :span="6">
-            <el-form-item label="单位地址：" prop="address">
-              {{ details.address }}
+
+          <el-col :span="8">
+            <el-form-item label="联系电话" prop="phone">
+              <el-input v-model="details.phone" readonly="readonly"></el-input>
             </el-form-item>
           </el-col>
 
-          <el-col :span="6">
-            <el-form-item label="联系电话：" prop="phone">
-              {{ details.phone }}
+          <el-col :span="8">
+            <el-form-item label="联系人" prop="linkName">
+              <el-input v-model="details.linkName" readonly="readonly"></el-input>
             </el-form-item>
           </el-col>
 
-          <el-col :span="6">
-            <el-form-item label="联系人：" prop="linkName">
-              {{ details.linkName }}
+
+          <el-col :span="8">
+            <el-form-item label="备注" prop="remarks">
+              <el-input v-model="details.remarks" readonly="readonly"></el-input>
             </el-form-item>
           </el-col>
 
-          <el-col :span="6">
-            <el-form-item label="备注：" prop="remarks">
-              {{ details.remarks }}
+          <el-col :span="8">
+            <el-form-item label="状态" prop="status">
+              <el-input v-model="details.status" readonly="readonly">
+              </el-input>
+
             </el-form-item>
           </el-col>
 
-          <el-col :span="6">
-            <el-form-item label="状态：" prop="status">
-              {{ details.status }}
+
+          <el-col :span="14">
+            <el-form-item label="单位地址" prop="address">
+              <el-input v-model="details.address" readonly="readonly">
+              </el-input>
+
             </el-form-item>
           </el-col>
-          <div slot="footer" class="dialog-footer">
-            <el-button @click="oppodetail = false">确定</el-button>
 
-          </div>
         </el-row>
       </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="oppodetail = false">关 闭</el-button>
+      </div>
     </el-dialog>
+
+
+
+
 
 
     <!-- 修改往来单位信息 -->
@@ -200,13 +226,13 @@
       <el-form :model="updates" label-width="80px">
         <el-form-item label="单位名称" prop="name">
 
-          <el-input v-model="updates.name"></el-input>
+          <el-input v-model="updates.name" @focus="updateressdow()"></el-input>
 
         </el-form-item>
 
         <el-form-item label="单位类型" prop="type">
-          <el-select v-model="updates.type" placeholder="请选择" :disabled="true">
-            <el-option label="请选择" value="0"></el-option>
+          <el-select v-model="updates.type" placeholder="请选择" :disabled="true" @focus="updateressdow()">
+            
             <el-option :label="types.text" :value="types.id"
                        v-for="types in types" :key="types.id">
             </el-option>
@@ -214,30 +240,38 @@
         </el-form-item>
 
         <el-form-item label="地址" prop="address">
-          <el-input v-model="updates.address"></el-input>
+          <el-input v-model="updates.address"  @focus="updateressshow()" @blur="updateluxian()" id='address1'></el-input>
         </el-form-item>
 
+        <div id="container1" style="display:none;"></div>
+
+        <div class="input-item" style="display:none;">
+        <div class="input-item-prepend"><span class="input-item-text">经纬度</span></div>
+        <input id='lnglat1' type="text" >
+        </div>
+
+
         <el-form-item label="电话" prop="phone">
-          <el-input v-model="updates.phone"></el-input>
+          <el-input v-model="updates.phone" @focus="updateressdow()"></el-input>
         </el-form-item>
 
         <el-form-item label="联系人" prop="linkName">
-          <el-input v-model="updates.linkName"></el-input>
+          <el-input v-model="updates.linkName" @focus="updateressdow()"></el-input>
         </el-form-item>
 
         <el-form-item label="备注" prop="remarks">
-          <el-input v-model="updates.remarks"></el-input>
+          <el-input v-model="updates.remarks" @focus="updateressdow()"></el-input>
         </el-form-item>
 
         <el-form-item label="是否锁定" prop="status">
           <!-- element-ui 的 开关 switch -->
-          <el-switch v-model="updates.status"></el-switch>
+          <el-switch v-model="updates.status" @focus="updateressdow()"></el-switch>
         </el-form-item>
 
 
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="oppoupdate = false">取 消</el-button>
+        <el-button    @click="outupdateoppo">取 消</el-button>
         <el-button type="primary" @click="update()">确 定</el-button>
       </div>
     </el-dialog>
@@ -254,7 +288,11 @@ export default {
     return {
       
       map:null,
-      
+      mapObj:null,
+
+     updatemap:null,
+
+
       oppos: [
         {
           id: "",
@@ -355,7 +393,7 @@ export default {
       //地图
       window.onLoad  = function(){
               var map = new AMap.Map('container', {
-                  zoom:12,//级别
+                  zoom:11,//级别
                   //center: [114.31, 30.52],//武汉坐标
                   viewMode:'3D'//使用3D视图
               });
@@ -365,22 +403,33 @@ export default {
               var toolbar = new AMap.ToolBar();
               //调用插件
               map.addControl(toolbar);
-              // 创建一个 Marker 实例：
-              // var marker = new AMap.Marker({
-              //     position: new AMap.LngLat(116.39, 39.9),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
-              //     title: '北京'
-              // });
-              
-                  // 将创建的点标记添加到已有的地图实例：
-                  //map.add(marker);
-
-              
 
 
+              //var map = new AMap.Map('container');
+              map.plugin('AMap.Geolocation', function () {
+                var geolocation = new AMap.Geolocation({
+                  enableHighAccuracy: true,//是否使用高精度定位，默认:true
+                  timeout: 10000,          //超过10秒后停止定位，默认：无穷大
+                  maximumAge: 0,           //定位结果缓存0毫秒，默认：0
+                  convert: true,           //自动偏移坐标，偏移后的坐标为高德坐标，默认：true
+                  showButton: true,        //显示定位按钮，默认：true
+                  buttonPosition: 'RB',    //定位按钮停靠位置，默认：'LB'，左下角
+                  buttonOffset: new AMap.Pixel(10, 20),//定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
+                  showMarker: true,        //定位成功后在定位到的位置显示点标记，默认：true
+                  showCircle: true,        //定位成功后用圆圈表示定位精度范围，默认：true
+                  panToLocation: true,     //定位成功后将定位到的位置作为地图中心点，默认：true
+                  zoomToAccuracy:true      //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
+              });
+              map.addControl(geolocation);
+              geolocation.getCurrentPosition();
+              AMap.event.addListener(geolocation, 'container1');//返回定位信息
+             // AMap.event.addListener(geolocation, 'error', onError);      //返回定位出错信息
+            })
+            //this.mapObj = mapObj;
+  }
 
-          }
                 var key = "ba9419462964ab1cb3aea92b4d1d12e6"
-                var url = `https://webapi.amap.com/maps?v=1.4.15&key=${key}&callback=onLoad&plugin=AMap.ToolBar,AMap.Driving`;
+                var url = `https://webapi.amap.com/maps?v=1.4.15&key=${key}&callback=onLoad&plugin=AMap.ToolBar,AMap.Driving,AMap.Geolocation`;
                 var jsapi = document.createElement('script');
                 jsapi.charset = 'utf-8';
                 jsapi.src = url;
@@ -401,18 +450,73 @@ export default {
     luxian(){
 
             this.map = new AMap.Map('container', {
-                  zoom:12,//级别
+                  zoom:11,//级别
                   //center: [114.31, 30.52],//武汉坐标
                   viewMode:'3D'//使用3D视图
               });
-            //驾车路线规划
+              //this.map = new AMap.Map('container');
+            var thismap = this.map;
+             thismap.plugin('AMap.Geolocation', function () {
+                 var geolocation = new AMap.Geolocation({
+                  enableHighAccuracy: true,//是否使用高精度定位，默认:true
+                  timeout: 10000000,          //超过10秒后停止定位，默认：无穷大
+                  maximumAge: 0,           //定位结果缓存0毫秒，默认：0
+                  convert: true,           //自动偏移坐标，偏移后的坐标为高德坐标，默认：true
+                  showButton: true,        //显示定位按钮，默认：true
+                  buttonPosition: 'RB',    //定位按钮停靠位置，默认：'LB'，左下角
+                  buttonOffset: new AMap.Pixel(10, 20),//定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
+                  showMarker: true,        //定位成功后在定位到的位置显示点标记，默认：true
+                  showCircle: true,        //定位成功后用圆圈表示定位精度范围，默认：true
+                  panToLocation: false,     //定位成功后将定位到的位置作为地图中心点，默认：true
+                  zoomToAccuracy:true      //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
+              });
+              thismap.addControl(geolocation);
+              geolocation.getCurrentPosition();
+              AMap.event.addListener(geolocation, 'container');//返回定位信息
+              //AMap.event.addListener(geolocation, 'error', onError);      //返回定位出错信息
+              })
+
+              //初始化toolbar插件
+              var toolbar = new AMap.ToolBar();
+              //调用插件
+              thismap.addControl(toolbar);
+
+
+       
+       
+       //点击地图回显地址
+      var geocoder = new AMap.Geocoder({
+        //city: "010", //城市设为北京，默认：“全国”
+        radius: 1000 //范围，默认：500
+    });
+
+      var marker = new AMap.Marker();
+     
+    function regeoCode() {
+        
+        var lnglat  = document.getElementById('lnglat').value.split(',');
+        //alert(lnglat)
+        thismap.add(marker);
+        marker.setPosition(lnglat);
+        
+       geocoder.getAddress(lnglat, function(status, result) {
+            if (status === 'complete'&&result.regeocode) {
+                var address = result.regeocode.formattedAddress;
+                document.getElementById('address').value = address;
+               
+            }
+            
+        });
+    }
+
+                  //驾车路线规划
                   var driving = new AMap.Driving({
                   // 驾车路线规划策略，AMap.DrivingPolicy.LEAST_TIME是最快捷模式
                   policy: AMap.DrivingPolicy.LEAST_TIME,
                   map:this.map,
                 })
                 //alert(this.editoppo.address)
-                var points = [
+                var points = [//路线规划起点终点
                    {keyword: '蜗牛学院',city:'武汉'},
                     {keyword: this.editoppo.address,city:'武汉'}
                 ]
@@ -420,7 +524,42 @@ export default {
                 // 未出错时，result即是对应的路线规划方案
 
                 })
+    
+ thismap.on('click',function(e){
+     document.getElementById('lnglat').value = e.lnglat;
+     regeoCode();
+     //驾车路线规划
+                  var driving = new AMap.Driving({
+                  // 驾车路线规划策略，AMap.DrivingPolicy.LEAST_TIME是最快捷模式
+                  policy: AMap.DrivingPolicy.LEAST_TIME,
+                  map:this.map,
+                })
+                //alert(this.editoppo.address)
+                var points = [//路线规划起点终点
+                   {keyword: '蜗牛学院',city:'武汉'},
+                    {keyword: this.editoppo.address,city:'武汉'}
+                ]
+                driving.search(points, function (status, result) {
+                // 未出错时，result即是对应的路线规划方案
+
+                })
+ })
+
+ document.getElementById('lnglat').onkeydown = function(e) {
+     if (e.keyCode === 13) {
+         regeoCode();
+         return false;
+     }
+     return true;
+ }
+ 
+
+
+
     },
+
+    
+
     //添加往来单位
     addoppo() {
 
@@ -429,6 +568,7 @@ export default {
       } else {
         this.editoppo.status = '1'
       }
+      //this.editoppo.address = document.getElementById('address').value;
       this.$axios.post("opposite/add", this.editoppo).then(r => {
 
         if (r.data.code == 200) {
@@ -455,6 +595,13 @@ export default {
         document.getElementById('container').style.display="none";
 
     },
+    //取消修改框
+    outupdateoppo(){
+      this.oppoupdate = false;
+      //获得焦点显示地图div
+        document.getElementById('container1').style.display="none";
+    },
+    
     //往来单位详情
     detail(id, type) {
 
@@ -479,9 +626,83 @@ export default {
 
       })
     },
+
+
+
+
     //打开修改对话框
     goupdate(id, type) {
       this.oppoupdate = true;
+
+
+        //地图
+      window.onLoad  = function(){
+              var map = new AMap.Map('container1', {
+                  zoom:11,//级别
+                  //center: [114.31, 30.52],//武汉坐标
+                  viewMode:'3D'//使用3D视图
+              });
+              this.mapupdate = map;
+
+              //初始化toolbar插件
+              var toolbar = new AMap.ToolBar();
+              //调用插件
+              map.addControl(toolbar);
+
+
+              //var map = new AMap.Map('container');
+              map.plugin('AMap.Geolocation', function () {
+                var geolocation = new AMap.Geolocation({
+                  enableHighAccuracy: true,//是否使用高精度定位，默认:true
+                  timeout: 10000,          //超过10秒后停止定位，默认：无穷大
+                  maximumAge: 0,           //定位结果缓存0毫秒，默认：0
+                  convert: true,           //自动偏移坐标，偏移后的坐标为高德坐标，默认：true
+                  showButton: true,        //显示定位按钮，默认：true
+                  buttonPosition: 'RB',    //定位按钮停靠位置，默认：'LB'，左下角
+                  buttonOffset: new AMap.Pixel(10, 20),//定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
+                  showMarker: true,        //定位成功后在定位到的位置显示点标记，默认：true
+                  showCircle: true,        //定位成功后用圆圈表示定位精度范围，默认：true
+                  panToLocation: true,     //定位成功后将定位到的位置作为地图中心点，默认：true
+                  zoomToAccuracy:true      //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
+              });
+              map.addControl(geolocation);
+              geolocation.getCurrentPosition();
+              AMap.event.addListener(geolocation, 'container1');//返回定位信息
+             // AMap.event.addListener(geolocation, 'error', onError);      //返回定位出错信息
+            })
+            //this.mapObj = mapObj;
+  }
+
+                var key = "ba9419462964ab1cb3aea92b4d1d12e6"
+                var url = `https://webapi.amap.com/maps?v=1.4.15&key=${key}&callback=onLoad&plugin=AMap.ToolBar,AMap.Driving,AMap.Geolocation`;
+                var jsapi = document.createElement('script');
+                jsapi.charset = 'utf-8';
+                jsapi.src = url;
+                document.head.appendChild(jsapi);
+
+
+
+           //驾车路线规划
+                  var driving = new AMap.Driving({
+                  // 驾车路线规划策略，AMap.DrivingPolicy.LEAST_TIME是最快捷模式
+                  policy: AMap.DrivingPolicy.LEAST_TIME,
+                  map:this.updatemap,
+                })
+                //alert(this.editoppo.address)
+                var points = [//路线规划起点终点
+                   {keyword: '蜗牛学院',city:'武汉'},
+                    {keyword: this.updates.address,city:'武汉'}
+                ]
+                driving.search(points, function (status, result) {
+                // 未出错时，result即是对应的路线规划方案
+
+                })
+
+
+
+
+
+
       this.$axios.post("opposite/findbyid?id=" + id).then(r => {
 
         this.updates = r.data.data
@@ -497,9 +718,103 @@ export default {
 
       })
     },
+    //路线失去焦点触发
+    updateluxian(){
+         this.updatemap = new AMap.Map('container1', {
+                  zoom:11,//级别
+                  viewMode:'3D'//使用3D视图
+              });
+          //this.updates.address = document.getElementById('address1').value
+
+              
+            var thismap = this.updatemap;
+             thismap.plugin('AMap.Geolocation', function () {
+                 var geolocation = new AMap.Geolocation({
+                  enableHighAccuracy: true,//是否使用高精度定位，默认:true
+                  timeout: 10000000,          //超过10秒后停止定位，默认：无穷大
+                  maximumAge: 0,           //定位结果缓存0毫秒，默认：0
+                  convert: true,           //自动偏移坐标，偏移后的坐标为高德坐标，默认：true
+                  showButton: true,        //显示定位按钮，默认：true
+                  buttonPosition: 'RB',    //定位按钮停靠位置，默认：'LB'，左下角
+                  buttonOffset: new AMap.Pixel(10, 20),//定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
+                  showMarker: true,        //定位成功后在定位到的位置显示点标记，默认：true
+                  showCircle: true,        //定位成功后用圆圈表示定位精度范围，默认：true
+                  panToLocation: false,     //定位成功后将定位到的位置作为地图中心点，默认：true
+                  zoomToAccuracy:true      //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
+              });
+              thismap.addControl(geolocation);
+              geolocation.getCurrentPosition();
+              AMap.event.addListener(geolocation, 'container1');//返回定位信息
+              //AMap.event.addListener(geolocation, 'error', onError);      //返回定位出错信息
+              })
+
+              //初始化toolbar插件
+              var toolbar = new AMap.ToolBar();
+              //调用插件
+              thismap.addControl(toolbar);
+
+
+       //点击地图回显地址
+      var geocoder = new AMap.Geocoder({
+        //city: "010", //城市设为北京，默认：“全国”
+        radius: 1000 //范围，默认：500
+    });
+
+      var marker = new AMap.Marker();
+     
+    function regeoCode() {
+        
+        var lnglat  = document.getElementById('lnglat1').value.split(',');
+        //alert(lnglat)
+        thismap.add(marker);
+        marker.setPosition(lnglat);
+        
+       geocoder.getAddress(lnglat, function(status, result) {
+            if (status === 'complete'&&result.regeocode) {
+                var address = result.regeocode.formattedAddress;
+                document.getElementById('address1').value = address;
+               
+            }
+            
+        });
+    }
+
+                  //驾车路线规划
+                  var driving = new AMap.Driving({
+                  // 驾车路线规划策略，AMap.DrivingPolicy.LEAST_TIME是最快捷模式
+                  policy: AMap.DrivingPolicy.LEAST_TIME,
+                  map:this.updatemap,
+                })
+                //alert(this.editoppo.address)
+                var points = [//路线规划起点终点
+                   {keyword: '蜗牛学院',city:'武汉'},
+                    {keyword: this.updates.address,city:'武汉'}
+                ]
+                driving.search(points, function (status, result) {
+                // 未出错时，result即是对应的路线规划方案
+
+                })
+    
+      thismap.on('click',function(e){
+        document.getElementById('lnglat1').value = e.lnglat;
+        regeoCode();
+                  
+ })
+
+ document.getElementById('lnglat1').onkeydown = function(e) {
+     if (e.keyCode === 13) {
+         regeoCode();
+         return false;
+     }
+     return true;
+ }
+
+    },
+
+
     //修改
     update() {
-
+      document.getElementById('container1').style.display="none";
       if (this.updates.status) {
         this.updates.status = '0'
       } else {
@@ -553,6 +868,15 @@ export default {
     addressdow(){
         //获得焦点关闭地图div
         document.getElementById('container').style.display="none";
+    },
+    updateressshow(){
+         //获得焦点显示地图div
+        document.getElementById('container1').style.display="block";
+
+    },
+    updateressdow(){
+      //获得焦点关闭地图div
+        document.getElementById('container1').style.display="none";
     }
   },
   created() {
@@ -565,6 +889,12 @@ export default {
 
 <style>
 #container{
+    width: 600px;
+    height: 300px;
+    margin-left:78px;
+    margin-bottom: 20px;
+}
+#container1{
     width: 600px;
     height: 300px;
     margin-left:78px;

@@ -61,6 +61,7 @@ public class OppositeCompanyController {
     @RequestMapping("add")
     public ResponseResult add(@RequestBody OppositeCompanyPo ocpo) {
         System.out.println("添加");
+        System.out.println(ocpo);
         oppositeCompanyService.add(ocpo);
         return new ResponseResult(200, "添加成功");
     }
