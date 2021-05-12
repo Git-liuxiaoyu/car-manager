@@ -1,6 +1,7 @@
 package com.woniu.adapter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.pagehelper.PageHelper;
 import com.woniu.dao.InsureRecordDao;
 import com.woniu.domain.KeepRecord;
 import com.woniu.po.InsureRecordPo;
@@ -62,6 +63,7 @@ public class InsureRecordAdapter {
 
         if (insureRecordList.size() == 0) {
             //从数据库查数据
+            PageHelper.startPage(pageIndex, pageSize);
             insureRecordList = insureRecordDao.insureRecordList(searchText);
             //存入redis的缓存中
             insureRecordRedisDao.addRedisInsureRecordList(insureRecordList, pageIndex, searchText,pageSize);

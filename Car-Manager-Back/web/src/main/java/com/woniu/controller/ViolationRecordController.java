@@ -32,7 +32,6 @@ public class ViolationRecordController {
             pageSize=size;
         }
         Integer total=violationRecordService.count(searchText);
-        PageHelper.startPage(pageIndex,pageSize);
         List<ViolationRecord> violationRecordList = violationRecordService.list(searchText,pageIndex,pageSize);
         PageInfo<ViolationRecord> pageInfo = new PageInfo<>(violationRecordList);
         pageInfo.setTotal(total);

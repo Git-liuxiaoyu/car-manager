@@ -1,6 +1,7 @@
 package com.woniu.adapter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.pagehelper.PageHelper;
 import com.woniu.dao.OppositeCompanyDao;
 import com.woniu.domain.OppositeCompany;
 import com.woniu.po.InsureRecordPo;
@@ -29,6 +30,7 @@ public class OppositeCompanyAdapter {
 
         if (OppositeList.size() == 0) {
             //从数据库查数据
+            PageHelper.startPage(pageIndex, pageSize);
             OppositeList = oppositeCompanyDao.list(searchText);
             //存入redis的缓存中
             oppositeCompanyRedisDao.addRedisUserList(OppositeList, pageIndex, searchText,pageSize);

@@ -1,6 +1,7 @@
 package com.woniu.adapter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.pagehelper.PageHelper;
 import com.woniu.dao.DriverDao;
 import com.woniu.domain.Driver;
 import com.woniu.domain.Employee;
@@ -28,6 +29,7 @@ public class DriverAdapter {
 //        ObjectMapper objectMapper = new ObjectMapper();
         if(driverList.size() == 0){
             //从数据库查数据
+            PageHelper.startPage(pageIndex, pageSize);
             driverList = driverDao.findDriverList(searchText);
             //存入redis的缓存中
             driverRedisDao.addRedisDriverList(driverList,pageIndex, searchText,pageSize);

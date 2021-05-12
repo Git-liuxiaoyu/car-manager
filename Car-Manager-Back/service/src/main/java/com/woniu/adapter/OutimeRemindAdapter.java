@@ -1,6 +1,7 @@
 package com.woniu.adapter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.pagehelper.PageHelper;
 import com.woniu.dao.OutimeRemindDao;
 import com.woniu.po.InsureRecordPo;
 import com.woniu.po.OutimeRemindPo;
@@ -58,6 +59,7 @@ public class OutimeRemindAdapter {
 
         if (outimeRemindList.size() == 0) {
             //从数据库查数据
+            PageHelper.startPage(pageIndex, pageSize);
             outimeRemindList = outimeRemindDao.outimeRemindList(nexttime,thistime);
             //存入redis的缓存中
             outimeRemindRedisDao.addRedisOutimeRemindList(outimeRemindList, pageIndex, nexttime,thistime,pageSize);

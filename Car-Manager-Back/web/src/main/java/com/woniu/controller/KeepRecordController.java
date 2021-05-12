@@ -49,7 +49,6 @@ public class KeepRecordController {
             pageSize=size;
         }
         Integer total=keepRecordService.count(searchText);
-        PageHelper.startPage(pageIndex,pageSize);
         List<KeepRecord> keepList = keepRecordService.keepList(searchText,pageIndex,pageSize);
         PageInfo<KeepRecord> pageInfo = new PageInfo<>(keepList);
         pageInfo.setTotal(total);

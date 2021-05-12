@@ -1,6 +1,7 @@
 package com.woniu.adapter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.pagehelper.PageHelper;
 import com.woniu.dao.DepartureRecordDao;
 import com.woniu.domain.DepartureRecord;
 import com.woniu.domain.Driver;
@@ -28,6 +29,7 @@ public class DepartureRecordAdapter {
         List<DepartureRecordPo> departureRecordPoList = departureRecordRedisDao.list(searchText, pageIndex, pageSize);
         ObjectMapper objectMapper = new ObjectMapper();
         if (departureRecordPoList.size() == 0) {
+            PageHelper.startPage(pageIndex, pageSize);
             departureRecordPoList = departureRecordDao.findList(searchText);
             departureRecordRedisDao.addRedisDriverList(departureRecordPoList, searchText, pageIndex, pageSize);
         }

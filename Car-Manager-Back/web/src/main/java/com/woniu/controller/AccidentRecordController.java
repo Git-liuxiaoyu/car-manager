@@ -57,7 +57,6 @@ public class AccidentRecordController {
             pageSize=size;
         }
         Integer total=accidentRecordService.count(searchText);
-        PageHelper.startPage(pageIndex,pageSize);
 //        List<Employee> employeeList = employeeService.findAll(searchText,pageIndex,pageSize);
         List<AccidentRecord> accidentRecordList = accidentRecordService.list(searchText, pageIndex, pageSize);
         PageInfo<AccidentRecord> pageInfo = new PageInfo<>(accidentRecordList);

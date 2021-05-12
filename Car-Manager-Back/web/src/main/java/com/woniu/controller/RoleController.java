@@ -31,7 +31,6 @@ public class RoleController {
             pageSize = size;
         }
         Integer total = roleService.count(searchText);
-        PageHelper.startPage(pageIndex, pageSize);
         List<Role> employeeList = roleService.findAll(searchText, pageIndex, pageSize);
         PageInfo<Role> pageInfo = new PageInfo<>(employeeList);
         pageInfo.setTotal(total);

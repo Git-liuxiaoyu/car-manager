@@ -70,7 +70,6 @@ public class OutimeRemindController {
 
 
         Integer total=outimeRemindService.count(nexttime,thistime);
-        PageHelper.startPage(pageIndex,pageSize);
         List<OutimeRemindPo> outimeReminds = outimeRemindService.outimeRemindList(nexttime,thistime,pageIndex,pageSize);
         PageInfo<OutimeRemindPo> pageInfo = new PageInfo<>(outimeReminds);
         pageInfo.setTotal(total);

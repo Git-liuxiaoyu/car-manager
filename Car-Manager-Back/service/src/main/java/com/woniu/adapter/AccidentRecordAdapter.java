@@ -2,6 +2,7 @@ package com.woniu.adapter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.github.pagehelper.PageHelper;
 import com.woniu.dao.AccidentRecordDao;
 
 import com.woniu.domain.AccidentRecord;
@@ -37,6 +38,7 @@ public class AccidentRecordAdapter {
         ObjectMapper objectMapper = new ObjectMapper();
         if(accidentRecordPoList.size() == 0){
             //从数据库查数据
+            PageHelper.startPage(pageIndex, pageSize);
             accidentRecordPoList = accidentRecordDao.list(searchText);
             //存入redis的缓存中
             accidentRecordRedisDao.addRedisAccidentRecordList(accidentRecordPoList, pageIndex, searchText,pageSize);

@@ -1,5 +1,6 @@
 package com.woniu.adapter;
 
+import com.github.pagehelper.PageHelper;
 import com.woniu.dao.RepairRecordDao;
 import com.woniu.domain.RepairRecord;
 import com.woniu.po.RepairRecordPo;
@@ -29,6 +30,7 @@ public class RepairRecordAdapter {
 
         if (repairRecordList.size() == 0) {
             //从数据库查数据
+            PageHelper.startPage(pageIndex,pageSize);
             repairRecordList = repairRecordDao.list(searchText);
             //存入redis的缓存中
             repairRecordRedisDao.addRedisRepairRecordList(repairRecordList, pageIndex, searchText,pageSize);

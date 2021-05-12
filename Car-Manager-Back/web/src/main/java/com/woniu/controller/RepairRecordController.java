@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -43,7 +45,6 @@ public class RepairRecordController {
             pageSize=size;
         }
         Integer total=repairRecordService.count(searchText);
-        PageHelper.startPage(pageIndex,pageSize);
         List<RepairRecord> repairRecordList = repairRecordService.list(searchText,pageIndex,pageSize);
         PageInfo<RepairRecord> pageInfo = new PageInfo<>(repairRecordList);
         pageInfo.setTotal(total);
@@ -64,7 +65,14 @@ public class RepairRecordController {
 
     @RequestMapping("/update")
     public ResponseResult updated(@RequestBody RepairRecord repairRecord){
-
+        repairRecordService.update(repairRecord);
+        return ResponseResult.SUCCESS;
+    }
+    @RequestMapping("/getCar")
+    public ResponseResult getCar(@RequestBody RepairRecord repairRecord){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date now = new Date();
+        repairRecord.setGetTime(sdf.format(now));
         //修改车辆状态为可用
         Car car = new Car();
         car.setId(repairRecord.getCarId());

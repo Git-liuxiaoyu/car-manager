@@ -43,7 +43,6 @@ public class DepartureRecordController {
             pageSize = size;
         }
         Integer total = departureRecordService.count(searchText);
-        PageHelper.startPage(pageIndex, pageSize);
         List<DepartureRecord> departureRecordList = departureRecordService.findAll(searchText, pageIndex, pageSize);
         PageInfo<DepartureRecord> pageInfo = new PageInfo<>(departureRecordList);
         pageInfo.setTotal(total);

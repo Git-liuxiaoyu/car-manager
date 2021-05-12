@@ -1,6 +1,7 @@
 package com.woniu.adapter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.pagehelper.PageHelper;
 import com.woniu.dao.KeepRecordDao;
 import com.woniu.dao.KeepRecordDao;
 import com.woniu.domain.KeepRecord;
@@ -34,6 +35,7 @@ public class KeepRecordAdapter {
 
         if (keepRecordPoList.size() == 0) {
             //从数据库查数据
+            PageHelper.startPage(pageIndex, pageSize);
             keepRecordPoList = keepRecordDao.findList(searchText);
             //存入redis的缓存中
             keepRecordRedisDao.addRedisList(keepRecordPoList, pageIndex, searchText,pageSize);

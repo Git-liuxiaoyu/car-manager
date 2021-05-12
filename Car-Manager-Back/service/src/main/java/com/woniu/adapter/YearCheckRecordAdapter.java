@@ -1,5 +1,6 @@
 package com.woniu.adapter;
 
+import com.github.pagehelper.PageHelper;
 import com.woniu.dao.YearCheckRecordDao;
 import com.woniu.domain.YearCheckRecord;
 import com.woniu.po.YearCheckRecordPo;
@@ -25,6 +26,7 @@ public class YearCheckRecordAdapter {
 
         if (yearCheckRecordList.size() == 0) {
             //从数据库查数据
+            PageHelper.startPage(pageIndex,pageSize);
             yearCheckRecordList = yearCheckRecordDao.list(searchText);
             //存入redis的缓存中
             yearCheckRecordRedisDao.addRedisYearCheckRecordList(yearCheckRecordList, pageIndex, searchText,pageSize);

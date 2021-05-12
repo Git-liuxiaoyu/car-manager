@@ -43,7 +43,6 @@ public class OppositeCompanyController {
             pageSize=size;
         }
         Integer total=oppositeCompanyService.count(searchText);
-        PageHelper.startPage(pageIndex,pageSize);
         List<OppositeCompany> insurelist = oppositeCompanyService.List(searchText,pageIndex,pageSize);
         PageInfo<OppositeCompany> pageInfo = new PageInfo<>(insurelist);
         pageInfo.setTotal(total);

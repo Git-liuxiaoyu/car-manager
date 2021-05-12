@@ -1,6 +1,7 @@
 package com.woniu.adapter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.pagehelper.PageHelper;
 import com.woniu.dao.RoleDao;
 import com.woniu.domain.Role;
 import com.woniu.po.RolePo;
@@ -26,6 +27,7 @@ public class RoleAdapter {
         ObjectMapper objectMapper = new ObjectMapper();
         if (rolePoList.size() == 0) {
             //从数据库查数据
+            PageHelper.startPage(pageIndex, pageSize);
             rolePoList = roleDao.findAll(searchText);
             //存入redis的缓存中
             roleRedisDao.addRedisUserList(rolePoList,pageIndex, searchText,pageSize);

@@ -38,7 +38,7 @@
               <el-button type="danger" icon="el-icon-delete" circle @click="del(scope.row)"></el-button>
             </el-tooltip>
             <el-tooltip content="分配权限" placement="bottom" effect="light">
-              <el-button type="warning" icon="el-icon-share" circle @click="doMenuRole(scope.row)"></el-button>
+              <el-button type="warning" icon="el-icon-share" circle @click="showRightsDialog(scope.row)"></el-button>
             </el-tooltip>
           </template>
         </el-table-column>
@@ -76,15 +76,20 @@
         <el-button type="primary" @click="updateRole()">确 定</el-button>
       </span>
     </el-dialog>
-    <el-dialog title="分配权限" :visible.sync="menuRoleFormVisible" center width="20%">
-      <el-tree :data="data" show-checkbox
-               default-expand-all node-key="id" ref="tree"
-               highlight-current :props="defaultProps">
-      </el-tree>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="menuRoleFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="menuRole()">确 定</el-button>
-      </span>
+    <!-- 分配角色权限 -->
+     <el-dialog title="分配角色权限" :visible.sync="dialogRightsVisible" center width="20%">
+        <el-tree
+         :data="rightData"
+          show-checkbox
+          node-key="id"
+         default-expand-all
+         :default-checked-keys="[]"
+         :props="defaultProps" ref='tree'>
+        </el-tree>
+        <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogRightsVisible = false">取 消</el-button>
+        <el-button type="primary" @click="addRights(roleId)">确 定</el-button>
+        </div>
     </el-dialog>
 
     <br/>
@@ -121,7 +126,8 @@ export default {
       //模态框
       addRoleFormVisible: false,//添加模态框
       updateRoleFormVisible: false,//修改模态框
-      menuRoleFormVisible: false,//分配权限模态框
+      // menuRoleFormVisible: false,//分配权限模态框
+      dialogRightsVisible:false,//分配权限模态框
       //添加的对象
       Role: {},
       //修改的对象
@@ -131,6 +137,8 @@ export default {
       },
       //树状图的数据
       data: [],
+      rightData:[],
+      roleId:0,
       defaultProps: {
         children: 'children',
         label: 'name'
@@ -194,17 +202,14 @@ export default {
         this.$message.info("取消删除");
       })
     },
-    //分配权限
-    doMenuRole(row) {
-      this.menuRoleFormVisible = true;
-      this.$axios.get("menu/list").then(r => {
-        this.data = r.data.data;
-        console.log(r)
-      })
+        //分页方法
+    handleCurrentChange(val) {
+      this.p = val;
+      this.findEmployee();
     },
-    //分配权限确定方法
-    menuRole() {
-
+    handleSizeChange(val) {
+      this.size = val;
+      this.findEmployee();
     },
     //分页的角色列表
     findRole() {
@@ -214,18 +219,52 @@ export default {
         this.total = r.data.data.total
       })
     },
-    //分页方法
-    handleCurrentChange(val) {
-      this.p = val;
-      this.findEmployee();
-    },
-    handleSizeChange(val) {
-      this.size = val;
-      this.findEmployee();
-    },
+     // 获取所有权限
+     loadRights(){
+         this.$axios.get("menu/list").then(res=>{
+            this.rightData = res.data.data
+        })
+     },
+     // 显示权限对话框
+     showRightsDialog(row){
+         // 当前行id
+         this.roleId  = row.id;
+         // 对话框显示
+         this.dialogRightsVisible = true;
+         
+     },
+     //权限提交
+     addRights(id){
+        let keys1 = this.$refs.tree.getCheckedKeys()
+        let keys2 = this.$refs.tree.getHalfCheckedKeys()
+        let keys = keys1.concat(keys2)
+        this.$axios.get("menu/add",{
+            params:{
+                "keys":keys.join(","),
+                "id":this.roleId
+            }}).then(res=>{
+                this.dialogRightsVisible = false;
+                this.$message.success("权限分配成功");
+        })
+     },
+
+
+  },
+    // 监控userId,每次点击权限分配userId刷新触发请求
+  watch:{ "roleId":function(newval,oldval){
+         this.$axios.get("menu/getByRoleId",{params:{
+             "roleId":this.roleId
+            }}).then(res=>{
+              console.log(res)
+              this.$refs.tree.setCheckedKeys(res.data.data)
+              
+        })
+
+     },
   },
   created() {
     this.findRole();
+    this.loadRights();
   }
 }
 </script>

@@ -1,6 +1,7 @@
 package com.woniu.adapter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.pagehelper.PageHelper;
 import com.woniu.dao.FeeRecordDao;
 import com.woniu.domain.Car;
 import com.woniu.domain.Driver;
@@ -37,6 +38,7 @@ public class FeeRecordAdapter {
         ObjectMapper objectMapper = new ObjectMapper();
         if(feeRecordList.size() == 0){
             //从数据库查数据
+            PageHelper.startPage(pageIndex, pageSize);
             feeRecordList = feeRecordDao.list(searchText);
             //存入redis的缓存中
             feeRecordRedisDao.addRedisUserList(feeRecordList, pageIndex, searchText,pageSize);

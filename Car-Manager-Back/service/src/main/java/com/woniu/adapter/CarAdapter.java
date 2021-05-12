@@ -1,6 +1,7 @@
 package com.woniu.adapter;
 
 
+import com.github.pagehelper.PageHelper;
 import com.woniu.dao.CarDao;
 import com.woniu.domain.Car;
 import com.woniu.po.CarPo;
@@ -41,6 +42,7 @@ public class CarAdapter {
 
         if (carList.size() == 0) {
             //从数据库查数据
+            PageHelper.startPage(pageIndex,pageSize);
             carList = carDao.list(searchText);
             //存入redis的缓存中
             carRedisDao.addRedisCarList(carList, pageIndex, searchText, pageSize);
