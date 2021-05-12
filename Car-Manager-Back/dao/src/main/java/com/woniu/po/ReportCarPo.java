@@ -18,5 +18,5 @@ public class ReportCarPo {
     private BigDecimal accidentFee;
     private BigDecimal yearCheckFee;
     private BigDecimal insureFee;
-
+    private Integer departureNum;//出车次数
 }

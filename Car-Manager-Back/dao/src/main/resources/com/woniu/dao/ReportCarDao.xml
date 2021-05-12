@@ -45,6 +45,10 @@ where rf.carId=c.id and o.id=rf.oilId and  rr.id=rf.repairId and ar.id=rf.accide
         </where>
     </select>
 
+    <select id="getDepartureNum" resultType="Integer">
+        select count(1) from departure_record where carId=#{carId}
+    </select>
+
 
 
 </mapper>

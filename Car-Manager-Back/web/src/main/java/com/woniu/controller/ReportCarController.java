@@ -39,26 +39,7 @@ public class ReportCarController {
     public ResponseResult getOne(Integer carId){
         ReportCar reportCar = reportCarService.getOne(carId);
         Map<String, Object> objectHashMap = new HashMap<>();
-//        BigDecimal[] fee={
-//                reportCar.getAccidentFee(),
-//                reportCar.getChargesFee(),
-//                reportCar.getInsureFee(),
-//                reportCar.getKeepFee(),
-//                reportCar.getRepairFee(),
-//                reportCar.getOilFee(),
-//                reportCar.getYearCheckFee(),
-//                reportCar.getViolationFee(),
-//        };
-//        String[] name={
-//                "事故费用",
-//                "规费费用",
-//                "保险费用",
-//                "保养费用",
-//                "维修费用",
-//                "油费用",
-//                "年检费用",
-//                "违章费用",
-//        };
+
         objectHashMap.put( "事故费用", reportCar.getAccidentFee());
         objectHashMap.put( "规费费用", reportCar.getChargesFee());
         objectHashMap.put( "保险费用",  reportCar.getInsureFee());
@@ -69,5 +50,11 @@ public class ReportCarController {
         objectHashMap.put( "违章费用", reportCar.getViolationFee());
 //        objectHashMap.put("fee",fee);
         return new ResponseResult(objectHashMap);
+    }
+
+    @RequestMapping("departureNum")
+    public Integer getDepartureNum(Integer carId){
+        return reportCarService.getDepartureNum(carId);
+
     }
 }

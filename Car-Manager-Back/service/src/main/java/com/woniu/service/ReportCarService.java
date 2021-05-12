@@ -12,4 +12,6 @@ public interface ReportCarService {
     List<ReportCar> getAll();
 
     ReportCar getOne(Integer carId);
+
+    Integer getDepartureNum(Integer carId);
 }

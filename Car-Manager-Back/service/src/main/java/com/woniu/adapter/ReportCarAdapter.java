@@ -48,5 +48,13 @@ public class ReportCarAdapter {
         return reportCar;
     }
 
+    public Integer getDepartureNum(Integer carId){
+        Integer num = reportCarDao.getDepartureNum(carId);
+
+        return num;
+    }
+
+
+
 
 }

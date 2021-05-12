@@ -11,7 +11,7 @@
 
     <el-row :gutter="20">
       <el-col :span="6">
-        <el-input placeholder="请输入内容" v-model="searchText" class="input-with-select">
+        <el-input placeholder="请输入驾驶员姓名" v-model="searchText" class="input-with-select">
           <el-button slot="append" icon="el-icon-search" @click="loadDriver"></el-button>
         </el-input>
       </el-col>
@@ -100,7 +100,7 @@
 
           <el-col :span="8">
             <el-form-item label="部门" prop="deptId">
-              <el-input v-model="driver.employee.deptId" readonly="readonly"></el-input>
+              <el-input v-model="driver.deptName" readonly="readonly"></el-input>
             </el-form-item>
           </el-col>
 
@@ -282,7 +282,7 @@
     </el-dialog>
 
     <!-- 修改 -->
-    <el-dialog title="编辑用户" :visible.sync="dialogEdiDriverVisible" center width="80%">
+    <el-dialog title="编辑驾驶员信息" :visible.sync="dialogEdiDriverVisible" center width="80%">
       <el-form :model="showDriver" label-width="80px">
         <el-row :gutter="20">
           <el-col :span="8">
@@ -418,6 +418,7 @@ export default {
         type: '',
         status: '',
         remarks: '',
+        deptName:'',
         employee: {
           name: '',
           deptId: '',
@@ -470,6 +471,7 @@ export default {
               e1.deptName = e2.text;
               this.showDriver.deptName= e2.text;
             }
+            
           })
           this.driverTypes.forEach(e3=>{
             if(e1.type===e3.id){
@@ -477,7 +479,13 @@ export default {
               this.showDriver.driverType = e3.text;
             }
           })
+          
         });
+        
+
+
+
+
       });
     },
 
@@ -522,15 +530,26 @@ export default {
       this.$axios.get("driver/dname?name=" + name).then(r => {
         if (r.data.code == 200) {
           this.driver.employee = r.data.data;
+           console.log(this.depts)
+            // console.log(this.driver.employee.)
+           this.depts.forEach(e2 => {
+            if (this.driver.employee.deptId == e2.id) {
+              this.driver.deptName = e2.text;
+              // this.showDriver.deptName= e2.text;
+            }
+            
+          })
+
         } else {
-          alert(r.data.msg)
+          // alert(r.data.msg)
+           this.$message({type: 'error', message: "没有此员工，或此员工已经是驾驶员", duration: 2000});
         }
       })
 
 
     },
     toAddDriver() {
-
+      
       if (this.driver.status) {
         this.driver.status = 1;
       } else {

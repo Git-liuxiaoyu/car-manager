@@ -11,7 +11,7 @@
 
     <el-row :gutter="20">
       <el-col :span="6">
-        <el-input placeholder="请输入内容" v-model="searchText" class="input-with-select">
+        <el-input placeholder="请输入车牌号码" v-model="searchText" class="input-with-select">
           <el-button slot="append" icon="el-icon-search" @click="findFee"></el-button>
         </el-input>
       </el-col>
@@ -407,6 +407,7 @@ export default {
     this.loadDriverName();
   }
 }
+
 </script>
 
 
