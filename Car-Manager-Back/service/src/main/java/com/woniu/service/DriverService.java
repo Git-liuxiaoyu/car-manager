@@ -27,4 +27,8 @@ public interface DriverService {
     List<Driver> getAll();
 
     int count(String searchText);
+
+    EmployeePo getOne(String name);
+
+    Driver getDriver(String name);
 }

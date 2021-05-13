@@ -2,6 +2,7 @@ package com.woniu.dao;
 
 import com.woniu.po.DriverPo;
 import com.woniu.po.EmployeePo;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -31,5 +32,9 @@ public interface DriverDao {
     List<DriverPo> getAll();
 
     int count(String searchText);
+    //查询所有员工
+    EmployeePo getOne(@Param("name") String name);
+//    查询所有驾驶员
+    DriverPo getDriver(String name);
 
 }

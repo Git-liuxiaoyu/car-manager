@@ -95,4 +95,14 @@
             </if>
         </where>
     </select>
+
+
+    <select id="getOne" resultType="EmployeePo">
+        <!--select d.* from driver d,employee e where e.id=d.employeeId and e.name=#{name}-->
+        select * from employee where employee.name=#{name}
+    </select>
+
+    <select id="getDriver" resultType="DriverPo">
+        select * from employee e,employee_role er where e.id=er.employeeId and e.name=#{name} and er.roleId=2
+    </select>
 </mapper>

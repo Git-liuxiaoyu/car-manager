@@ -71,14 +71,14 @@
     </el-row>
     <!-- 新增 -->
     <el-dialog title="新增规费信息" :visible.sync="addDialogFormVisible" center width="80%">
-      <el-form :model="fees" label-width="100px">
+      <el-form :model="fees" label-width="100px" :rules="rules" ref="addForm">
         <el-row :gutter="20">
 
           <el-col :span="8">
 
             <el-form-item label="车牌号" prop="carId">
               <el-select v-model="fees.carId" placeholder="请选择">
-                <el-option label="请选择" value="0"></el-option>
+                <!-- <el-option label="请选择" value="0"></el-option> -->
                 <el-option :label="car.carNum" :value="car.id"
                            v-for="car in cars" :key="car.id">
                 </el-option>
@@ -88,14 +88,14 @@
 
 
           <el-col :span="8">
-            <el-form-item label="规费名称">
+            <el-form-item label="规费名称" prop="feeName">
               <el-input v-model="fees.feeName"></el-input>
             </el-form-item>
           </el-col>
 
           <el-col :span="8">
 
-            <el-form-item label="缴费时间:">
+            <el-form-item label="缴费时间:" prop="payTime">
               <el-date-picker
                 v-model="fees.payTime"
                 type="datetime"
@@ -107,7 +107,7 @@
           </el-col>
 
           <el-col :span="8">
-            <el-form-item label="缴费金额">
+            <el-form-item label="缴费金额" prop="fee">
               <el-input v-model="fees.fee"></el-input>
             </el-form-item>
           </el-col>
@@ -115,7 +115,7 @@
           <el-col :span="8">
             <el-form-item label="收费单位" prop="oppositeCompanyId">
               <el-select v-model="fees.oppositeCompanyId" placeholder="请选择">
-                <el-option label="请选择" value="0"></el-option>
+                <!-- <el-option label="请选择" value="0"></el-option> -->
                 <el-option :label="opposite.name" :value="opposite.id"
                            v-for="opposite in opposites" :key="opposite.id">
                 </el-option>
@@ -127,7 +127,7 @@
           <el-col :span="8">
             <el-form-item label="经办人" prop="driverId">
               <el-select v-model="fees.driverId" placeholder="请选择">
-                <el-option label="请选择" value="0"></el-option>
+                <!-- <el-option label="请选择" value="0"></el-option> -->
                 <el-option :label="driver.employeeName" :value="driver.id"
                            v-for="driver in drivers" :key="driver.id">
                 </el-option>
@@ -136,7 +136,7 @@
           </el-col>
 
           <el-col :span="8">
-            <el-form-item label="备注">
+            <el-form-item label="备注" prop="remarks">
               <el-input v-model="fees.remarks"></el-input>
             </el-form-item>
           </el-col>
@@ -146,22 +146,21 @@
       </el-form>
 
       <span slot="footer" class="dialog-footer">
-        <el-button @click="addDialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="toAddFees()">确 定</el-button>
+        <el-button @click="addFee('addForm')">取 消</el-button>
+        <el-button type="primary" @click="toAddFees('addForm')">确 定</el-button>
       </span>
     </el-dialog>
 
 
     <!-- 修改 -->
     <el-dialog title="编辑用户" :visible.sync="dialogEditFeeVisible" center width="80%">
-      <el-form :model="editFee" label-width="80px">
+      <el-form :model="editFee" label-width="100px" :rules="rules" ref="editForm">
         <el-row :gutter="20">
 
           <el-col :span="8">
 
             <el-form-item label="车牌号" prop="carId">
               <el-select v-model="editFee.carId" placeholder="请选择" :disabled="true">
-                <el-option label="请选择" value="0"></el-option>
                 <el-option :label="car.carNum" :value="car.id"
                            v-for="car in cars" :key="car.id">
                 </el-option>
@@ -171,17 +170,13 @@
 
 
           <el-col :span="8">
-            <el-form-item label="规费名称">
+            <el-form-item label="规费名称" prop="feeName">
               <el-input v-model="editFee.feeName"></el-input>
             </el-form-item>
           </el-col>
 
           <el-col :span="8">
-            <!-- <el-form-item label="缴费时间">
-              <el-input type="datetime" v-model="editFee.payTime"></el-input>
-            </el-form-item> -->
-
-            <el-form-item label="缴费时间:">
+            <el-form-item label="缴费时间:" >
               <el-date-picker
                 v-model="editFee.payTime"
                 type="datetime"
@@ -193,7 +188,7 @@
           </el-col>
 
           <el-col :span="8">
-            <el-form-item label="缴费金额">
+            <el-form-item label="缴费金额" prop="fee" > 
               <el-input v-model="editFee.fee"></el-input>
             </el-form-item>
           </el-col>
@@ -202,7 +197,6 @@
 
             <el-form-item label="收费单位" prop="oppositeCompanyId">
               <el-select v-model="editFee.oppositeCompanyId" placeholder="请选择">
-                <el-option label="请选择" value="0"></el-option>
                 <el-option :label="opposite.name" :value="opposite.id"
                            v-for="opposite in opposites" :key="opposite.id">
                 </el-option>
@@ -213,7 +207,6 @@
           <el-col :span="8">
             <el-form-item label="经办人" prop="driverId">
               <el-select v-model="editFee.driverId" placeholder="请选择">
-                <el-option label="请选择" value="0"></el-option>
                 <el-option :label="driver.employeeName" :value="driver.id"
                            v-for="driver in drivers" :key="driver.id">
                 </el-option>
@@ -222,7 +215,7 @@
           </el-col>
 
           <el-col :span="8">
-            <el-form-item label="备注">
+            <el-form-item label="备注" prop="remarks">
               <el-input v-model="editFee.remarks"></el-input>
             </el-form-item>
           </el-col>
@@ -230,8 +223,8 @@
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogEditFeeVisible = false">取 消</el-button>
-        <el-button type="primary" @click="toUpdateFee()">确 定</el-button>
+        <el-button @click="editFeeForm('editForm')">取 消</el-button>
+        <el-button type="primary" @click="toUpdateFee('editForm')">确 定</el-button>
       </div>
     </el-dialog>
 
@@ -241,7 +234,15 @@
 
 <script>
 export default {
+
+
   data() {
+       var checkAge = (rule, value, callback) => {
+        if (value=="") {
+          return callback(new Error('车牌不能为空'));
+        }
+
+      }
     return {
       searchText: '',
       p: 1,
@@ -274,6 +275,46 @@ export default {
       //控制修改弹框
       dialogEditFeeVisible: false,
       editFee: {},
+
+      rules:{
+        carId:[
+          {required: true, //是否必填       
+          message: '车牌不能为空', //规则
+          trigger: 'change'  //何事件触发
+          }
+        ],
+        feeName:[
+           {required: true,       
+          message: '规费名称不能为空', 
+          trigger: 'blur'  
+          }
+        ],
+        payTime:[
+          {type: 'date', required: true, message: '请选择日期', trigger: 'change'}
+        ],
+        fee:[
+          { required: true, message: "金额不能为空", trigger: "blur"},
+          { pattern: /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/, message: '请输入正确额格式,可保留两位小数' },
+        ],
+        oppositeCompanyId:[
+           {required: true,       
+          message: '规费单位不能为空', 
+          trigger: 'change'  
+          }
+        ],
+        driverId:[
+          {required: true,       
+          message: '经办人不能为空', 
+          trigger: 'change'  
+          }
+        ],
+        remarks:[
+          {required: true,       
+          message: '备注为空请填‘无’', 
+          trigger: 'blur'  
+          }
+        ]
+      }
 
     }
   },
@@ -333,18 +374,28 @@ export default {
       // this.loadDriverName();
     },
     //调用添加方法
-    toAddFees() {
-      this.$axios.post("feerecord/add", this.fees).then(r => {
-        console.log(r);
-        if (r.data.code == 200) {
-          this.$message({type: 'success', message: "添加成功", duration: 800});
-          this.addDialogFormVisible = false;
-          this.findFee();
+    toAddFees(formName) {
+       this.$refs[formName].validate((valid) => {
+         if (valid) {
+            this.$axios.post("feerecord/add", this.fees).then(r => {
+              console.log(r);
+              if (r.data.code == 200) {
+                this.$message({type: 'success', message: "添加成功", duration: 800});
+                this.addDialogFormVisible = false;
+                this.findFee();
+              } else {
+                this.$message({type: 'error', message: "添加失败", duration: 800});
+              }
+              //   this.feeData=r.data;
+            })
         } else {
-          this.$message({type: 'error', message: "添加失败", duration: 800});
-        }
-        //   this.feeData=r.data;
-      })
+              return false;
+            }
+        });
+    },
+    addFee(formName){
+      this.addDialogFormVisible=false;
+      this.$refs[formName].resetFields();
     },
     // 进入修改框
     updateFee(row) {
@@ -362,19 +413,30 @@ export default {
       this.editFee = row;
     },
     // 去修改
-    toUpdateFee() {
-        this.getCarList()
-      this.$axios.post("feerecord/update", this.editFee).then(r => {
-        console.log(r);
-        if (r.data.code == 200) {
-          this.$message({type: 'success', message: "修改成功", duration: 800});
-          this.dialogEditFeeVisible = false;
-          this.findFee();
-        } else {
-          this.$message({type: 'error', message: "修改失败", duration: 800});
-        }
-        //   this.feeData=r.data;
-      })
+    toUpdateFee(formName) {
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+              this.getCarList()
+            this.$axios.post("feerecord/update", this.editFee).then(r => {
+              console.log(r);
+              if (r.data.code == 200) {
+                this.$message({type: 'success', message: "修改成功", duration: 800});
+                this.dialogEditFeeVisible = false;
+                this.findFee();
+              } else {
+                this.$message({type: 'error', message: "修改失败", duration: 800});
+              }
+              //   this.feeData=r.data;
+            })
+      } else {
+            return false;
+          }
+        });
+    },
+
+    editFeeForm(formName){
+      this.dialogEditFeeVisible=false;
+      this.$refs[formName].resetFields();
     },
     // 删除
     deleteFee(id) {

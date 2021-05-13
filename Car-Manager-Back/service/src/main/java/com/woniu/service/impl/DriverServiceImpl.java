@@ -32,6 +32,8 @@ public class DriverServiceImpl implements DriverService {
     }
 
 
+
+
     @Override
     public int addDriver(Driver driver) {
         return driverAdapter.addDriver(driver);
@@ -70,6 +72,16 @@ public class DriverServiceImpl implements DriverService {
     @Override
     public int updateRole(Integer employeeId,Integer roleId) {
         return driverAdapter.updateRole(employeeId,roleId);
+    }
+
+    @Override
+    public EmployeePo getOne(String name) {
+        return driverAdapter.getOne(name);
+    }
+
+    @Override
+    public Driver getDriver(String name) {
+        return driverAdapter.getDriver(name);
     }
 
 //    @Override

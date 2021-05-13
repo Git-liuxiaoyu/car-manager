@@ -46,33 +46,33 @@
     </template>
 
     <el-dialog title="添加角色" :visible.sync="addRoleFormVisible" center width="30%">
-      <el-form :model="Role" label-width="70px">
+      <el-form :model="Role" label-width="70px" :rules="rules" ref="form">
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item label="角色名:">
+            <el-form-item label="角色名:" prop="name">
               <el-input v-model="Role.name"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="addRoleFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="addRole()">确 定</el-button>
+        <el-button @click="cancel('form')">取 消</el-button>
+        <el-button type="primary" @click="addRole('form')">确 定</el-button>
       </span>
     </el-dialog>
 
     <el-dialog title="修改角色" :visible.sync="updateRoleFormVisible" center width="30%">
-      <el-form :model="update" label-width="70px">
+      <el-form :model="update" label-width="70px" :rules="rules" ref="editForm">
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-form-item label="角色名:">
+            <el-form-item label="角色名:" prop="name">
               <el-input v-model="update.name"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="updateRoleFormVisible = false">取 消</el-button>
+        <el-button @click="editCancel('editForm')">取 消</el-button>
         <el-button type="primary" @click="updateRole()">确 定</el-button>
       </span>
     </el-dialog>
@@ -143,6 +143,14 @@ export default {
         children: 'children',
         label: 'name'
       },
+      rules:{
+         name:[
+          {required: true,       
+          message: '角色不能为空', 
+          trigger: 'blur'  
+          }
+         ]
+      }
     }
   },
   methods: {
@@ -151,16 +159,27 @@ export default {
       this.addRoleFormVisible = true;
     },
     //添加角色确定
-    addRole() {
-      this.addRoleFormVisible = false;
-      this.$axios.post("role/add", this.Role).then(r => {
-        if (r.data.code = 200) {
-          this.$message.success("添加成功");
+    addRole(formName) {
+      this.$refs[formName].validate((valid) => {
+      if (valid) {
           this.addRoleFormVisible = false;
-          this.p = 1;
-          this.findRole();
-        }
-      })
+          this.$axios.post("role/add", this.Role).then(r => {
+            if (r.data.code = 200) {
+              this.$message.success("添加成功");
+              this.addRoleFormVisible = false;
+              this.p = 1;
+              this.findRole();
+            }
+          })
+      } else {
+            return false;
+          }
+        });
+    },
+
+    cancel(formName){
+      this.addRoleFormVisible=false;
+       this.$refs[formName].resetFields();
     },
     //编辑角色
     doUpdate(row) {
@@ -169,16 +188,26 @@ export default {
       this.update.name = row.name;
     },
     //编辑角色确定
-    updateRole() {
-      this.updateRoleFormVisible = false;
-      this.$axios.post("role/update", this.update).then(r => {
-        if (r.data.code = 200) {
-          this.$message.success("修改成功");
-          this.addRoleFormVisible = false;
-          this.p = 1;
-          this.findRole();
+    updateRole(formName) {
+       this.$refs[formName].validate((valid) => {
+      if (valid) {
+          this.updateRoleFormVisible = false;
+          this.$axios.post("role/update", this.update).then(r => {
+            if (r.data.code = 200) {
+              this.$message.success("修改成功");
+              this.addRoleFormVisible = false;
+              this.p = 1;
+              this.findRole();
+            }
+          })
+      } else {
+          return false;
         }
-      })
+      });
+    },
+    editCancel(formName){
+      this.updateRoleFormVisible=false;
+       this.$refs[formName].resetFields();
     },
     //删除角色
     del(row) {
