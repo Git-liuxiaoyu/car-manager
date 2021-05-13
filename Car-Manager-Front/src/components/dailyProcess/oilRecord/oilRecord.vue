@@ -119,7 +119,7 @@
       el-form-item :就是el-form表单里面的每项-->
     <el-dialog title="新增加油记录" :visible.sync="oilreVisible"
                ref = "addCar" center width="80%">
-      <el-form :model="editoilreadd" label-width="150px">
+      <el-form :model="editoilreadd" label-width="150px" :rules="addrules" ref="addForm">
         <el-row :gutter="20">
           <el-col :span="6">
             <el-form-item label="车牌号" prop="carId">
@@ -156,7 +156,7 @@
           </el-col>
 
           <el-col :span="6">
-            <el-form-item label="油料标号" prop="oppositeCompanyId">
+            <el-form-item label="油料标号" prop="oilType">
               <el-select v-model="editoilreadd.oilType" placeholder="请选择" :trigger-click="dnamead(editoilreadd.oilType)" >            
                 <el-option :label="oilTypes.text" :value="oilTypes.id"
                            v-for="oilTypes in oilTypes" :key="oilTypes.id" >
@@ -223,8 +223,8 @@
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="oilreVisible = false">取 消</el-button>
-        <el-button type="primary" @click="addoilre()">确 定</el-button>
+        <el-button @click="outoiler('addForm')">取 消</el-button>
+        <el-button type="primary" @click="addoilre('addForm')">确 定</el-button>
       </div>
     </el-dialog>
 
@@ -238,7 +238,7 @@
     <!-- 修改加油记录信息 -->
     <el-dialog title="修改加油记录" :visible.sync="oilreupdate"
                ref = "updates" center width="80%">
-      <el-form :model="updates" label-width="150px">
+      <el-form :model="updates" label-width="150px" :rules="updaterules" ref="updateForm">
         <el-row :gutter="20">
           <el-col :span="6">
             <el-form-item label="车牌号" prop="carId">
@@ -266,7 +266,7 @@
           </el-col>
 
           <el-col :span="10">
-            <el-form-item label="加油时间" prop="carId">
+            <el-form-item label="加油时间" prop="addTime">
               <el-input
                 placeholder="加油时间"
                 v-model="updates.addTime"
@@ -342,8 +342,8 @@
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="oilreupdate = false">取 消</el-button>
-        <el-button type="primary" @click="update()">确 定</el-button>
+        <el-button @click="outupdate('updateForm')">取 消</el-button>
+        <el-button type="primary" @click="update('updateForm')">确 定</el-button>
       </div>
     </el-dialog>
 
@@ -356,6 +356,121 @@ export default {
   data() {
     return {
       dialogStatus:"",
+
+      //添加表单验证
+      addrules:{
+        carId: [
+            { required: true, message: '请选择车牌', trigger: 'change' }
+          ],
+        oppositeCompanyId: [
+            { required: true, message: '请选择加油站', trigger: 'change' }
+          ],
+        addTime: [
+            { required: true, message: '请选择加油时间', trigger: 'change' }
+          ],
+        oilType: [
+            { required: true, message: '请选择油料标号', trigger: 'change' }    
+          ],
+        thisOilVolume: [
+            { required: true, message: '请输入本次加油量', trigger: 'blur' },
+            {
+                  required: true,
+                  pattern: /^(0|[1-9][0-9]*)(\.\d+)?$/,
+                  message: '请正确输入油量',
+                  trigger: 'blur'
+              }
+          ],
+        lastOilVolume: [
+            { required: true, message: '请输入上次加油量', trigger: 'blur' },
+            {
+                  required: true,
+                  pattern: /^(0|[1-9][0-9]*)(\.\d+)?$/,
+                  message: '请正确输入油量',
+                  trigger: 'blur'
+              }
+          ],
+        thisMileage : [
+            { required: true, message: '请输入本次里程', trigger: 'blur' },
+            {
+                  required: true,
+                  pattern: /^(0|[1-9][0-9]*)(\.\d+)?$/,
+                  message: '请正确输入里程',
+                  trigger: 'blur'
+              }
+          ],
+        lastMileage : [
+            { required: true, message: '请输入上次里程', trigger: 'blur' },
+            {
+                  required: true,
+                  pattern: /^(0|[1-9][0-9]*)(\.\d+)?$/,
+                  message: '请正确输入里程',
+                  trigger: 'blur'
+              }
+          ],
+        driverId: [
+            { required: true, message: '请选择加油人员', trigger: 'change' }
+          ],
+
+
+      },
+       //修改表单验证
+      updaterules:{
+        carId: [
+            { required: true, message: '请选择车牌', trigger: 'change' }
+          ],
+        oppositeCompanyId: [
+            { required: true, message: '请选择加油站', trigger: 'change' }
+          ],
+        addTime: [
+            { required: true, message: '请选择加油时间', trigger: 'change' }
+          ],
+        oilType: [
+            { required: true, message: '请选择油料标号', trigger: 'change' }    
+          ],
+        thisOilVolume: [
+            { required: true, message: '请输入本次加油量', trigger: 'blur' },
+            {
+                  required: true,
+                  pattern: /^(0|[1-9][0-9]*)(\.\d+)?$/,
+                  message: '请正确输入油量',
+                  trigger: 'blur'
+              }
+          ],
+        lastOilVolume: [
+            { required: true, message: '请输入上次加油量', trigger: 'blur' },
+            {
+                  required: true,
+                  pattern: /^(0|[1-9][0-9]*)(\.\d+)?$/,
+                  message: '请正确输入油量',
+                  trigger: 'blur'
+              }
+          ],
+        thisMileage : [
+            { required: true, message: '请输入本次里程', trigger: 'blur' },
+            {
+                  required: true,
+                  pattern: /^(0|[1-9][0-9]*)(\.\d+)?$/,
+                  message: '请正确输入里程',
+                  trigger: 'blur'
+              }
+          ],
+        lastMileage : [
+            { required: true, message: '请输入上次里程', trigger: 'blur' },
+            {
+                  required: true,
+                  pattern: /^(0|[1-9][0-9]*)(\.\d+)?$/,
+                  message: '请正确输入里程',
+                  trigger: 'blur'
+              }
+          ],
+        driverId: [
+            { required: true, message: '请选择加油人员', trigger: 'change' }
+          ],
+
+
+      },
+
+
 
       //列表
       oilrecords:[
@@ -495,25 +610,39 @@ export default {
 
     },
     //添加加油记录
-    addoilre(){
-      this.$axios.post("oilrecord/add", this.editoilreadd).then(r => {
-        if(r.data.code == 200){
-          this.$message({type: 'success', message:"添加成功",  duration:800});
-          this.oppoVisible = false;
+    addoilre(addForm){
+      this.$refs[addForm].validate((valid) => {
+          if (valid) {
+              this.$axios.post("oilrecord/add", this.editoilreadd).then(r => {
+                if(r.data.code == 200){
+                  this.$message({type: 'success', message:"添加成功",  duration:800});
+                  this.oppoVisible = false;
 
-          //循环清空editoppo集合中的值
-          for (var i in this.editoilreadd) {
-            this.editoilreadd[i] = "";
+                  //循环清空editoppo集合中的值
+                  for (var i in this.editoilreadd) {
+                    this.editoilreadd[i] = "";
+                  }
+
+                  //重新加载页面
+                  this.oilrelist();
+                  this.oilreVisible  = false;
+
+                }else{
+                  this.$message({type: 'success', message:"添加失败",  duration:800});
+                }
+              })
+          } else {
+            console.log('error submit!!');
+            return false;
           }
+        });
+      
+    },
+    //取消添加框
+    outoiler(addForm){
+      this.oilreVisible = false
+      this.$refs[addForm].resetFields();
 
-          //重新加载页面
-          this.oilrelist();
-          this.oilreVisible  = false;
-
-        }else{
-          this.$message({type: 'success', message:"添加失败",  duration:800});
-        }
-      })
     },
     //打开修改对话框
     goupdate(id){
@@ -543,40 +672,56 @@ export default {
 
       })
     },
+    //取消修改框
+    outupdate(updateform){
+        this.oilreupdate = false
 
-    update(){
-      this.$axios.post("oilrecord/update",this.updates).then(r => {
-        if(r.data.code == 200){
-          this.$message({type: 'success', message:"修改成功",  duration:800});
-          this.oppoupdate = false;
-          //循环清空editoppo集合中的值
-          for (var i in this.updates) {
-            this.updates[i] = "";
+        this.$refs[updateform].resetFields();
+
+    },
+
+    update(updateform){
+        this.$refs[updateform].validate((valid) => {
+          if (valid) {
+            this.$axios.post("oilrecord/update",this.updates).then(r => {
+              if(r.data.code == 200){
+                this.$message({type: 'success', message:"修改成功",  duration:800});
+                this.oppoupdate = false;
+                //循环清空editoppo集合中的值
+                for (var i in this.updates) {
+                  this.updates[i] = "";
+                }
+
+                //查询车牌号下拉框
+                this.$axios.post("oilrecord/carlist").then(r => {
+                  this.cars = r.data
+                })
+
+                //查询往来单位下拉框
+                this.$axios.post("oilrecord/oppolist").then(r => {
+                  this.opposites = r.data
+                })
+
+                //查询加油人员下拉框
+                this.$axios.post("oilrecord/driverlist").then(r => {
+                  this.driverIds = r.data
+                })
+
+                //重新加载页面
+                this.oilrelist();
+              }else{
+                this.$message({type: 'success', message:"修改失败",  duration:800});
+              }
+            })
+
+            this.oilreupdate = false;
+          } else {
+            console.log('error submit!!');
+            return false;
           }
+        });
 
-          //查询车牌号下拉框
-          this.$axios.post("oilrecord/carlist").then(r => {
-            this.cars = r.data
-          })
-
-          //查询往来单位下拉框
-          this.$axios.post("oilrecord/oppolist").then(r => {
-            this.opposites = r.data
-          })
-
-          //查询加油人员下拉框
-          this.$axios.post("oilrecord/driverlist").then(r => {
-            this.driverIds = r.data
-          })
-
-          //重新加载页面
-          this.oilrelist();
-        }else{
-          this.$message({type: 'success', message:"修改失败",  duration:800});
-        }
-      })
-
-      this.oilreupdate = false;
+      
     },
 
     del(id){

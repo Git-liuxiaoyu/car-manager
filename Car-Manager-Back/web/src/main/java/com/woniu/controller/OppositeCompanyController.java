@@ -60,8 +60,9 @@ public class OppositeCompanyController {
      */
     @RequestMapping("add")
     public ResponseResult add(@RequestBody OppositeCompanyPo ocpo) {
-        System.out.println("添加");
-        System.out.println(ocpo);
+        if(ocpo.getRemarks().equals(null) || ocpo.getRemarks().equals("")){
+            ocpo.setRemarks("这个人很懒，还没有备注");
+        }
         oppositeCompanyService.add(ocpo);
         return new ResponseResult(200, "添加成功");
     }
