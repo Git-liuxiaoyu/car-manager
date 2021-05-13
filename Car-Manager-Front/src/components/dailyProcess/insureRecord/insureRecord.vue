@@ -85,10 +85,10 @@
    el-form-item :就是el-form表单里面的每项-->
     <el-dialog title="新增保险记录" :visible.sync="insureVisible"
                ref="insureadds" center width="80%">
-      <el-form :model="insureadds" label-width="150px">
+      <el-form :model="insureadds" label-width="150px" :rules="addrules" ref="addForm">
         <el-row :gutter="20">
           <el-col :span="6">
-            <el-form-item label="车牌号" prop="carId">
+            <el-form-item label="车牌号" prop="cardId">
               <el-select v-model="insureadds.cardId" placeholder="请选择">
                 <el-option label="请选择" value="0"></el-option>
                 <el-option :label="cars.carNum" :value="cars.id"
@@ -181,8 +181,8 @@
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="insureVisible = false">取 消</el-button>
-        <el-button type="primary" @click="addinsure()">确 定</el-button>
+        <el-button @click="outinsure('addForm')">取 消</el-button>
+        <el-button type="primary" @click="addinsure('addForm')">确 定</el-button>
       </div>
     </el-dialog>
 
@@ -190,7 +190,7 @@
     <!-- 修改加油记录信息 -->
     <el-dialog title="修改保险记录" :visible.sync="insureupdate"
                ref="addCar" center width="80%">
-      <el-form :model="updates" label-width="150px">
+      <el-form :model="updates" label-width="150px" :rules="updaterules" ref="updateForm">
         <el-row :gutter="20">
           <el-col :span="6">
             <el-form-item label="车牌号" prop="carId">
@@ -288,8 +288,8 @@
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="insureupdate = false">取 消</el-button>
-        <el-button type="primary" @click="update()">确 定</el-button>
+        <el-button @click="outupdate('updateForm')">取 消</el-button>
+        <el-button type="primary" @click="update('updateForm')">确 定</el-button>
       </div>
     </el-dialog>
 
@@ -304,6 +304,66 @@ export default {
   data() {
     return {
       dialogStatus: "",
+
+      addrules:{
+          cardId: [
+            { required: true, message: '请选择车牌', trigger: 'change' }
+          ],
+          insureNum: [
+            { required: true, message: '请输入保险编号', trigger: 'blur' },
+            { min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }
+          ],
+          beginDate:[
+            { required: true, message: '请输入保险时间', trigger: 'blur' },          
+          ], 
+          type: [
+            { required: true, message: '请选择保险种类', trigger: 'change' }
+          ],
+          cost: [
+            { required: true, message: '请输入保险金额', trigger: 'blur' },
+            {
+                  required: true,
+                  pattern: /^(0|[1-9][0-9]*)(\.\d+)?$/,
+                  message: '请输入正确的金额',
+                  trigger: 'blur'
+              }
+          ],
+          oppositeCompanyId: [
+            { required: true, message: '请选择保险公司', trigger: 'change' }
+          ],
+          outDate:[
+            { required: true, message: '请输入保险到期时间', trigger: 'blur' },          
+          ], 
+          driverId: [
+            { required: true, message: '请选经办人', trigger: 'change' }
+          ],
+
+      },
+      updaterules:{
+
+          insureNum: [
+            { required: true, message: '请输入保险编号', trigger: 'blur' },
+            { min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }
+          ],
+          beginDate:[
+            { required: true, message: '请输入保险时间', trigger: 'blur' },          
+          ], 
+          type: [
+            { required: true, message: '请选择保险种类', trigger: 'change' }
+          ],
+
+          oppositeCompanyId: [
+            { required: true, message: '请选择保险公司', trigger: 'change' }
+          ],
+          outDate:[
+            { required: true, message: '请输入保险到期时间', trigger: 'blur' },          
+          ], 
+          driverId: [
+            { required: true, message: '请选经办人', trigger: 'change' }
+          ],
+
+      },
+
       //列表
       insurelist: [
         {
@@ -440,8 +500,11 @@ export default {
 
     },
     //添加
-    addinsure() {
-      this.$axios.post("insureRecord/add", this.insureadds).then(r => {
+    addinsure(addForm) {
+
+      this.$refs[addForm].validate((valid) => {
+          if (valid) {
+            this.$axios.post("insureRecord/add", this.insureadds).then(r => {
         if (r.data == 1) {
           this.$message({type: 'success', message: "添加成功", duration: 800});
           this.insureVisible = false;
@@ -458,6 +521,12 @@ export default {
           this.$message({type: 'success', message: "添加失败", duration: 800});
         }
       })
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
+      
 
     },
     //打开修改框
@@ -487,9 +556,17 @@ export default {
       })
 
     },
+    //取消添加框
+    outinsure(addForm){
+        this.insureVisible = false
+        this.$refs[addForm].resetFields();
+    },
     //修改
-    update() {
-      this.$axios.post("insureRecord/update", this.updates).then(r => {
+    update(updateForm) {
+
+      this.$refs[updateForm].validate((valid) => {
+          if (valid) {
+            this.$axios.post("insureRecord/update", this.updates).then(r => {
         if (r.data == 1) {
           this.$message({type: 'success', message: "修改成功", duration: 800});
           this.keepupdate = false;
@@ -506,8 +583,19 @@ export default {
       })
 
       this.insureupdate = false;
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
+      
 
 
+    },
+    //取消修改框
+    outupdate(updateForm){
+        this.insureupdate = false
+        this.$refs[updateForm].resetFields();
     },
     //删除
     del(id) {

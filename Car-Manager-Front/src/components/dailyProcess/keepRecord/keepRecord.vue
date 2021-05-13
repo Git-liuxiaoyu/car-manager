@@ -104,7 +104,7 @@
     el-form-item :就是el-form表单里面的每项-->
     <el-dialog title="新增加油记录" :visible.sync="keepVisible"
                ref="keepadds" center width="80%">
-      <el-form :model="keepadds" label-width="150px">
+      <el-form :model="keepadds" label-width="150px" :rules="addrules" ref="addForm">
         <el-row :gutter="20">
           <el-col :span="6">
             <el-form-item label="车牌号" prop="carId">
@@ -205,8 +205,8 @@
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="keepVisible = false">取 消</el-button>
-        <el-button type="primary" @click="addkeep()">确 定</el-button>
+        <el-button @click="outkeep('addForm')">取 消</el-button>
+        <el-button type="primary" @click="addkeep('addForm')">确 定</el-button>
       </div>
     </el-dialog>
 
@@ -214,7 +214,7 @@
     <!-- 修改加油记录信息 -->
     <el-dialog title="修改加油记录" :visible.sync="keepupdate"
                ref="addCar" center width="80%">
-      <el-form :model="updates" label-width="150px">
+      <el-form :model="updates" label-width="150px" :rules="updaterules" ref="updateForm">
         <el-row :gutter="20">
           <el-col :span="6">
             <el-form-item label="车牌号" prop="carId">
@@ -321,8 +321,8 @@
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="keepupdate = false">取 消</el-button>
-        <el-button type="primary" @click="update()">确 定</el-button>
+        <el-button @click="outkeepupdate('updateForm')">取 消</el-button>
+        <el-button type="primary" @click="update('updateForm')">确 定</el-button>
       </div>
     </el-dialog>
 
@@ -337,6 +337,112 @@ export default {
   data() {
     return {
       dialogStatus: "",
+      
+      //添加表单验证
+      addrules:{
+        carId: [
+            { required: true, message: '请选择车牌', trigger: 'change' }
+          ],
+        type: [
+            { required: true, message: '请选择保养类型', trigger: 'change' }
+          ],
+        keepDate:[
+            { required: true, message: '请输入保养时间', trigger: 'blur' },          
+          ], 
+        fee: [
+            { required: true, message: '请输入保养金额', trigger: 'blur' },
+            {
+                  required: true,
+                  pattern: /^(0|[1-9][0-9]*)(\.\d+)?$/,
+                  message: '请输入正确的金额',
+                  trigger: 'blur'
+              }
+          ],
+        oppositeCompanyId : [
+            { required: true, message: '请选择保养单位', trigger: 'change' }
+          ],
+        thisKeepMileage: [
+            { required: true, message: '请输入本次保养里程', trigger: 'blur' },
+            {
+                  required: true,
+                  pattern: /^(0|[1-9][0-9]*)(\.\d+)?$/,
+                  message: '请输入正确的里程',
+                  trigger: 'blur'
+              }
+          ],
+        keepContext: [
+            { required: true, message: '请输入保养内容', trigger: 'blur' },
+          ],
+        nextKeepTime:[
+            { required: true, message: '请输入下次保养时间', trigger: 'blur' },          
+          ],
+        nextKeepMileage: [
+            { required: true, message: '请输入下次保养里程', trigger: 'blur' },
+            {
+                  required: true,
+                  pattern: /^(0|[1-9][0-9]*)(\.\d+)?$/,
+                  message: '请输入正确的里程',
+                  trigger: 'blur'
+              }
+          ],  
+        driverId: [
+            { required: true, message: '请选择经办人', trigger: 'change' }
+          ],
+
+      },
+
+      updaterules:{
+        carId: [
+            { required: true, message: '请选择车牌', trigger: 'change' }
+          ],
+        type: [
+            { required: true, message: '请选择保养类型', trigger: 'change' }
+          ],
+        keepDate:[
+            { required: true, message: '请输入保养时间', trigger: 'blur' },          
+          ], 
+        fee: [
+            { required: true, message: '请输入保养金额', trigger: 'blur' },
+            {
+                  required: true,
+                  pattern: /^(0|[1-9][0-9]*)(\.\d+)?$/,
+                  message: '请输入正确的金额',
+                  trigger: 'blur'
+              }
+          ],
+        oppositeCompanyId : [
+            { required: true, message: '请选择保养单位', trigger: 'change' }
+          ],
+        thisKeepMileage: [
+            { required: true, message: '请输入本次保养里程', trigger: 'blur' },
+            {
+                  required: true,
+                  pattern: /^(0|[1-9][0-9]*)(\.\d+)?$/,
+                  message: '请输入正确的里程',
+                  trigger: 'blur'
+              }
+          ],
+        keepContext: [
+            { required: true, message: '请输入保养内容', trigger: 'blur' },
+          ],
+        nextKeepTime:[
+            { required: true, message: '请输入下次保养时间', trigger: 'blur' },          
+          ],
+        nextKeepMileage: [
+            { required: true, message: '请输入下次保养里程', trigger: 'blur' },
+            {
+                  required: true,
+                  pattern: /^(0|[1-9][0-9]*)(\.\d+)?$/,
+                  message: '请输入正确的里程',
+                  trigger: 'blur'
+              }
+          ],  
+        driverId: [
+            { required: true, message: '请选择经办人', trigger: 'change' }
+          ],
+
+      },
+
       //列表
       keeplist: [
         {
@@ -484,25 +590,42 @@ export default {
 
     },
     //添加
-    addkeep() {
-      this.$axios.post("keeprecord/add", this.keepadds).then(r => {
-        if (r.data.code == 200) {
-          this.$message({type: 'success', message: "添加成功", duration: 800});
-          this.oppoVisible = false;
+    addkeep(addForm) {
 
-          //循环清空editoppo集合中的值
-          for (var i in this.keepadds) {
-            this.keepadds[i] = "";
+
+      this.$refs[addForm].validate((valid) => {
+          if (valid) {
+            this.$axios.post("keeprecord/add", this.keepadds).then(r => {
+              if (r.data.code == 200) {
+                this.$message({type: 'success', message: "添加成功", duration: 800});
+                this.oppoVisible = false;
+
+                //循环清空editoppo集合中的值
+                for (var i in this.keepadds) {
+                  this.keepadds[i] = "";
+                }
+
+                //重新加载页面
+                this.keepfindlist();
+                this.keepVisible = false;
+
+              } else {
+                this.$message({type: 'success', message: "添加失败", duration: 800});
+              }
+            })
+          } else {
+            console.log('error submit!!');
+            return false;
           }
+        });
+      
 
-          //重新加载页面
-          this.keepfindlist();
-          this.keepVisible = false;
+    },
 
-        } else {
-          this.$message({type: 'success', message: "添加失败", duration: 800});
-        }
-      })
+    //取消添加框
+    outkeep(addForm){
+        this.keepVisible = false
+        this.$refs[addForm].resetFields();
 
     },
     //打开修改框
@@ -534,9 +657,17 @@ export default {
       })
 
     },
+    //修改框取消
+    outkeepupdate(updateform){
+      this.keepupdate = false
+      this.$refs[updateform].resetFields();
+    },
     //修改
-    update() {
-      this.$axios.post("keeprecord/update", this.updates).then(r => {
+    update(updateform) {
+
+      this.$refs[updateform].validate((valid) => {
+          if (valid) {
+            this.$axios.post("keeprecord/update", this.updates).then(r => {
         if (r.data.code == 200) {
           this.$message({type: 'success', message: "修改成功", duration: 800});
           this.keepupdate = false;
@@ -568,6 +699,12 @@ export default {
       })
 
       this.keepupdate = false;
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
+      
 
 
     },

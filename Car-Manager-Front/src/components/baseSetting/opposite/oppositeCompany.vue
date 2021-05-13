@@ -96,7 +96,7 @@
 
     <!-- 添加往来单位信息 -->
     <el-dialog title="新增往来单位信息" :visible.sync="oppoVisible">
-      <el-form :model="editoppo" label-width="80px">
+      <el-form :model="editoppo" label-width="80px" :rules="rules" ref="addForm">
         <el-form-item label="单位名称" prop="name">
 
           <el-input v-model="editoppo.name" @focus="addressdow()"></el-input>
@@ -111,15 +111,29 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="地址" prop="address">
-          <el-input v-model="editoppo.address" @focus="addressshow()" @blur="luxian()" id='address'></el-input>
+        <el-form-item label="地址" prop="address" >
+
+          <el-col :span="10" >
+              <el-input v-model="editoppo.address" @focus="addressshow()"  id='address' ></el-input>
+          </el-col>
+
+          <el-col :span="6" style="display:none; margin-left:40px"  id="addbutton">
+           <el-button plain @click="luxian()" >规划驾车路线</el-button>
+          </el-col>
+
+          <el-col :span="6" style="display:none;"  id="addmapbutton">
+            <el-button plain @click="addressdow()" >关闭地图</el-button>
+          </el-col>
+          
+          
         </el-form-item>
-        <div id="container" style="display:none;"></div>
 
 
+          
+          <div id="container" style="display:none;"></div>
         <div class="input-item" style="display:none;">
-        <div class="input-item-prepend"><span class="input-item-text">经纬度</span></div>
-        <input id='lnglat' type="text" >
+          <div class="input-item-prepend"><span class="input-item-text">经纬度</span></div>
+          <input id='lnglat' type="text" >
         </div>
 
 
@@ -146,8 +160,8 @@
 
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="outoppo">取 消</el-button>
-        <el-button type="primary" @click="addoppo">确 定</el-button>
+        <el-button @click="outoppo('addForm')">取 消</el-button>
+        <el-button type="primary" @click="addoppo('addForm')">确 定</el-button>
       </div>
     </el-dialog>
 
@@ -223,7 +237,7 @@
 
     <!-- 修改往来单位信息 -->
     <el-dialog title="修改往来单位信息" :visible.sync="oppoupdate">
-      <el-form :model="updates" label-width="80px">
+      <el-form :model="updates" label-width="80px" :rules="rulesupdate" ref="updateForm">
         <el-form-item label="单位名称" prop="name">
 
           <el-input v-model="updates.name" @focus="updateressdow()"></el-input>
@@ -239,8 +253,21 @@
           </el-select>
         </el-form-item>
 
+
+
+
         <el-form-item label="地址" prop="address">
-          <el-input v-model="updates.address"  @focus="updateressshow()" @blur="updateluxian()" id='address1'></el-input>
+         <el-col :span="10" >
+               <el-input v-model="updates.address"  @focus="updateressshow()" id='address1'></el-input>
+          </el-col>
+
+           <el-col :span="6" style="display:none;  margin-left:20px" id="updatebutton">
+           <el-button plain @click="updateluxian()">规划驾车路线</el-button>
+          </el-col>
+
+          <el-col :span="6" style="display:none;"  id="updatemapbutton">
+           <el-button plain @click="updateressdow()">关闭地图</el-button>
+          </el-col>
         </el-form-item>
 
         <div id="container1" style="display:none;"></div>
@@ -249,6 +276,10 @@
         <div class="input-item-prepend"><span class="input-item-text">经纬度</span></div>
         <input id='lnglat1' type="text" >
         </div>
+
+
+
+
 
 
         <el-form-item label="电话" prop="phone">
@@ -271,8 +302,8 @@
 
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button    @click="outupdateoppo">取 消</el-button>
-        <el-button type="primary" @click="update()">确 定</el-button>
+        <el-button    @click="outupdateoppo('updateForm')">取 消</el-button>
+        <el-button type="primary" @click="update('updateForm')">确 定</el-button>
       </div>
     </el-dialog>
 
@@ -291,7 +322,49 @@ export default {
       mapObj:null,
 
      updatemap:null,
+      //添加表单验证
+      rules:{
+        name: [
+            { required: true, message: '请输入单位名称', trigger: 'blur' },
+            { min: 2, max: 15, message: '长度在 2 到 15 个字符', trigger: 'blur' }
+          ],
+        type: [
+            { required: true, message: '请选择单位类型', trigger: 'change' }
+          ],
+        // address: [
+        //     { required: true, message: '请输入单位地址或点击地图', trigger: 'blur' },           
+        //   ],
+        phone: [
+            { required: true, message: '请输入联系电话', trigger: 'blur' },
+            { min: 5, max: 14, message: '长度在 5 到 14个字符', trigger: 'blur' }
+          ],
+        linkName: [
+            { required: true, message: '请输入联系人', trigger: 'blur' },
+            { min: 5, max: 10, message: '长度在 2 到 10个字符', trigger: 'blur' }
+          ],
 
+      },
+      rulesupdate:{
+        name: [
+            { required: true, message: '请输入单位名称', trigger: 'blur' },
+            { min: 2, max: 15, message: '长度在 2 到 15 个字符', trigger: 'blur' }
+          ],
+        type: [
+            { required: true, message: '请选择单位类型', trigger: 'change' }
+          ],
+        // address: [
+        //     { required: true, message: '请输入单位地址或点击地图', trigger: 'blur' },           
+        //   ],
+        phone: [
+            { required: true, message: '请输入联系电话', trigger: 'blur' },
+            { min: 5, max: 14, message: '长度在 5 到 14个字符', trigger: 'blur' }
+          ],
+        linkName: [
+            { required: true, message: '请输入联系人', trigger: 'blur' },
+            { min: 5, max: 10, message: '长度在 2 到 10个字符', trigger: 'blur' }
+          ],
+
+      },
 
       oppos: [
         {
@@ -386,11 +459,12 @@ export default {
 
 
 
+
     //显示新增对话框
     showEditoppo() {
       this.oppoVisible = true;//显示新增对话框
 
-      //地图
+     //地图
       window.onLoad  = function(){
               var map = new AMap.Map('container', {
                   zoom:11,//级别
@@ -422,10 +496,45 @@ export default {
               });
               map.addControl(geolocation);
               geolocation.getCurrentPosition();
-              AMap.event.addListener(geolocation, 'container1');//返回定位信息
+              AMap.event.addListener(geolocation, 'container');//返回定位信息
              // AMap.event.addListener(geolocation, 'error', onError);      //返回定位出错信息
             })
             //this.mapObj = mapObj;
+
+    var marker = new AMap.Marker();
+
+    function regeoCode() {
+
+        var lnglat  = document.getElementById('lnglat').value.split(',');
+        //alert(lnglat)
+        map.add(marker);
+        marker.setPosition(lnglat);
+
+       geocoder.getAddress(lnglat, function(status, result) {
+            if (status === 'complete'&&result.regeocode) {
+                var address = result.regeocode.formattedAddress;
+                document.getElementById('address').value = address;
+
+            }
+
+        });
+    }
+
+ map.on('click',function(e){
+     document.getElementById('lnglat').value = e.lnglat;
+     regeoCode();
+    
+ })
+
+ document.getElementById('lnglat').onkeydown = function(e) {
+     if (e.keyCode === 13) {
+         regeoCode();
+         return false;
+     }
+     return true;
+ }
+
+
   }
 
                 var key = "ba9419462964ab1cb3aea92b4d1d12e6"
@@ -434,6 +543,12 @@ export default {
                 jsapi.charset = 'utf-8';
                 jsapi.src = url;
                 document.head.appendChild(jsapi);
+
+                //点击地图回显地址
+      var geocoder = new AMap.Geocoder({
+        //city: "010", //城市设为北京，默认：“全国”
+        radius: 1000 //范围，默认：500
+    });
 
 
 
@@ -447,6 +562,7 @@ export default {
       })
     },
     //地址失去焦点事件
+     //地址
     luxian(){
 
             this.map = new AMap.Map('container', {
@@ -516,9 +632,10 @@ export default {
                   map:this.map,
                 })
                 //alert(this.editoppo.address)
+                var thisaddress = document.getElementById('address').value
                 var points = [//路线规划起点终点
                    {keyword: '蜗牛学院',city:'武汉'},
-                    {keyword: this.editoppo.address,city:'武汉'}
+                    {keyword: thisaddress,city:'武汉'}
                 ]
                 driving.search(points, function (status, result) {
                 // 未出错时，result即是对应的路线规划方案
@@ -528,21 +645,7 @@ export default {
  thismap.on('click',function(e){
      document.getElementById('lnglat').value = e.lnglat;
      regeoCode();
-     //驾车路线规划
-                  var driving = new AMap.Driving({
-                  // 驾车路线规划策略，AMap.DrivingPolicy.LEAST_TIME是最快捷模式
-                  policy: AMap.DrivingPolicy.LEAST_TIME,
-                  map:this.map,
-                })
-                //alert(this.editoppo.address)
-                var points = [//路线规划起点终点
-                   {keyword: '蜗牛学院',city:'武汉'},
-                    {keyword: this.editoppo.address,city:'武汉'}
-                ]
-                driving.search(points, function (status, result) {
-                // 未出错时，result即是对应的路线规划方案
-
-                })
+    
  })
 
  document.getElementById('lnglat').onkeydown = function(e) {
@@ -561,14 +664,15 @@ export default {
 
 
     //添加往来单位
-    addoppo() {
-
-      if (this.editoppo.status) {
+    addoppo(addForm) {
+      this.$refs[addForm].validate((valid) => {
+          if (valid) {
+           if (this.editoppo.status) {
         this.editoppo.status = '0'
       } else {
         this.editoppo.status = '1'
       }
-      //this.editoppo.address = document.getElementById('address').value;
+      this.editoppo.address = document.getElementById('address').value;
       this.$axios.post("opposite/add", this.editoppo).then(r => {
 
         if (r.data.code == 200) {
@@ -587,19 +691,29 @@ export default {
           this.$message({type: 'success', message: "添加失败", duration: 800});
         }
       })
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
+
+      
     },
     //取消添加框
-    outoppo(){
+    outoppo(addForm){
         this.oppoVisible = false;
         //获得焦点显示地图div
         document.getElementById('container').style.display="none";
+        this.$refs[addForm].resetFields();
 
     },
     //取消修改框
-    outupdateoppo(){
+    outupdateoppo(updateForm){
       this.oppoupdate = false;
       //获得焦点显示地图div
         document.getElementById('container1').style.display="none";
+
+        this.$refs[updateForm].resetFields();
     },
 
     //往来单位详情
@@ -635,7 +749,7 @@ export default {
       this.oppoupdate = true;
 
 
-        //地图
+           //地图
       window.onLoad  = function(){
               var map = new AMap.Map('container1', {
                   zoom:11,//级别
@@ -670,8 +784,12 @@ export default {
               AMap.event.addListener(geolocation, 'container1');//返回定位信息
              // AMap.event.addListener(geolocation, 'error', onError);      //返回定位出错信息
             })
-            //this.mapObj = mapObj;
+            
+
+
   }
+
+  
 
                 var key = "ba9419462964ab1cb3aea92b4d1d12e6"
                 var url = `https://webapi.amap.com/maps?v=1.4.15&key=${key}&callback=onLoad&plugin=AMap.ToolBar,AMap.Driving,AMap.Geolocation`;
@@ -680,23 +798,6 @@ export default {
                 jsapi.src = url;
                 document.head.appendChild(jsapi);
 
-
-
-           //驾车路线规划
-                  var driving = new AMap.Driving({
-                  // 驾车路线规划策略，AMap.DrivingPolicy.LEAST_TIME是最快捷模式
-                  policy: AMap.DrivingPolicy.LEAST_TIME,
-                  map:this.updatemap,
-                })
-                //alert(this.editoppo.address)
-                var points = [//路线规划起点终点
-                   {keyword: '蜗牛学院',city:'武汉'},
-                    {keyword: this.updates.address,city:'武汉'}
-                ]
-                driving.search(points, function (status, result) {
-                // 未出错时，result即是对应的路线规划方案
-
-                })
 
 
 
@@ -718,7 +819,7 @@ export default {
 
       })
     },
-    //路线失去焦点触发
+        //修改路线失去焦点触发
     updateluxian(){
          this.updatemap = new AMap.Map('container1', {
                   zoom:11,//级别
@@ -772,6 +873,7 @@ export default {
        geocoder.getAddress(lnglat, function(status, result) {
             if (status === 'complete'&&result.regeocode) {
                 var address = result.regeocode.formattedAddress;
+
                 document.getElementById('address1').value = address;
 
             }
@@ -785,10 +887,11 @@ export default {
                   policy: AMap.DrivingPolicy.LEAST_TIME,
                   map:this.updatemap,
                 })
-                //alert(this.editoppo.address)
+                
+                var thisaddress = document.getElementById('address1').value
                 var points = [//路线规划起点终点
                    {keyword: '蜗牛学院',city:'武汉'},
-                    {keyword: this.updates.address,city:'武汉'}
+                    {keyword: thisaddress,city:'武汉'}
                 ]
                 driving.search(points, function (status, result) {
                 // 未出错时，result即是对应的路线规划方案
@@ -811,30 +914,45 @@ export default {
 
     },
 
-
     //修改
-    update() {
-      document.getElementById('container1').style.display="none";
-      if (this.updates.status) {
-        this.updates.status = '0'
-      } else {
-        this.updates.status = '1'
-      }
-      this.$axios.post("opposite/update", this.updates).then(r => {
-        console.log(r)
-        if (r.data.code == 200) {
-          this.$message({type: 'success', message: "修改成功", duration: 800});
-          this.oppoupdate = false;
-          //循环清空editoppo集合中的值
-          for (var i in this.updates) {
-            this.updates[i] = "";
+    update(updateForm) {
+      this.$refs[updateForm].validate((valid) => {
+          if (valid) {
+                //获得焦点关闭地图div
+              document.getElementById('container1').style.display="none";
+              //关闭规划路线按钮
+              document.getElementById('updatebutton').style.display="none";
+
+              document.getElementById('updatemapbutton').style.display="none";
+            this.updates.address = document.getElementById('address1').value
+
+            if (this.updates.status) {
+              this.updates.status = '0'
+            } else {
+              this.updates.status = '1'
+            }
+            this.$axios.post("opposite/update", this.updates).then(r => {
+              console.log(r)
+              if (r.data.code == 200) {
+                this.$message({type: 'success', message: "修改成功", duration: 800});
+                this.oppoupdate = false;
+                //循环清空editoppo集合中的值
+                for (var i in this.updates) {
+                  this.updates[i] = "";
+                }
+                //重新加载页面
+                this.oppolist();
+              } else {
+                this.$message({type: 'success', message: "修改失败", duration: 800});
+              }
+            })
+          } else {
+            console.log('error submit!!');
+            return false;
           }
-          //重新加载页面
-          this.oppolist();
-        } else {
-          this.$message({type: 'success', message: "修改失败", duration: 800});
-        }
-      })
+        });
+
+      
 
     },
 
@@ -859,25 +977,39 @@ export default {
         this.$message.info("取消删除");
       })
     },
-    //控制地图显示
+     //控制地图显示
     addressshow(){
         //获得焦点显示地图div
         document.getElementById('container').style.display="block";
+        //显示规划路线按钮
+        document.getElementById('addbutton').style.display="block";
+        document.getElementById('addmapbutton').style.display="block";
     },
     //控制地图关闭
     addressdow(){
         //获得焦点关闭地图div
         document.getElementById('container').style.display="none";
+         //关闭规划路线按钮
+        document.getElementById('addbutton').style.display="none";
+        //关闭关闭按钮
+        document.getElementById('addmapbutton').style.display="none";
     },
     updateressshow(){
          //获得焦点显示地图div
         document.getElementById('container1').style.display="block";
+        //显示规划路线按钮
+        document.getElementById('updatebutton').style.display="block";
 
+        document.getElementById('updatemapbutton').style.display="block";
     },
     updateressdow(){
       //获得焦点关闭地图div
         document.getElementById('container1').style.display="none";
-    }
+         //关闭规划路线按钮
+        document.getElementById('updatebutton').style.display="none";
+
+        document.getElementById('updatemapbutton').style.display="none";
+    },
   },
   created() {
     this.oppolist()
@@ -900,5 +1032,6 @@ export default {
     margin-left:78px;
     margin-bottom: 20px;
 }
+
 
 </style>
