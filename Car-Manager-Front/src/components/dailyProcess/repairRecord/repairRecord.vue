@@ -24,6 +24,7 @@
     <template>
       <el-table :data="tableData" border style="width: 100%" max-height="377"
                 :header-cell-style="{background:'#eef1f6',color:'#606266'}">
+        <el-table-column type="index"></el-table-column>
         <el-table-column  prop="carNum" label="车牌号码" min-width></el-table-column>
         <el-table-column  prop="oppositeName" label="修理厂" min-width></el-table-column>
         <el-table-column  prop="sendTime" label="送修时间" min-width :show-overflow-tooltip="true">
@@ -76,7 +77,7 @@
 
     <!--添加维修信息-->
     <el-dialog title="维修信息登记" :visible.sync="addDialogFormVisible" center width="80%">
-      <el-form :model="addData" label-width="100px">
+      <el-form :model="addData" label-width="100px" :rules='checkRules' ref="addForm">
         <el-row :gutter="20">
 
           <el-col :span="8">
@@ -122,13 +123,13 @@
           </el-col>
 
           <el-col :span="8">
-            <el-form-item label="送修原因">
+            <el-form-item label="送修原因" prop="reason">
               <el-input v-model="addData.reason"></el-input>
             </el-form-item>
           </el-col>
 
           <el-col :span="8">
-            <el-form-item label="送修备注">
+            <el-form-item label="送修备注" prop="remarks">
               <el-input v-model="addData.remarks"></el-input>
             </el-form-item>
           </el-col>
@@ -144,13 +145,13 @@
         </el-row>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="addDialogFormVisible = false">取 消</el-button>
+        <el-button @click="closeAddDialog">取 消</el-button>
         <el-button type="primary" @click="doAdd">确 定</el-button>
       </span>
     </el-dialog>
     <!--维修信息修改-->
     <el-dialog title="维修信息修改" :visible.sync="updateDialogFormVisible" center width="80%">
-      <el-form :model="updateData" label-width="100px">
+      <el-form :model="updateData" label-width="100px" :rules='checkRules' ref="updateForm">
         <el-row :gutter="20">
 
           <el-col :span="8">
@@ -196,19 +197,19 @@
           </el-col>
 
           <el-col :span="8">
-            <el-form-item label="送修原因">
+            <el-form-item label="送修原因" prop="reason">
               <el-input v-model="updateData.reason"></el-input>
             </el-form-item>
           </el-col>
 
           <el-col :span="8">
-            <el-form-item label="送修备注">
+            <el-form-item label="送修备注" prop="remarks">
               <el-input v-model="updateData.remarks"></el-input>
             </el-form-item>
           </el-col>
 
           <el-col :span="8">
-            <el-form-item label="经办人">
+            <el-form-item label="经办人" prop="driverId">
                 <el-select v-model="updateData.driverId" placeholder="请选择">
                   <el-option v-for="driver in driverList" :key="driver.id"
                             :label="driver.employeeName" :value="driver.id">
@@ -219,13 +220,13 @@
         </el-row>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="updateDialogFormVisible = false">取 消</el-button>
+        <el-button @click="closeUpdateDialog">取 消</el-button>
         <el-button type="primary" @click="doUpdate">确 定</el-button>
       </span>
     </el-dialog>
     <!--取车信息登记-->
     <el-dialog title="取车信息登记" :visible.sync="getCarDialogFormVisible" center width="80%">
-      <el-form :model="updateData" label-width="100px">
+      <el-form :model="updateData" label-width="100px" :rules='checkRules' ref="updateForm">
          <el-row :gutter="20">
           <el-col :span="8">
             <el-form-item label="车牌号码:" prop="carId">
@@ -238,7 +239,7 @@
           </el-col>
           <el-col :span="8">
             <el-form-item label="修理厂:">
-                <el-select v-model="updateData.oppositeCompanyId" placeholder="请选择">
+                <el-select v-model="updateData.oppositeCompanyId" disabled placeholder="请选择">
                     <el-option v-for="opposite in oppositeList" :key="opposite.id"
                                 :label="opposite.name" :value="opposite.id">
                     </el-option>
@@ -266,22 +267,22 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="花费金额">
+            <el-form-item label="花费金额" prop="repairFee">
               <el-input v-model="updateData.repairFee"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="维修项目">
+            <el-form-item label="维修项目" prop="repairItem">
               <el-input v-model="updateData.repairItem"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="使用材料">
+            <el-form-item label="使用材料" prop="useGoods">
               <el-input v-model="updateData.useGoods"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="取车备注">
+            <el-form-item label="取车备注" prop="remarks">
               <el-input v-model="updateData.remarks"></el-input>
             </el-form-item>
           </el-col>
@@ -409,6 +410,26 @@ export default {
       driverList:[], // 驾驶员集合
       repairItemType:[],// 维修类别集合
       oppositeList:[], // 往来单位集合
+       // 验证规则
+      checkRules: {
+      // 要以数组形式展示
+        reason:[
+          { required: true, message: "原因不能为空", trigger: "blur"},
+        ],
+        useGoods:[
+          { required: true, message: "材料不能为空", trigger: "blur"},
+        ],
+        repairItem:[
+          { required: true, message: "维修项目不能为空", trigger: "blur"},
+        ],
+        remarks:[
+          { required: true, message: "备注为空请填'无'", trigger: "blur"},
+        ],
+        repairFee:[
+          { required: true, message: "金额不能为空", trigger: "blur"},
+          { pattern: /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/, message: '请输入正确额格式,可保留两位小数' },
+        ]
+      }
     }
   },
   methods: {
@@ -449,6 +470,10 @@ export default {
     showAddDialog(){
         this.addDialogFormVisible = true;
     },
+    closeAddDialog(){
+      this.$refs['addForm'].resetFields();
+      this.addDialogFormVisible = false;
+    },
     showViewRepairDialog(row){
       this.ViewDialogFormVisible = true;
       this.updateData = row;
@@ -457,8 +482,9 @@ export default {
       this.addData.repairFee = 0;
       this.addData.getTime = "未取车"
       this.$axios.post("repairRecord/add",this.addData).then(r=>{
-        if (r.data.code = 200) {
+        if (r.data.code === 200) {
           this.$message.success("添加成功");
+          this.$refs['addForm'].resetFields();
           this.addDialogFormVisible = false;
           this.p = 1;
           this.loadList();
@@ -486,9 +512,13 @@ export default {
       }
       this.updateData = row;
     },
+    closeUpdateDialog(){
+      this.$refs['updateForm'].resetFields();
+      this.updateDialogFormVisible = false;
+    },
     doUpdate(){
       this.$axios.post("repairRecord/update",this.updateData).then(r=>{
-        if (r.data.code = 200) {
+        if (r.data.code === 200) {
           this.$message.success("修改成功");
           this.updateDialogFormVisible = false;
           this.p = 1;
@@ -498,7 +528,7 @@ export default {
     },
     getCarRigister(){
         this.$axios.post("repairRecord/getCar",this.updateData).then(r=>{
-        if (r.data.code = 200) {
+        if (r.data.code === 200) {
           this.$message.success("取车成功");
           this.getCarDialogFormVisible = false;
           this.p = 1;

@@ -44,7 +44,7 @@
               <el-button type="primary" icon="el-icon-share" circle @click="showImgManageDialog(scope.row)"></el-button>
             </el-tooltip>
             <el-tooltip content="详情" placement="bottom" effect="light">
-              <el-button type="primary" icon="el-icon-view" circle @click="showViewRepairDialog(scope.row)"></el-button>
+              <el-button type="primary" icon="el-icon-view" circle @click="showViewDialog(scope.row)"></el-button>
             </el-tooltip>
             <el-tooltip content="删除" placement="bottom" effect="light">
               <el-button type="danger" icon="el-icon-delete" circle @click="del(scope.row)"></el-button>
@@ -59,13 +59,12 @@
     <br/>
 
     <!--添加-->
-    <el-dialog title="新增车辆" :visible.sync="addDialogFormVisible" center width="80%">
-      <el-form :model="addData" label-width="150px">
+    <el-dialog title="新增车辆" :visible.sync="addDialogFormVisible" center width="80%" >
+      <el-form :model="addData" label-width="150px" :rules='checkRules' ref="addForm">
         <el-row :gutter="20">
-
           <el-col :span="6">
-            <el-form-item label="车牌号码：">
-              <el-input v-model="addData.carNum"></el-input>
+            <el-form-item label="车牌号码：" prop="carNum">
+              <el-input v-model="addData.carNum" ></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
@@ -94,43 +93,43 @@
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-form-item label="载重（吨）：" >
-              <el-input v-model="addData.carrying" type=number></el-input>
+            <el-form-item label="载重（吨）：" prop="carrying">
+              <el-input v-model="addData.carrying" ></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-form-item label="座位数：" >
-              <el-input v-model="addData.seatNum" type=number></el-input>
+            <el-form-item label="座位数：" prop="seatNum">
+              <el-input v-model="addData.seatNum"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-form-item label="油耗（百公里）：" >
+            <el-form-item label="油耗（百公里）：" prop="oilConsume">
               <el-input v-model="addData.oilConsume"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-form-item label="初始里程（公里）：" >
+            <el-form-item label="初始里程（公里）：" prop="initialMileage">
               <el-input v-model="addData.initialMileage"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-form-item label="保养里程（公里）：" >
+            <el-form-item label="保养里程（公里）：" prop="curingMileage">
               <el-input v-model="addData.curingMileage"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-form-item label="保养周期（公里）：" >
+            <el-form-item label="保养周期（月）：" prop="curingCycle">
               <el-input v-model="addData.curingCycle"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
 
-            <el-form-item label="发动机号码：" >
+            <el-form-item label="发动机号码：" prop="engineNum">
               <el-input v-model="addData.engineNum"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-form-item label="车架号：" >
+            <el-form-item label="车架号：" prop="serialNumber">
               <el-input v-model="addData.serialNumber"></el-input>
             </el-form-item>
           </el-col>
@@ -144,7 +143,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-form-item label="购买价格：" >
+            <el-form-item label="购买价格：" prop="price">
               <el-input v-model="addData.price"></el-input>
             </el-form-item>
           </el-col>
@@ -153,6 +152,7 @@
               <el-date-picker
                 v-model="addData.boughtDate"
                 type="date"
+                value-format="yyyy-MM-dd"
                 placeholder="选择日期">
               </el-date-picker>
             </el-form-item>
@@ -176,7 +176,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-form-item label="备注：" >
+            <el-form-item label="备注：" prop="remarks">
               <el-input v-model="addData.remarks"></el-input>
             </el-form-item>
           </el-col>
@@ -191,18 +191,18 @@
         </el-row>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="addDialogFormVisible = false">取 消</el-button>
+        <el-button @click="closeAddDialog">取 消</el-button>
         <el-button type="primary" @click="doAdd">确 定</el-button>
       </span>
     </el-dialog>
     <!--修改-->
     <el-dialog title="编辑车辆" :visible.sync="updateDialogFormVisible" center width="80%">
-      <el-form :model="updateData" label-width="150px">
+      <el-form :model="updateData" label-width="150px" :rules='checkRules' ref="updateForm">
         <el-row :gutter="20">
 
           <el-col :span="6">
-            <el-form-item label="车牌号码:" prop="carId">
-              <el-input v-model="updateData.carNum"></el-input>
+            <el-form-item label="车牌号码:" prop="carId" >
+              <el-input v-model="updateData.carNum" disabled></el-input>
             </el-form-item>
           </el-col>
 
@@ -330,13 +330,12 @@
         </el-row>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="updateDialogFormVisible = false">取 消</el-button>
+        <el-button @click="closeUpdateDialog">取 消</el-button>
         <el-button type="primary" @click="doUpdate">确 定</el-button>
       </span>
     </el-dialog>
     <!--图片管理-->
     <el-dialog :title="updateData.carNum+'图片管理'" :visible.sync="manageCarImgVisible" center width="80%">
-      <!-- <el-tag center>{{updateData.carNum}}</el-tag> -->
       <!-- 图片展示 -->
       <div>
           <div class="demo-image">
@@ -344,7 +343,7 @@
               <div class="block" style="width:200px;height:200px;display: inline-block;float:left;text-align:center" >
                     <el-image
                       :preview-src-list=[img.imgName]
-                      z-index = 20000
+                      :z-index = 20000
                       style="width:100px;height:100px;"
                       class="table-td-thumb"
                       :src="img.imgName">
@@ -362,6 +361,7 @@
       <!--图片上传-->
       <!-- action="http://localhost:8888/carImg/upload" -->
       <el-upload
+          id="sbtn"
           style="clear:both"
           class="upload-demo"
           ref="upload"
@@ -372,7 +372,7 @@
           :data=uploadData
           :before-upload=handleBefore
           :auto-upload="false">
-          <el-button slot="trigger" size="small" type="primary">选取图片</el-button>
+          <el-button slot="trigger" size="large" type="primary">选取图片</el-button>
           <el-button style="margin-left: 10px;" size="large" type="success" @click="submitUpload">上传图片</el-button>
           <div slot="tip" class="el-upload__tip">只能上传小于500kb的jpeg/gif/png/jpg文件</div>
       </el-upload>
@@ -380,7 +380,7 @@
       <el-input placeholder="请输入上传图片描述" v-model="uploadData.description" width="40px" ></el-input>
     </el-dialog>
     <!--详细-->
-    <el-dialog title="维修信息详细" :visible.sync="ViewDialogFormVisible" center width="80%">
+    <el-dialog title="车辆信息详细" :visible.sync="ViewDialogFormVisible" center width="80%">
       <el-form :model="updateData" label-width="150px">
         <el-row :gutter="20">
           <el-col :span="6">
@@ -507,7 +507,7 @@ export default {
       total: 5,
       ViewDialogFormVisible: false,
       // 增
-      addData: {},
+      addData: {status:"1"},
       addDialogFormVisible: false,
       // 改
       updateData: {},
@@ -529,7 +529,85 @@ export default {
         carId: 0,
         imgName: "",
         description: ""
+      },
+      // 验证规则
+      checkRules: {
+      // 要以数组形式展示
+        carNum: [
+          { required: true, message: "车牌号不能为空", trigger: "blur" },
+          { 
+            pattern:/(^[\u4E00-\u9FA5]{1}[A-Z0-9]{6}$)|(^[A-Z]{2}[A-Z0-9]{2}[A-Z0-9\u4E00-\u9FA5]{1}[A-Z0-9]{4}$)|(^[\u4E00-\u9FA5]{1}[A-Z0-9]{5}[挂学警军港澳]{1}$)|(^[A-Z]{2}[0-9]{5}$)|(^(08|38){1}[A-Z0-9]{4}[A-Z0-9挂学警军港澳]{1}$)/,
+            message: '常规格式：晋B12345'
+          },
+        ],
+        carrying:[
+          { required: true, message: "载重不能为空", trigger: "blur"},
+          { 
+            pattern: /^(([1-9]{1}\d*)|(0{1}))(\.\d{1,2})?$/,
+            message: "请输入合法的数字",
+            trigger: "change"
+          }
+        ],
+        seatNum:[
+          { required: true, message: "座位数不能为空", trigger: "blur"},
+          { 
+            type: 'number',
+            min: 1,
+            message: '座位数为正整数',
+            trigger: 'change'
+          }
+        ],
+        oilConsume:[
+          { required: true, message: "油耗不能为空", trigger: "blur"},
+          { 
+            type: 'number',
+            min: 0,
+            message: '请输入大于0的数字',
+            trigger: 'change'
+          }
+        ],
+        initialMileage:[
+          { required: true, message: "初始里程不能为空", trigger: "blur"},
+          { 
+            type: 'number',
+            min: 0,
+            message: '请输入大于0的数字',
+            trigger: 'change'
+          }
+        ],
+        curingMileage:[
+          { required: true, message: "保养里程不能为空", trigger: "blur"},
+          { 
+            type: 'number',
+            min: 0,
+            message: '请输入大于0的数字',
+            trigger: 'change'
+          }
+        ],
+        curingCycle:[
+          { required: true, message: "保养周期不能为空", trigger: "blur"},
+          { 
+            type: 'number',
+            min: 0,
+            message: '请输入大于0的数字',
+            trigger: 'change'
+          }
+        ],
+        engineNum:[
+          { required: true, message: "发动机号码不能为空", trigger: "blur"},
+        ],
+        serialNumber:[
+          { required: true, message: "车架号不能为空", trigger: "blur"},
+        ],
+        remarks:[
+          { required: true, message: "备注为空请填'无'", trigger: "blur"},
+        ],
+        price:[
+          { required: true, message: "金额不能为空", trigger: "blur"},
+          { pattern: /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/, message: '请输入正确额格式,可保留两位小数' },
+        ]
       }
+
     };
   },
   methods: {
@@ -591,7 +669,11 @@ export default {
       this.oneId = "";
       this.twoId = "";
     },
-    showViewRepairDialog(row) {
+    closeAddDialog(){
+      this.$refs['addForm'].resetFields();
+      this.addDialogFormVisible = false;
+    },
+    showViewDialog(row) {
       this.ViewDialogFormVisible = true;
       this.updateData = row;
     },
@@ -599,11 +681,14 @@ export default {
       this.addData.brandId = this.oneId;
       this.addData.type = this.twoId;
       this.$axios.post("car/add", this.addData).then(r => {
-        if ((r.data.code = 200)) {
+        if ((r.data.code === 200)) {
           this.$message.success("添加成功");
+          this.$refs['addForm'].resetFields();
           this.addDialogFormVisible = false;
           this.p = 1;
           this.loadList();
+        }else{
+          this.$message.warning("该车牌号已被占用无法添加");
         }
       });
     },
@@ -621,12 +706,16 @@ export default {
       this.twoId = row.type;
       this.oneMenu(row.brandId);
     },
+    closeUpdateDialog(){
+      this.$refs['updateForm'].resetFields();
+      this.updateDialogFormVisible = false;
+    },
 
     doUpdate() {
       this.updateData.brandId = this.oneId;
       this.updateData.type = this.twoId;
       this.$axios.post("car/update", this.updateData).then(r => {
-        if ((r.data.code = 200)) {
+        if ((r.data.code === 200)) {
           this.$message.success("修改成功");
           this.updateDialogFormVisible = false;
           this.p = 1;
@@ -644,7 +733,6 @@ export default {
         this.uploadData.carId=this.updateData.id
         this.uploadData.imgName=this.updateData.carNum+this.uploadData.description;
         this.$refs.upload.submit();
-        this.$router.go(0);
     },
     handleBefore(file) {
         this.fileList = []
@@ -668,7 +756,6 @@ export default {
           this.$axios.get("carImg/delete?id=" + img.id).then(r => {
             (this.p = 1), this.loadList();
             this.$message.success("删除成功");
-            app.$data.imgList = this.getCarImgList(img.carId)
           });
         })
         .catch(res => {
@@ -731,6 +818,12 @@ export default {
       })
     },
   },
+  watch: {
+    // 如果 `question` 发生改变，这个函数就会运行
+    imgList: function (newQuestion, oldQuestion) {
+      this.getCarImgList(this.updateData.id);
+    }
+  },
   created() {
     Promise.all([
       this.getMenu(),
@@ -741,9 +834,12 @@ export default {
         this.loadList(); //延时结束loading
       }, 500);
     });
-  }
+  },  
 };
 </script>
 
-<style scoped>
+<style>
+  #sbtn>div>input{
+    display: none!important;
+  }
 </style>

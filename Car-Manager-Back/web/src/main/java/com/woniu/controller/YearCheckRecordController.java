@@ -47,14 +47,14 @@ public class YearCheckRecordController {
 
     @RequestMapping("/add")
     public ResponseResult add(@RequestBody YearCheckRecord yearCheckRecord){
-        System.out.println("要添加的数据"+yearCheckRecord);
-
+        if(yearCheckRecord.getNextCheckDate().isEmpty()){
+            String checkDate = yearCheckRecord.getCheckDate();
+            // TODO: 2021/5/13 下次年检时间加一年
+        }
         OutimeRemindPo orpo = new OutimeRemindPo();
         orpo.setCarId(yearCheckRecord.getCarId());
         orpo.setOutDate(yearCheckRecord.getNextCheckDate());
         orpo.setType(106);
-        System.out.println("要添加的保养到期数据"+orpo);
-
         //添加到期提醒
         outimeRemindService.add(orpo);
 

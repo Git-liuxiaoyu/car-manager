@@ -60,7 +60,7 @@
     <br/>
     <!--年检信息登记-->
     <el-dialog title="年检信息登记" :visible.sync="addDialogFormVisible" center width="80%">
-      <el-form :model="addData" label-width="100px">
+      <el-form :model="addData" label-width="100px" :rules='checkRules' ref="addForm">
         <el-row :gutter="20">
           <el-col :span="8">
             <el-form-item label="车牌号码:">
@@ -72,7 +72,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="年检标号">
+            <el-form-item label="年检标号" prop="checkNum">
               <el-input v-model="addData.checkNum"></el-input>
             </el-form-item>
           </el-col>
@@ -88,7 +88,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="年检金额">
+            <el-form-item label="年检金额" prop="cost">
               <el-input v-model="addData.cost"></el-input>
             </el-form-item>
           </el-col>
@@ -123,7 +123,7 @@
 
 
           <el-col :span="8">
-            <el-form-item label="年检备注">
+            <el-form-item label="年检备注" prop="remarks">
               <el-input v-model="addData.remarks"></el-input>
             </el-form-item>
           </el-col>
@@ -131,13 +131,13 @@
         </el-row>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="addDialogFormVisible = false">取 消</el-button>
+        <el-button @click="closeAddDialog">取 消</el-button>
         <el-button type="primary" @click="doAdd">确 定</el-button>
       </span>
     </el-dialog>
     <!--年检信息编辑-->
     <el-dialog title="年检信息编辑" :visible.sync="updateDialogFormVisible" center width="80%">
-      <el-form :model="updateData" label-width="100px">
+      <el-form :model="updateData" label-width="100px" :rules='checkRules' ref="updateForm">
         <el-row :gutter="20">
 
           <el-col :span="8">
@@ -150,7 +150,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="年检标号">
+            <el-form-item label="年检标号" prop="checkNum">
               <el-input v-model="updateData.checkNum"></el-input>
             </el-form-item>
           </el-col>
@@ -165,7 +165,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="年检金额:">
+            <el-form-item label="年检金额:" prop="cost">
                 <el-input v-model="updateData.cost"></el-input>
             </el-form-item>
           </el-col>
@@ -198,7 +198,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="年检备注">
+            <el-form-item label="年检备注" prop="remarks">
               <el-input v-model="updateData.remarks"></el-input>
             </el-form-item>
           </el-col>
@@ -206,7 +206,7 @@
         </el-row>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="updateDialogFormVisible = false">取 消</el-button>
+        <el-button @click="closeUpdateDialog">取 消</el-button>
         <el-button type="primary" @click="doUpdate">确 定</el-button>
       </span>
     </el-dialog>
@@ -250,6 +250,19 @@ export default {
       carList:[],// 车辆集合
       driverList:[], // 驾驶员集合
       oppositeList:[], // 往来单位集合
+            checkRules: {
+      // 要以数组形式展示
+        checkNum:[
+          { required: true, message: "标号不能为空", trigger: "blur"},
+        ],
+        remarks:[
+          { required: true, message: "备注为空请填'无'", trigger: "blur"},
+        ],
+        cost:[
+          { required: true, message: "金额不能为空", trigger: "blur"},
+          { pattern: /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/, message: '请输入正确额格式,可保留两位小数' },
+        ]
+      }
     }
   },
   methods: {
@@ -285,14 +298,19 @@ export default {
     showAddDialog(){
         this.addDialogFormVisible = true;
     },
+    closeAddDialog(){
+      this.$refs['addForm'].resetFields();
+      this.addDialogFormVisible = false;
+    },
     showViewRepairDialog(row){
       this.ViewDialogFormVisible = true;
       this.updateData = row;
     },
     doAdd(){
       this.$axios.post("yearCheckRecord/add",this.addData).then(r=>{
-        if (r.data.code = 200) {
+        if (r.data.code === 200) {
           this.$message.success("添加成功");
+          this.$refs['addForm'].resetFields();
           this.addDialogFormVisible = false;
           this.p = 1;
           this.loadList();
@@ -310,9 +328,13 @@ export default {
       }
         this.updateData = row;
     },
+    closeUpdateDialog(){
+      this.$refs['updateForm'].resetFields();
+      this.updateDialogFormVisible = false;
+    },
     doUpdate(){
       this.$axios.post("yearCheckRecord/update",this.updateData).then(r=>{
-        if (r.data.code = 200) {
+        if (r.data.code === 200) {
           this.$message.success("修改成功");
           this.updateDialogFormVisible = false;
           this.p = 1;
@@ -370,7 +392,6 @@ export default {
     this.getOppositeList()
     this.getCarList()
     this.getDriverList()
-
     this.loadList()
   }
 }

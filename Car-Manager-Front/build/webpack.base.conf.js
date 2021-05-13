@@ -68,16 +68,16 @@ module.exports = {
       }
     ]
   },
-  //jquery
-  plugins: [
-    new webpack.optimize.CommonsChunkPlugin('common.js'),
-    new webpack.ProvidePlugin({
-      $: "jquery",
-      jQuery: "jquery",
-      "window.jQuery":"jquery",
-      Popper: ["popper.js", "default"]
-    })
-  ],
+  // //jquery
+  // plugins: [
+  //   new webpack.optimize.CommonsChunkPlugin('common.js'),
+  //   new webpack.ProvidePlugin({
+  //     $: "jquery",
+  //     jQuery: "jquery",
+  //     "window.jQuery":"jquery",
+  //     Popper: ["popper.js", "default"]
+  //   })
+  // ],
   node: {
     // prevent webpack from injecting useless setImmediate polyfill because Vue
     // source contains it (although only uses it if it's native).

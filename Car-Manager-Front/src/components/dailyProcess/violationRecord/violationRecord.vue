@@ -56,7 +56,7 @@
     <br/>
 <!--违章信息登记-->
 <el-dialog title="违章信息登记" :visible.sync="addDialogFormVisible" center width="80%">
-      <el-form :model="addData" label-width="100px">
+      <el-form :model="addData" label-width="100px" :rules='checkRules' ref="addForm">
         <el-row :gutter="20">
 
           <el-col :span="6">
@@ -90,13 +90,13 @@
           </el-col>
 
           <el-col :span="6">
-            <el-form-item label="违章罚款">
+            <el-form-item label="违章罚款" prop="fee">
               <el-input v-model="addData.fee"></el-input>
             </el-form-item>
           </el-col>
 
           <el-col :span="6">
-            <el-form-item label="违章扣分">
+            <el-form-item label="违章扣分" prop="reduceScore">
               <el-input v-model="addData.reduceScore"></el-input>
             </el-form-item>
           </el-col>
@@ -112,13 +112,13 @@
           </el-col>
 
           <el-col :span="6">
-            <el-form-item label="违章地点">
+            <el-form-item label="违章地点" prop="place">
               <el-input v-model="addData.place"></el-input>
             </el-form-item>
           </el-col>
 
           <el-col :span="6">
-            <el-form-item label="违章备注">
+            <el-form-item label="违章备注" prop="remarks">
                 <el-input v-model="addData.remarks"></el-input>
             </el-form-item>
           </el-col>
@@ -128,14 +128,14 @@
       </el-form>
 
       <span slot="footer" class="dialog-footer">
-        <el-button @click="addDialogFormVisible = false">取 消</el-button>
+        <el-button @click="closeAddDialog">取 消</el-button>
         <el-button type="primary" @click="doAdd()">确 定</el-button>
       </span>
     </el-dialog>
 
 <!--违章信息修改-->
     <el-dialog title="违章信息修改" :visible.sync="updateDialogFormVisible" center width="80%">
-      <el-form :model="updateData" label-width="100px">
+      <el-form :model="updateData" label-width="100px" :rules='checkRules' ref="updateForm">
          <el-row :gutter="20">
           <el-col :span="6">
             <el-form-item label="车牌号码:">
@@ -168,13 +168,13 @@
           </el-col>
 
           <el-col :span="6">
-            <el-form-item label="违章罚款">
+            <el-form-item label="违章罚款" prop="fee">
               <el-input v-model="updateData.fee"></el-input>
             </el-form-item>
           </el-col>
 
           <el-col :span="6">
-            <el-form-item label="违章扣分">
+            <el-form-item label="违章扣分" prop="reduceScore">
               <el-input v-model="updateData.reduceScore"></el-input>
             </el-form-item>
           </el-col>
@@ -190,13 +190,13 @@
           </el-col>
 
           <el-col :span="6">
-            <el-form-item label="违章地点">
+            <el-form-item label="违章地点" prop="place">
               <el-input v-model="updateData.place"></el-input>
             </el-form-item>
           </el-col>
 
           <el-col :span="6">
-            <el-form-item label="违章备注">
+            <el-form-item label="违章备注" prop="remarks">
                 <el-input v-model="updateData.remarks"></el-input>
             </el-form-item>
           </el-col>
@@ -206,7 +206,7 @@
       </el-form>
 
       <span slot="footer" class="dialog-footer">
-        <el-button @click="updateDialogFormVisible = false">取 消</el-button>
+        <el-button @click="closeUpdateDialog">取 消</el-button>
         <el-button type="primary" @click="doUpdate">确 定</el-button>
       </span>
     </el-dialog>
@@ -252,7 +252,30 @@ export default {
       // 其他
       violationType: [],// 违章类别
       carList:[],// 车辆集合
-      driverList:[] // 驾驶员集合
+      driverList:[], // 驾驶员集合
+             // 验证规则
+      checkRules: {
+      // 要以数组形式展示
+        place:[
+          { required: true, message: "地点不能为空", trigger: "blur"},
+        ],
+        reduceScore:[
+          { required: true, message: "扣分不能为空", trigger: "blur"},
+          { 
+            type: 'number',
+            min: 0,
+            message: '扣分为正整数',
+            trigger: 'change'
+          }
+        ],
+        remarks:[
+          { required: true, message: "备注为空请填'无'", trigger: "blur"},
+        ],
+        fee:[
+          { required: true, message: "金额不能为空", trigger: "blur"},
+          { pattern: /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/, message: '请输入正确额格式,可保留两位小数' },
+        ]
+      }
     }
   },
   methods: {
@@ -288,10 +311,15 @@ export default {
     showAddDialog(){
         this.addDialogFormVisible = true;
     },
+    closeAddDialog(){
+      this.$refs['addForm'].resetFields();
+      this.addDialogFormVisible = false;
+    },
     doAdd(){
       this.$axios.post("violationRecord/add", this.addData).then(r => {
-        if (r.data.code = 200) {
+        if (r.data.code === 200) {
           this.$message.success("添加成功");
+          this.$refs['addForm'].resetFields();
           this.addDialogFormVisible = false;
           this.p = 1;
           this.loadList();
@@ -309,9 +337,13 @@ export default {
         }
         this.updateData = row;
     },
+    closeUpdateDialog(){
+      this.$refs['updateForm'].resetFields();
+      this.updateDialogFormVisible = false;
+    },
     doUpdate(row){
       this.$axios.post("violationRecord/update", this.updateData).then(r => {
-        if (r.data.code = 200) {
+        if (r.data.code === 200) {
           this.$message.success("修改成功");
           this.updateDialogFormVisible = false;
           this.p = 1;
@@ -328,7 +360,7 @@ export default {
       }).then(res => {
         this.$axios.get("violationRecord/delete?id=" + row.id).then(r => {
           this.p = 1,
-            this.loadList();
+          this.loadList();
           this.$message.success("删除成功");
         })
       }).catch(res => {
