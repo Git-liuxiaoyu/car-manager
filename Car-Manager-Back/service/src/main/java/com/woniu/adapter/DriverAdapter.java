@@ -114,6 +114,33 @@ public class DriverAdapter {
        return driverList;
 
     }
+
+    public EmployeePo getOne(String name){
+//        Driver driver = new Driver();
+//        DriverPo driverPo = driverDao.getOne(name);
+//        if(driverPo!=null) {
+//            BeanUtils.copyProperties(driverPo, driver);
+//        }
+//        return driver;
+        EmployeePo employeePo=null;
+        EmployeePo employeePo1 = driverDao.getOne(name);
+        if (employeePo1!=null){
+            employeePo=employeePo1;
+        }
+        return employeePo;
+    }
+
+
+    public Driver getDriver(String name){
+        Driver driver = new Driver();
+        DriverPo driverPo = driverDao.getDriver(name);
+        if(driverPo!=null) {
+            BeanUtils.copyProperties(driverPo, driver);
+        }
+        return driver;
+    }
+
+
     public int addDriverRole(Integer employeeId){
         return driverDao.addDriverRole(employeeId);
     }

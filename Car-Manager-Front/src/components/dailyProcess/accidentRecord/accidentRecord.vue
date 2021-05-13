@@ -75,7 +75,7 @@
     </el-row>
     <!-- 新增 -->
     <el-dialog title="事故信息登记" :visible.sync="addDialogFormVisible" center width="80%">
-      <el-form :model="addAccident" label-width="100px">
+      <el-form :model="addAccident" label-width="100px" :rules="rules" ref="addForm">
         <el-row :gutter="20">
 
           <el-col :span="8">
@@ -113,7 +113,7 @@
           </el-col>
 
           <el-col :span="8">
-            <el-form-item label="事故时间:">
+            <el-form-item label="事故时间:" prop="time">
               <el-date-picker
                 v-model="addAccident.time"
                 type="datetime"
@@ -184,15 +184,15 @@
       </el-form>
 
       <span slot="footer" class="dialog-footer">
-        <el-button @click="addDialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="toAddAccident()">确 定</el-button>
+        <el-button @click="addAccidentForm('addForm')">取 消</el-button>
+        <el-button type="primary" @click="toAddAccident('addForm')">确 定</el-button>
       </span>
     </el-dialog>
 
 
     <!-- 修改 -->
     <el-dialog title="事故信息修改" :visible.sync="dialogEditVisible" center width="80%">
-      <el-form :model="editAccident" label-width="100px">
+      <el-form :model="editAccident" label-width="100px" :rules="rules" ref="editForm">
         <el-row :gutter="20">
 
           <el-col :span="8">
@@ -214,14 +214,10 @@
 
 
           <el-col :span="8">
-            <!-- <el-form-item label="驾驶员">
-              <el-input v-model="addAccident.driverName" ></el-input>
-
-            </el-form-item> -->
 
             <el-form-item label="驾驶员" prop="driverId">
               <el-select v-model="editAccident.driverId" placeholder="请选择">
-                <el-option label="请选择" value="0" ></el-option>
+                <!-- <el-option label="请选择" value="0" ></el-option> -->
                 <el-option :label="driver.employeeName" :value="driver.id"
                            v-for="driver in drivers" :key="driver.id">
                 </el-option>
@@ -239,7 +235,7 @@
                :picker-options="startDatePicker" :disabled="dialogStatus=='view'" type="date"  :placeholder="dialogStatus=='view'?'':'请输入支付时间'"></el-date-picker>
           </el-form-item> -->
 
-            <el-form-item label="事故时间" prop="time">
+            <el-form-item label="事故时间" >
               <el-date-picker
                 v-model="editAccident.time"
                 type="datetime"
@@ -308,8 +304,8 @@
 
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogEditVisible = false">取 消</el-button>
-        <el-button type="primary" @click="toUpdate()">确 定</el-button>
+        <el-button @click="editAccidentForm('editForm')">取 消</el-button>
+        <el-button type="primary" @click="toUpdate('editForm')">确 定</el-button>
       </div>
     </el-dialog>
 
@@ -452,6 +448,84 @@ export default {
       //详细
       dialogshowAccidentVisible:false,
 
+      rules:{
+         driverId:[
+            {required: true, //是否必填       
+            message: '驾驶员不能为空', //规则
+            trigger: 'change'  //何事件触发
+          }
+         ],
+         carId:[
+            {required: true, //是否必填       
+            message: '车牌号不能为空', //规则
+            trigger: 'change'  //何事件触发
+          }
+         ],
+         time:[
+            {required: true, //是否必填       
+            message: '事故时间不能为空', //规则
+            trigger: 'change'  //何事件触发
+          }
+         ],
+         place:[
+            {required: true, //是否必填       
+            message: '事故地点不能为空', //规则
+            trigger: 'blur'  //何事件触发
+          }
+         ],
+         explain:[
+             {required: true, //是否必填       
+            message: '事故说明不能为空', //规则
+            trigger: 'blur'  //何事件触发
+          }
+         ],
+                  selfCondition:[
+             {required: true, //是否必填       
+            message: '我方情况不能为空', //规则
+            trigger: 'blur'  //何事件触发
+          }
+         ],
+                  oppoCondition:[
+             {required: true, //是否必填       
+            message: '我方情况不能为空', //规则
+            trigger: 'blur'  //何事件触发
+          }
+         ],
+                  solveResult:[
+             {required: true, //是否必填       
+            message: '处理结果不能为空', //规则
+            trigger: 'blur'  //何事件触发
+          }
+         ],
+                  selfCost:[
+             {required: true, //是否必填       
+            message: '我方承担金额不能为空', //规则
+            trigger: 'blur'  //何事件触发
+          },
+           { pattern: /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/, message: '请输入正确额格式,可保留两位小数' },
+         ],
+                           oppoCost:[
+             {required: true, //是否必填       
+            message: '对方承担金额不能为空', //规则
+            trigger: 'blur'  //何事件触发
+          },
+           { pattern: /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/, message: '请输入正确额格式,可保留两位小数' },
+         ],
+                           insureCost:[
+             {required: true, //是否必填       
+            message: '保险承担金额不能为空', //规则
+            trigger: 'blur'  //何事件触发
+          },
+           { pattern: /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/, message: '请输入正确额格式,可保留两位小数' },
+         ],
+                           remarks:[
+             {required: true, //是否必填       
+            message: '备注为空请填‘无’', //规则
+            trigger: 'blur'  //何事件触发
+          }
+         ],
+      }
+
     }
   },
   methods:{
@@ -495,8 +569,9 @@ export default {
       })
     },
 
-    toAddAccident(){
-
+    toAddAccident(formName){
+     this.$refs[formName].validate((valid) => {
+          if (valid) {
       this.$axios.post("accidentRecord/add",this.addAccident ).then(r=>{
         console.log(r);
         if(r.data.code==200){
@@ -508,6 +583,15 @@ export default {
         }
         // this.drivers=r.data.data;
       })
+      } else {
+            return false;
+          }
+        });
+    },
+
+    addAccidentForm(formName){
+      this.addDialogFormVisible=false;
+        this.$refs[formName].resetFields();
     },
     showViewAccidentDialog(row){
        this.dialogshowAccidentVisible=true;
@@ -535,8 +619,9 @@ export default {
       this.loadDriverName();
       this.getCarList()
     },
-    toUpdate(){
-
+    toUpdate(formName){
+     this.$refs[formName].validate((valid) => {
+          if (valid) {
       this.$axios.post("accidentRecord/update",this.editAccident).then(r=>{
         console.log(r);
         if(r.data.code==200){
@@ -547,6 +632,15 @@ export default {
           this.$message({type: 'error', message:"修改失败",  duration:800});
         }
       })
+      } else {
+            return false;
+          }
+        });
+    },
+
+    editAccidentForm(formName){
+      this.dialogEditVisible=false;
+       this.$refs[formName].resetFields();
     },
     deleteAccident(id){
 

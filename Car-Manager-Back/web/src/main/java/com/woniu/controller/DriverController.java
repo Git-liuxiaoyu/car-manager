@@ -108,5 +108,28 @@ public class DriverController {
         return  new ResponseResult<>(driverList);
     }
 
+    @RequestMapping("getOne")
+    public ResponseResult<EmployeePo> getOne(String name){
+        EmployeePo employeePo = driverService.getOne(name);
+        if (employeePo!=null){
+//            return  new ResponseResult(employeePo);
+            return  new ResponseResult(200,"ok");
+        }
+        return new ResponseResult(101,"公司没有此员工请联系管理员添加");
+//        return  new ResponseResult<>(driver);
+    }
+
+    @RequestMapping("getDriver")
+    public ResponseResult<Driver> getDriver(String name){
+        Driver driver = driverService.getDriver(name);
+        if (driver.getId()==null){
+            return  new ResponseResult(200,"ok");
+        }
+        return new ResponseResult(101,"公司没有此员工请联系管理员添加");
+//        return  new ResponseResult<>(driver);
+    }
+
+
+
 
 }
