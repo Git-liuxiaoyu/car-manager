@@ -2,7 +2,6 @@ package com.woniu.service.impl;
 
 import com.woniu.adapter.KeepRecordAdapter;
 import com.woniu.domain.KeepRecord;
-import com.woniu.domain.OilRecord;
 import com.woniu.po.KeepRecordPo;
 import com.woniu.service.KeepRecordService;
 import org.springframework.beans.factory.annotation.Autowired;

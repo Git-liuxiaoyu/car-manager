@@ -1,11 +1,8 @@
 package com.woniu.controller;
 
-import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.woniu.domain.AccidentRecord;
-import com.woniu.domain.FeeRecord;
-import com.woniu.po.AccidentRecordPo;
-import com.woniu.po.CarPo;
+import com.woniu.domain.AccidentRecord;
 import com.woniu.service.AccidentRecordService;
 import com.woniu.util.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
