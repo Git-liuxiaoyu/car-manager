@@ -6,13 +6,13 @@ import router from './router/router'
 import * as echarts from 'echarts';
 Vue.prototype.$echarts = echarts;
 import SlideVerify from 'vue-monoplasty-slide-verify';
-import $ from 'jquery';
+// import $ from 'jquery';
 
 import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
-Vue.use($);
+// Vue.use($);
 Vue.use(BootstrapVue)
 
 Vue.use(SlideVerify);

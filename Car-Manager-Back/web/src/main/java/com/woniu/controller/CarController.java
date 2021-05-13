@@ -33,15 +33,19 @@ public class CarController {
         Integer total=carService.count(searchText);
         List<Car> carList = carService.list(searchText,pageIndex,pageSize);
         PageInfo<Car> pageInfo = new PageInfo<>(carList);
-        System.out.println(carList);
         pageInfo.setTotal(total);
         return new ResponseResult<>(pageInfo);
     }
 
     @RequestMapping("/add")
     public ResponseResult add(@RequestBody Car car){
-        carService.add(car);
-        return ResponseResult.SUCCESS;
+        List<Car> list = carService.list(car.getCarNum(), 1, 1);
+        if (list.isEmpty()){
+            carService.add(car);
+            return ResponseResult.SUCCESS;
+        }
+        return ResponseResult.FORBIDDEN;
+
     }
 
     @RequestMapping("/update")
