@@ -77,7 +77,7 @@
 
     <!--添加维修信息-->
     <el-dialog title="维修信息登记" :visible.sync="addDialogFormVisible" center width="80%">
-      <el-form :model="addData" label-width="100px" :rules='checkRules' ref="addForm">
+      <el-form :model="addData" label-width="110px" :rules='checkRules' ref="addForm">
         <el-row :gutter="20">
 
           <el-col :span="8">
@@ -94,7 +94,7 @@
             <el-form-item label="修理厂:" prop="oppositeCompanyId">
                 <el-select v-model="addData.oppositeCompanyId" placeholder="请选择">
                     <el-option v-for="opposite in oppositeList" :key="opposite.id"
-                                :label="opposite.name" :value="opposite.id">
+                                :label="opposite.name" :value="opposite.id" :disabled="opposite.disabled">
                     </el-option>
                 </el-select>
             </el-form-item>
@@ -137,7 +137,7 @@
             <el-form-item label="经办人" prop="driverId">
                 <el-select v-model="addData.driverId" placeholder="请选择">
                   <el-option v-for="driver in driverList" :key="driver.id"
-                            :label="driver.employeeName" :value="driver.id">
+                            :label="driver.employeeName" :value="driver.id" :disabled="driver.disabled">
                   </el-option>
                 </el-select>
             </el-form-item>
@@ -455,9 +455,23 @@ export default {
     loadList() {
       this.$axios.get("opposite/getoppolist?type=" + 34).then(r => {
         this.oppositeList = r.data
+        this.oppositeList.forEach(e=>{
+          if (e.status===0){
+            e.disabled = true
+          }else{
+            e.disabled = false
+          }
+        })
         this.$axios.get("driver/getAll").then(r => {
         this.driverList = r.data.data
-              this.$axios.get("dictionary/menu").then(r => {
+         this.driverList.forEach(e=>{
+          if (e.status===0){
+            e.disabled = true
+          }else{
+            e.disabled = false
+          }
+        })
+        this.$axios.get("dictionary/menu").then(r => {
         let totalTree = r.data.data;
         for (let i = 0; i < totalTree.length; i++) {
           if (totalTree[i].id == 43) {

@@ -115,7 +115,7 @@
             <el-form-item label="经办人" prop="driverId">
                 <el-select v-model="addData.driverId" placeholder="请选择">
                     <el-option v-for="driver in driverList" :key="driver.id"
-                                :label="driver.employeeName" :value="driver.id">
+                                :label="driver.employeeName" :value="driver.id" :disabled="driver.disabled">
                     </el-option>
                 </el-select>
             </el-form-item>
@@ -298,6 +298,13 @@ export default {
         })
         this.$axios.get("driver/getAll").then(r => {
         this.driverList = r.data.data
+        this.driverList.forEach(e=>{
+          if (e.status===0){
+            e.disabled = true
+          }else{
+            e.disabled = false
+          }
+        })
         this.$axios.get("opposite/getoppolist?type=92").then(r => {
         this.oppositeList = r.data
         this.$axios.get("yearCheckRecord/list", {params: {p: this.p, searchText: this.searchText, size: this.size}}).then(r => {

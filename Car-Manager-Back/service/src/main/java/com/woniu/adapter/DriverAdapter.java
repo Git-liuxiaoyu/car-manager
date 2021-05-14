@@ -25,6 +25,7 @@ public class DriverAdapter {
     private DriverRedisDao driverRedisDao;
 
     public List<Driver> findDriverLists(String searchText, int pageIndex,int pageSize){
+        updateredis();
         List<DriverPo> driverList = driverRedisDao.list(pageIndex, searchText,pageSize);
 //        ObjectMapper objectMapper = new ObjectMapper();
         if(driverList.size() == 0){
