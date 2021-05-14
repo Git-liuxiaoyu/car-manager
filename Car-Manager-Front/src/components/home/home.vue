@@ -4,7 +4,7 @@
     <el-row class="l-head">
       <el-col :span="10" class="l-head-zj">
         <i class="glyphicon glyphicon-leaf"></i>
-        <span>小蜗牛车辆管理系统</span>
+        <span style="line-height: 60px;">小蜗牛车辆管理系统</span>
       </el-col>
 
       <el-col :span="13" class="l-head-youbian">

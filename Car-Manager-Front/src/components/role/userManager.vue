@@ -72,41 +72,41 @@
     <br/>
 
     <el-dialog title="添加用户" :visible.sync="addDialogFormVisible" center width="80%">
-      <el-form :model="Employee" label-width="70px">
+      <el-form :model="Employee" label-width="80px" :rules="rules" ref="addForm">
         <el-row :gutter="20">
 
           <el-col :span="6">
-            <el-form-item label="账号:">
+            <el-form-item label="账号:" prop="account">
               <el-input v-model="Employee.account"></el-input>
             </el-form-item>
           </el-col>
 
           <el-col :span="6">
-            <el-form-item label="密码:">
+            <el-form-item label="密码:" prop="password">
               <el-input v-model="Employee.password"></el-input>
             </el-form-item>
           </el-col>
 
           <el-col :span="6">
-            <el-form-item label="姓名:">
+            <el-form-item label="姓名:" prop="name" >
               <el-input v-model="Employee.name"></el-input>
             </el-form-item>
           </el-col>
 
           <el-col :span="6">
-            <el-form-item label="年龄">
+            <el-form-item label="年龄" prop="age">
               <el-input v-model="Employee.age"></el-input>
             </el-form-item>
           </el-col>
 
           <el-col :span="6">
-            <el-form-item label="手机号">
+            <el-form-item label="手机号" prop="telephone">
               <el-input v-model="Employee.telephone"></el-input>
             </el-form-item>
           </el-col>
 
           <el-col :span="6">
-            <el-form-item label="性别">
+            <el-form-item label="性别" prop="gender">
               <template>
                 <el-radio v-model="Employee.gender" label="0">男</el-radio>
                 <el-radio v-model="Employee.gender" label="1">女</el-radio>
@@ -115,13 +115,13 @@
           </el-col>
 
           <el-col :span="12">
-            <el-form-item label="地址">
+            <el-form-item label="地址" prop="address">
               <el-input v-model="Employee.address"></el-input>
             </el-form-item>
           </el-col>
 
           <el-col :span="6">
-            <el-form-item label="生日">
+            <el-form-item label="生日" prop="birthday">
               <el-date-picker
                 v-model="Employee.birthday"
                 align="right"
@@ -132,13 +132,13 @@
           </el-col>
 
           <el-col :span="6">
-            <el-form-item label="身份证">
+            <el-form-item label="身份证" prop="idCard">
               <el-input v-model="Employee.idCard"></el-input>
             </el-form-item>
           </el-col>
 
           <el-col :span="6">
-            <el-form-item label="入职日期">
+            <el-form-item label="入职日期" prop="entryDate">
               <el-date-picker
                 v-model="Employee.entryDate"
                 align="right"
@@ -149,7 +149,7 @@
           </el-col>
 
           <el-col :span="6">
-            <el-form-item label="部门">
+            <el-form-item label="部门" prop="oneId">
               <el-select v-model="oneId" placeholder="请选择" @change="oneMenu">
                 <el-option v-for="item in children" :key="item.id" :label="item.text" :value="item.id">
                 </el-option>
@@ -158,7 +158,7 @@
           </el-col>
 
           <el-col :span="6">
-            <el-form-item label="职位">
+            <el-form-item label="职位" prop="twoId">
               <el-select v-model="twoId" placeholder="请选择">
                 <el-option v-for="item in childrenTow" :label="item.text" :key="item.id" :value="item.id">
                 </el-option>
@@ -167,7 +167,7 @@
           </el-col>
 
           <el-col :span="6">
-            <el-form-item label="状态">
+            <el-form-item label="状态" prop="status">
               <template>
                 <el-radio v-model="Employee.status" label="0">锁定</el-radio>
                 <el-radio v-model="Employee.status" label="1">正常</el-radio>
@@ -180,17 +180,17 @@
       </el-form>
 
       <span slot="footer" class="dialog-footer">
-        <el-button @click="addDialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="addUser()">确 定</el-button>
+        <el-button @click="addCancel('addForm')">取 消</el-button>
+        <el-button type="primary" @click="addUser('addForm')">确 定</el-button>
       </span>
     </el-dialog>
 
     <el-dialog title="修改用户" :visible.sync="updateDialogFormVisible" center width="80%">
-      <el-form :model="updateEmployee" label-width="70px">
+      <el-form :model="updateEmployee" label-width="80px" :rules="rules" ref="editForm">
         <el-row :gutter="20">
 
           <el-col :span="6">
-            <el-form-item label="账号:">
+            <el-form-item label="账号:" prop="account">
               <el-input v-model="updateEmployee.account"></el-input>
             </el-form-item>
           </el-col>
@@ -202,25 +202,25 @@
           </el-col>
 
           <el-col :span="6">
-            <el-form-item label="姓名:">
+            <el-form-item label="姓名:" prop="name">
               <el-input v-model="updateEmployee.name"></el-input>
             </el-form-item>
           </el-col>
 
           <el-col :span="6">
-            <el-form-item label="年龄">
+            <el-form-item label="年龄" prop="age">
               <el-input v-model="updateEmployee.age"></el-input>
             </el-form-item>
           </el-col>
 
           <el-col :span="6">
-            <el-form-item label="手机号">
+            <el-form-item label="手机号" prop="telephone">
               <el-input v-model="updateEmployee.telephone"></el-input>
             </el-form-item>
           </el-col>
 
           <el-col :span="6">
-            <el-form-item label="性别">
+            <el-form-item label="性别" prop="gender">
               <el-radio-group v-model="updateEmployee.gender">
                 <el-radio :label="0">男</el-radio>
                 <el-radio :label="1">女</el-radio>
@@ -229,13 +229,13 @@
           </el-col>
 
           <el-col :span="12">
-            <el-form-item label="地址">
+            <el-form-item label="地址" prop="address">
               <el-input v-model="updateEmployee.address"></el-input>
             </el-form-item>
           </el-col>
 
           <el-col :span="6">
-            <el-form-item label="生日">
+            <el-form-item label="生日" prop="birthday">
               <el-date-picker
                 v-model="updateEmployee.birthday"
                 align="right"
@@ -246,13 +246,13 @@
           </el-col>
 
           <el-col :span="6">
-            <el-form-item label="身份证">
+            <el-form-item label="身份证" prop="idCard">
               <el-input v-model="updateEmployee.idCard"></el-input>
             </el-form-item>
           </el-col>
 
           <el-col :span="6">
-            <el-form-item label="入职日期">
+            <el-form-item label="入职日期" prop="entryDate">
               <el-date-picker
                 v-model="updateEmployee.entryDate"
                 align="right"
@@ -263,7 +263,7 @@
           </el-col>
 
           <el-col :span="6">
-            <el-form-item label="部门">
+            <el-form-item label="部门" prop="oneId">
               <el-select v-model="oneId" placeholder="请选择" @change="oneMenu">
                 <el-option v-for="item in children" :key="item.id" :label="item.text" :value="item.id">
                 </el-option>
@@ -272,7 +272,7 @@
           </el-col>
 
           <el-col :span="6">
-            <el-form-item label="职位">
+            <el-form-item label="职位" prop="twoId">
               <el-select v-model="twoId" placeholder="请选择">
                 <el-option v-for="item in childrenTow" :label="item.text" :key="item.id" :value="item.id">
                 </el-option>
@@ -281,7 +281,7 @@
           </el-col>
 
           <el-col :span="6">
-            <el-form-item label="状态">
+            <el-form-item label="状态"  prop="status">
               <el-radio-group v-model="updateEmployee.status">
                 <el-radio :label="0">锁定</el-radio>
                 <el-radio :label="1">正常</el-radio>
@@ -294,8 +294,8 @@
       </el-form>
 
       <span slot="footer" class="dialog-footer">
-        <el-button @click="updateDialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="updateUser">确 定</el-button>
+        <el-button @click="editCancel('editForm')">取 消</el-button>
+        <el-button type="primary" @click="updateUser('editForm')">确 定</el-button>
       </span>
     </el-dialog>
 
@@ -372,20 +372,115 @@ export default {
         address: '',
         status: '',
       },//被修改的对象
+      //表单验证
+      rules:{
+        account:[
+           {required: true, //是否必填       
+          message: '账号不能为空', //规则
+          trigger: 'blur'  //何事件触发
+          }
+        ],
+         password:[
+           {required: true, //是否必填       
+          message: '密码不能为空', //规则
+          trigger: 'blur'  //何事件触发
+          }
+        ],
+        name:[
+           {required: true, //是否必填       
+          message: '姓名不能为空', //规则
+          trigger: 'blur'  //何事件触发
+          }
+        ],
+          age:[
+           {required: true, //是否必填       
+          message: '年龄不能为空', //规则
+          trigger: 'blur'  //何事件触发
+          },
+           { pattern:/^(?:[1-9][0-9]?|1[01][0-9]|120)$/, message: '年龄1-120之间' },
+        ],
+
+        telephone:[
+           {required: true, //是否必填       
+          message: '年龄不能为空', //规则
+          trigger: 'blur'  //何事件触发
+          },
+           {pattern: '^1[3|4|5|7|8][0-9]{9}$', message: '请输入正确的11位手机号', trigger: 'blur' }
+        ],
+
+          gender:[
+           {required: true, //是否必填       
+            message: '请选择性别', //规则
+            trigger: 'change'  //何事件触发
+            }
+        ],
+        address:[
+           {required: true, //是否必填       
+            message: '地址不能为空', //规则
+            trigger: 'blur'  //何事件触发
+            }
+        ],
+                idCard:[
+           {required: true, //是否必填       
+            message: '身份证不能为空', //规则
+            trigger: 'blur'  //何事件触发
+            },
+            // {pattern: /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/,
+            //  message: '请输入正确的身份证号', trigger: 'blur' }
+        ],
+        birthday:[
+           {required: true, //是否必填       
+            message: '生日不能为空', //规则
+            trigger: 'chage'  //何事件触发
+            },
+        ],
+        entryDate:[
+           {required: true, //是否必填       
+            message: '入职时间不能为空', //规则
+            trigger: 'chage'  //何事件触发
+            },
+        ],           
+        // oneId:[
+        //    {required: true, //是否必填       
+        //     message: '部门不能为空', //规则
+        //     trigger: 'chage'  //何事件触发
+        //     },
+        // ],
+        // twoId:[
+        //    {required: true, //是否必填       
+        //     message: '职位不能为空', //规则
+        //     trigger: 'chage'  //何事件触发
+        //     },
+        // ],
+       status:[
+           {required: true, //是否必填       
+            message: '请选择一种状态', //规则
+            trigger: 'chage'  //何事件触发
+            },
+        ],
+
+
+      }
     }
   },
   methods: {
-    updateUser() {
-      this.updateEmployee.deptId = this.oneId;
-      this.updateEmployee.positionId = this.twoId;
-      this.$axios.post("employee/update", this.updateEmployee).then(r => {
-        if (r.data.code = 200) {
-          this.$message.success("修改成功");
-          this.updateDialogFormVisible = false;
-          this.p = 1;
-          this.findEmployee();
+    updateUser(formName) {
+       this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.updateEmployee.deptId = this.oneId;
+          this.updateEmployee.positionId = this.twoId;
+          this.$axios.post("employee/update", this.updateEmployee).then(r => {
+            if (r.data.code = 200) {
+              this.$message.success("修改成功");
+              this.updateDialogFormVisible = false;
+              this.p = 1;
+              this.findEmployee();
+            }
+          })
+           } else {
+          return false;
         }
-      })
+      });
     },
     updateRole() {
       this.roleId=[];
@@ -404,6 +499,11 @@ export default {
           this.findEmployee();
         }
       })
+    },
+
+    editCancel(formName){
+        this.updateDialogFormVisible=false;
+         this.$refs[formName].resetFields();
     },
     addRole(row) {
       this.addRoleFormVisible = true;
@@ -436,18 +536,29 @@ export default {
       this.updateEmployee.status = row.status;
       this.oneMenu(row.deptId)
     },
-    addUser() {
-      this.Employee.deptId = this.oneId;
-      this.Employee.positionId = this.twoId;
-      console.log(this.Employee)
-      this.$axios.post("employee/add", this.Employee).then(r => {
-        if (r.data.code = 200) {
-          this.$message.success("添加成功");
-          this.addDialogFormVisible = false;
-          this.p = 1;
-          this.findEmployee();
+    addUser(formName) {
+       this.$refs[formName].validate((valid) => {
+        if (valid) {
+            this.Employee.deptId = this.oneId;
+            this.Employee.positionId = this.twoId;
+            console.log(this.Employee)
+            this.$axios.post("employee/add", this.Employee).then(r => {
+              if (r.data.code = 200) {
+                this.$message.success("添加成功");
+                this.addDialogFormVisible = false;
+                this.p = 1;
+                this.findEmployee();
+                this.$refs[formName].resetFields();
+              }
+            })
+        } else {
+          return false;
         }
-      })
+      });
+    },
+    addCancel(formName){
+        this.addDialogFormVisible=false;
+         this.$refs[formName].resetFields();
     },
     oneMenu(id) {
       for (let i = 0; i < this.children.length; i++)

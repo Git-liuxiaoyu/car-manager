@@ -89,11 +89,11 @@
 
     <!-- 新增 -->
     <el-dialog title="添加驾驶员" :visible.sync="addDialogFormVisible"
-               label-width="100px" ref="toAddDriver" >
-      <el-form :model="driver"  :rules="rules" ref="addForm">
+                ref="toAddDriver"  center width="80%">
+      <el-form :model="driver"  :rules="rules" ref="addForm" label-width="100px">
         <el-row :gutter="20">
           <el-col :span="8">
-            <el-form-item label="姓名" prop="name">
+            <el-form-item label="姓名" prop="employee.name">
               <el-input v-model="driver.employee.name" @blur="dname($event)"></el-input>
             </el-form-item>
           </el-col>
@@ -113,7 +113,7 @@
                 v-model="driver.employee.birthday"
                 type="date"
                 placeholder="选择日期时间"
-                value-format="yyyy-MM-dd " readonly="readonly"
+                value-format="yyyy-MM-dd " 
               >
               </el-date-picker>
             </el-form-item>
@@ -160,7 +160,7 @@
           <el-col :span="8">
             <el-form-item label="驾照类型" prop="type">
               <el-select v-model="driver.type" placeholder="请选择" >
-                <el-option label="请选择" value="0" ></el-option>
+                <!-- <el-option label="请选择" value="0" ></el-option> -->
                 <el-option :label="drivertype.text" :value="drivertype.id"
                            v-for="drivertype in driverTypes" :key="drivertype.id">
                 </el-option>
@@ -176,7 +176,11 @@
 
           <el-col :span="8">
             <el-form-item label="状态" prop="status">
-              <el-switch v-model="driver.status"></el-switch>
+              <!-- <el-switch v-model="driver.status"></el-switch> -->
+               <template>
+                <el-radio v-model="driver.status" label="0">禁用</el-radio>
+                <el-radio v-model="driver.status" label="1">启用</el-radio>
+              </template>
             </el-form-item>
           </el-col>
         </el-row>
@@ -433,7 +437,7 @@ export default {
       },
       employees: [],
       rules: {
-       name:[
+      "employee.name":[
         {
           required: true, //是否必填       
           message: '姓名不能为空', //规则
@@ -448,6 +452,18 @@ export default {
           trigger: 'blur'  //何事件触发
           },
           {  pattern: '^[0-9]*$',min: 18, max: 18, message: '请输入正确驾照号码', trigger: 'blur' }
+          ],
+          type:[
+          {required: true, //是否必填
+          message: '请选择驾照类型’', //规则
+          trigger: 'blur'  //何事件触发
+          },
+          ],
+          status:[
+          {required: true, //是否必填
+          message: '请选择状态', //规则
+          trigger: 'change'  //何事件触发
+          },
           ],
           remarks:[
           {required: true, //是否必填
@@ -514,7 +530,7 @@ export default {
             
             message: '驾照号码不能为空', 
             trigger: 'blur'  },
-             { pattern: '^[0-9]*$', min: 18, max: 18, message: '请输入正确驾照号码', trigger: 'blur' }
+             { pattern: '^[0-9]*$', min: 18, max: 18, message: '请输入18位驾照号码', trigger: 'blur' }
           ],
            remarks:[
           {required: true, //是否必填
@@ -630,22 +646,24 @@ export default {
     toAddDriver(formName) {
       this.$refs[formName].validate((valid) => {
       if (valid) {
-            if (this.driver.status) {
-              this.driver.status = 1;
-            } else {
-              this.driver.status = 0;
-            }
             this.$axios.post("driver/addDriver", this.driver).then(r => {
               if (r.data.code == 200) {
-                this.$message({type: 'success', message: "修改成功", duration: 800});
+                this.$message({type: 'success', message: "添加成功", duration: 800});
+                 this.$refs[formName].resetFields();
                 this.addDialogFormVisible = false;
+                    for (var i in this.driver.employee) {
+                    this.driver.employee[i] = "";
+                  }
+                  this.driver.deptName="",
+                  this.p=1;
+
               this.loadDriver();
               } else {
-                this.$message({type: 'error', message: "修改失败", duration: 800});
+                this.$message({type: 'error', message: "添加失败", duration: 800});
               }
             })
             } else {
-            console.log('error submit!!');
+
             return false;
           }
         });
@@ -681,6 +699,11 @@ export default {
     },
 
     updateDriver(row) {
+       if (this.showDriver.status == "启动") {
+        this.showDriver.status = 1;
+      } else if (this.showDriver.status == "禁止"){
+        this.showDriver.status = 0;
+      }
       this.dialogEdiDriverVisible = true;
       this.loadDriver();
       for(let driver in this.tableData){
@@ -722,6 +745,7 @@ export default {
         this.$axios.post("driver/del",row).then(r=>{
           if(r.data.code==200){
             this.$message({type: 'success', message:"删除成功",  duration:800});
+            this.p=1;
             this.loadDriver();
           }else{
             this.$message({type: 'error', message:"删除失败",  duration:800});

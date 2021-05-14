@@ -57,19 +57,21 @@
 
     <update id="update" parameterType="EmployeePo">
         update employee
-        set account=#{account},
-            password=#{password},
-            name=#{name},
-            age=#{age},
-            gender= #{gender},
-            telephone=#{telephone},
-            deptId=#{deptId},
-            positionId=#{positionId},
-            birthday=#{birthday},
-            idCard=#{idCard},
-            entryDate=#{entryDate},
-            address=#{address},
-            status=#{status}
+        <set>
+        <if test="account!=null and account!=''">account=#{account},</if>
+        <if test="password!=null and password!=''"> password=#{password},</if>
+        <if test="name!=null and name!=''"> name=#{name},</if>
+        <if test="age!=null and age!=''"> age=#{age},</if>
+        <if test="gender!=null and gender!=''"> gender=#{gender},</if>
+        <if test="telephone!=null and telephone!=''"> telephone=#{telephone},</if>
+        <if test="deptId!=null and deptId!=''"> deptId=#{deptId},</if>
+        <if test="positionId!=null and positionId!=''"> positionId=#{positionId},</if>
+        <if test="birthday!=null "> birthday=#{birthday},</if>
+        <if test="idCard!=null and idCard!=''"> idCard=#{idCard},</if>
+        <if test="entryDate!=null "> entryDate=#{entryDate},</if>
+        <if test="address!=null and address!=''"> address=#{address},</if>
+        <if test="status!=null and status!=''"> status=#{status},</if>
+    </set>
         where id = #{id}
     </update>
 

@@ -47,7 +47,7 @@
                 </el-col>
                 <el-col :span="4" :push="6">
                   <div class="yzm" @click="createCode" title="看不清点我">
-                    <i class="checkCode">{{ checkCode }}</i>
+                    <p class="checkCode">{{ checkCode }}</p>
                   </div>
                 </el-col>
                 <br/><br/><br/><br/>
@@ -112,8 +112,8 @@ export default {
       });
     },
     login() {
-      if (this.employee.seccode != this.checkCode) {
-        this.$message.error("验证码错误，注意大写字母");
+      if (this.employee.seccode != this.checkCode.toLowerCase()) {
+        this.$message.error("输入的验证码有误");
         this.createCode();
         return;
       };
@@ -175,4 +175,5 @@ export default {
   line-height: 40px;
   background-color: #909399;
 }
+
 </style>

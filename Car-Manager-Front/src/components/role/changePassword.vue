@@ -12,10 +12,11 @@
       <el-form ref="form" label-width="100px">
         <el-row>
           <el-col :span="6" :push="8">
-            <el-form-item label="原密码:" size="medium  ">
+            <el-form-item label="原密码:" size="medium">
               <el-input
                 v-model="password"
                 type="password"
+                @input="isNo"
                 @blur="compare"
               ></el-input>
             </el-form-item>
@@ -23,21 +24,21 @@
         </el-row>
         <el-row>
           <el-col :span="6" :push="8">
-            <el-form-item label="新密码:" size="medium  ">
-              <el-input v-model="newOnePassword" type="password"></el-input>
+            <el-form-item label="新密码:" size="medium" >
+              <el-input v-model="newOnePassword" type="password"  @input="isNo"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="6" :push="8">
-            <el-form-item label="确定密码:" size="medium  ">
-              <el-input v-model="newTwoPassword" type="password"></el-input>
+            <el-form-item label="确定密码:" size="medium" >
+              <el-input v-model="newTwoPassword" type="password"  @input="isNo"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="5" :push="10">
-            <el-button type="primary " size="mini" @click="updatePassWord"
+            <el-button type="primary " size="mini" @click="updatePassWord" :disabled="disabled"
               >立即修改</el-button
             >
             <el-button size="mini" @click="cancel">取消</el-button>
@@ -57,10 +58,19 @@ export default {
       employee: {},
       password: "", //输入的原密码
       newOnePassword: "", //输入的新密码
-      newTwoPassword: "" //输入的确定的新密码
+      newTwoPassword: "", //输入的确定的新密码
+      disabled:true,
     };
   },
   methods: {
+    //判断按钮是否禁止
+    isNo(){
+if(this.password=="" || this.newOnePassword=="" || this.newTwoPassword==""){
+this.disabled=true;
+}else{
+  this.disabled=false;
+}
+    },
     //根据用户名查询密码
     getByAccount() {
       let account = localStorage.getItem("account");
