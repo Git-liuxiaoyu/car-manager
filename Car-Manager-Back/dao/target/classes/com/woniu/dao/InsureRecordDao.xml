@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.woniu.dao.InsureRecordDao">
+    <!--sql片段-->
+    <sql id="columns">
+        id,cardId,insureNum,beginDate,type,
+        cost,oppositeCompanyId,outDate,driverId,remarks
+    </sql>
+    <!--添加-->
+    <insert id="add" parameterType="InsureRecordPo">
+        insert into insure_record(
+        <include refid="columns"></include>
+        )
+        values(null,#{cardId},#{insureNum},#{beginDate},#{type},
+               #{cost},#{oppositeCompanyId},#{outDate},#{driverId},#{remarks})
+    </insert>
+    <!-- 删除 -->
+    <delete id="delete" parameterType="InsureRecordPo">
+        delete  from insure_record where id=#{id}
+    </delete>
+    <!--修改-->
+    <update id="update" parameterType="InsureRecordPo">
+        update insure_Record
+        <set>
+            <if test="cardId!=null">cardId=#{cardId},</if>
+            <if test="insureNum!=null">insureNum=#{insureNum},</if>
+            <if test="beginDate!=null">beginDate=#{beginDate},</if>
+            <if test="type!=null">type=#{type},</if>
+            <if test="cost!=null">cost=#{cost},</if>
+            <if test="oppositeCompanyId!=null">oppositeCompanyId=#{oppositeCompanyId},</if>
+            <if test="outDate!=null">outDate=#{outDate},</if>
+            <if test="driverId!=null">driverId=#{driverId},</if>
+            <if test="remarks!=null">remarks=#{remarks},</if>
+        </set>
+        where id=#{id}
+    </update>
+    
+
+<!--    &lt;!&ndash;根据id查&ndash;&gt;-->
+<!--    <select id="findById" resultType="InsureRecordPo" parameterType="InsureRecordPo">-->
+<!--        select-->
+<!--        <include refid="columns"></include>-->
+<!--        from insure_record where id=#{id}-->
+<!--    </select>-->
+    
+    
+    
+    
+    <resultMap type = "InsureRecordPo" id = "insurResultMap">
+        <!-- id用于指定Cart中的主键 -->
+        <id column="id" property="id" />
+        <result column="cardId" property="cardId" />
+        <result column="carnum" property="carNum"/>
+        <result column="insureNum" property="insureNum"/>
+        <result column="beginDate" property="beginDate"/>
+        <result column="type" property="type"/>
+        <result column="typename" property="typename"/>
+        <result column="cost" property="cost"/>
+        <result column="oppositeCompanyId" property="oppositeCompanyId"/>
+        <result column="oppositename" property="oppositename"/>
+        <result column="outDate" property="outDate"/>
+        <result column="driverId" property="driverId"/>
+        <result column="drivername" property="drivername"/>
+        <result column="remarks" property="remarks"/>
+    
+    </resultMap>
+    <!--分页查询-->
+    <select id="insureRecordList" resultMap="insurResultMap" resultType="InsureRecordPo">
+        select i.*,c.carNum carnum,oc.name oppositename,e.`name` drivername,dy.text typename from
+        insure_record i,car c ,opposite_company oc,driver d,employee e,dictionary dy where
+        c.id = i.cardId and i.oppositeCompanyId = oc.id and i.driverId = d.id and d.employeeId = e.id
+        and i.type = dy.id
+        <if test="searchText!=null and searchText!='' ">
+            and c.carNum like concat('%',#{searchText},'%')
+        </if>
+    
+    </select>
+    
+    
+    <!--数量-->
+    <select id="count" parameterType="int" resultType="int">
+        select count(0) from
+        insure_record i,car c ,opposite_company oc,driver d,employee e,dictionary dy where
+        c.id = i.cardId and i.oppositeCompanyId = oc.id and i.driverId = d.id and d.employeeId = e.id
+        and i.type = dy.id
+        <if test="searchText!=null and searchText!='' ">
+            and c.carNum like concat('%',#{searchText},'%')
+        </if>
+    
+    </select>
+    
+    
+    
+    
+    
+    
+    <resultMap type = "InsureRecordPo" id = "insurResultMap3">
+        <!-- id用于指定Cart中的主键 -->
+        <id column="id" property="id" />
+        <result column="cardId" property="cardId" />
+        <result column="carnum" property="carNum"/>
+        <result column="insureNum" property="insureNum"/>
+        <result column="beginDate" property="beginDate"/>
+        <result column="type" property="type"/>
+        <result column="typename" property="typename"/>
+        <result column="cost" property="cost"/>
+        <result column="oppositeCompanyId" property="oppositeCompanyId"/>
+        <result column="oppositename" property="oppositename"/>
+        <result column="outDate" property="outDate"/>
+        <result column="driverId" property="driverId"/>
+        <result column="drivername" property="drivername"/>
+        <result column="remarks" property="remarks"/>
+    </resultMap>
+    
+    <!---->
+    <select id="findById" resultMap="insurResultMap3" resultType="InsureRecordPo">
+        select i.*,c.carNum carnum,oc.name oppositename,e.`name` drivername,dy.text typename from
+        insure_record i,car c ,opposite_company oc,driver d,employee e,dictionary dy where
+        c.id = i.cardId and i.oppositeCompanyId = oc.id and i.driverId = d.id and d.employeeId = e.id
+        and i.type = dy.id
+        and i.id = #{id}
+    </select>
+    
+    
+    
+    
+    
+</mapper>

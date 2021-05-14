@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.woniu.dao.DictionaryDao">
+    <select id="listGetByParentId" resultType="DictionaryPo">
+        select *
+        from dictionary
+        where parentId = #{id}
+    </select>
+
+    <select id="delete">
+        delete
+        from dictionary
+        where id = #{id}
+    </select>
+
+    <update id="update" parameterType="DictionaryPo">
+        update dictionary set parentId=#{parentId},text=#{text},level=#{level},isDisable=#{isDisable}
+        where id=#{id}
+    </update>
+
+    <select id="list" resultType="DictionaryPo">
+        select * from dictionary
+        <where>
+            <if test="searchText!=null and searchText!='' ">
+                text like concat('%',#{searchText},'%')
+            </if>
+        </where>
+    </select>
+
+    <select id="menuList" resultType="DictionaryPo">
+        select *
+        from dictionary
+    </select>
+
+    <select id="count" parameterType="int" resultType="int">
+        select count(0) from dictionary
+        <where>
+            <if test="searchText!=null and searchText!='' ">
+                text like concat('%',#{searchText},'%')
+            </if>
+        </where>
+    </select>
+
+    <insert id="add">
+        insert into dictionary value (null,#{parentId},#{text},${level},#{isDisable})
+    </insert>
+</mapper>

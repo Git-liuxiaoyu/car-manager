@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.woniu.dao.CarDao">
+    <!--sql片段-->
+    <sql id="columns">
+        id
+        ,carNum,brandId,type,color,carrying,seatNum,oilConsume,initialMileage,
+        curingMileage,curingCycle,engineNum,serialNumber,oppositeCompanyId,price,
+        boughtDate,deptId,carStatus,remarks,status,images
+    </sql>
+    <!--添加-->
+    <insert id="add" parameterType="CarPo">
+        insert into car(
+        <include refid="columns"></include>
+        )
+        values(null,#{carNum},#{brandId},#{type},#{color},#{carrying},#{seatNum},#{oilConsume},#{initialMileage},
+        #{curingMileage},#{curingCycle},#{engineNum},#{serialNumber},#{oppositeCompanyId},#{price},
+        #{boughtDate},#{deptId},#{carStatus},#{remarks},#{status},#{images})
+    </insert>
+    <!--修改-->
+    <update id="update" parameterType="CarPo">
+        update car
+        <set>
+            <if test="carNum!=null">carNum=#{carNum},</if>
+            <if test="brandId!=null">brandId=#{brandId},</if>
+            <if test="type!=null">type=#{type},</if>
+            <if test="color!=null">color=#{color},</if>
+            <if test="carrying!=null">carrying=#{carrying},</if>
+            <if test="seatNum!=null">seatNum=#{seatNum},</if>
+            <if test="oilConsume!=null">oilConsume=#{oilConsume},</if>
+            <if test="initialMileage!=null">initialMileage=#{initialMileage},</if>
+            <if test="curingMileage!=null">curingMileage=#{curingMileage},</if>
+            <if test="curingCycle!=null">curingCycle=#{curingCycle},</if>
+            <if test="serialNumber!=null">serialNumber=#{serialNumber},</if>
+            <if test="oppositeCompanyId!=null">oppositeCompanyId=#{oppositeCompanyId},</if>
+            <if test="price!=null">price=#{price},</if>
+            <if test="boughtDate!=null">boughtDate=#{boughtDate},</if>
+            <if test="deptId!=null">deptId=#{deptId},</if>
+            <if test="carStatus!=null">carStatus=#{carStatus},</if>
+            <if test="remarks!=null">remarks=#{remarks},</if>
+            <if test="status!=null">status=#{status},</if>
+            <if test="images!=null">images=#{images},</if>
+        </set>
+        where id=#{id}
+    </update>
+
+
+    <resultMap type="CarPo" id="CarMap">
+        <!-- id用于指定Cart中的主键 -->
+        <id column="id" property="id"/>
+        <result column="carId" property="carId"/>
+        <result column="carNum" property="carNum"/>
+        <result column="brandId" property="brandId"/>
+        <result column="type" property="type"/>
+        <result column="color" property="color"/>
+        <result column="carrying" property="carrying"/>
+        <result column="seatNum" property="seatNum"/>
+        <result column="oilConsume" property="oilConsume"/>
+        <result column="initialMileage" property="initialMileage"/>
+        <result column="curingMileage" property="curingMileage"/>
+        <result column="curingCycle" property="curingCycle"/>
+        <result column="engineNum" property="engineNum"/>
+        <result column="serialNumber" property="serialNumber"/>
+        <result column="oppositeCompanyId" property="oppositeCompanyId"/>
+        <result column="price" property="price"/>
+        <result column="boughtDate" property="boughtDate"/>
+        <result column="deptId" property="deptId"/>
+        <result column="carStatus" property="carStatus"/>
+        <result column="carStatusname" property="carStatusname"/>
+        <result column="remarks" property="remarks"/>
+        <result column="status" property="status"/>
+        <result column="images" property="images"/>
+    </resultMap>
+    <!--动态分页查询-->
+
+    <select id="list" resultMap="CarMap">
+        select c.*,d.text carStatusname from car c,dictionary d where c.carStatus = d.id
+        <if test="searchText!=null and searchText!='' ">and c.carNum like concat('%',#{searchText},'%')</if>
+    </select>
+
+    <select id="count" parameterType="int" resultType="int">
+        select count(0) from car
+        <where>
+            <if test="searchText!=null and searchText!='' ">and carNum like concat('%',#{searchText},'%')</if>
+        </where>
+    </select>
+    <!--删除,状态变更-->
+    <update id="delete" parameterType="Integer">
+        update car set status = 0,carStatus=81 where id =#{id}
+    </update>
+    <!--查询所有-->
+    <select id="getAll" resultType="CarPo">
+        select *
+        from car
+    </select>
+    <!--根据id查看car-->
+    <select id="getById" resultType="CarPo">
+        select *
+        from car where id=#{id}
+    </select>
+</mapper>

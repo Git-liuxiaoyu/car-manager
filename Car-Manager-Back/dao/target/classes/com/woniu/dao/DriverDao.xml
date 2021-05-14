@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.woniu.dao.DriverDao">
+
+    <resultMap type="DriverPo" id="driverPoResultMap">
+        <id column="id" property="id" />
+        <result column="driverNum" property="driverNum" />
+        <result column="type" property="type" />
+        <result column="status" property="status" />
+        <result column="remarks" property="remarks" />
+        <result column="employeeId" property="employeeId" />
+        <association property="employeePo" javaType="EmployeePo">
+<!--            <id column="employeeId" property="id"/>-->
+            <result column="name" property="name"/>
+            <result column="deptId" property="deptId"/>
+            <result column="gender" property="gender"/>
+            <result column="telephone" property="telephone"/>
+            <result column="entryDate" property="entryDate"/>
+            <result column="address" property="address"/>
+            <result column="birthday" property="birthday"/>
+            <result column="idCard" property="idCard"/>
+        </association>
+
+    </resultMap>
+    <select id="findDriverList" resultMap="driverPoResultMap" >
+        --         select * from driver
+        select d.*,e.id employeeId,e.name, e.deptId,e.gender,e.telephone,e.entryDate,e.address,e.birthday,e.idCard from driver d , employee e,employee_role er
+        <where>
+            d.employeeId=e.id and er.employeeId=e.id and er.roleId=2
+            <if test="searchText!=null and searchText!='' ">
+               and e.name like concat('%',#{searchText},'%')
+            </if>
+        </where>
+    </select>
+
+    <insert id="addDriver" parameterType="DriverPo">
+        insert into driver(driverNum,type ,status,employeeId,remarks) values(#{driverNum},#{type },#{status},#{employeeId},#{remarks})
+    </insert>
+
+    <insert id="addDriverRole" >
+        insert into employee_role(employeeId,roleId) values(#{employeeId},2);
+    </insert>
+
+    <delete id="delDriver" parameterType="Integer">
+        delete from driver where id=#{id}
+    </delete>
+    <delete id="delDriverRole" >
+        delete from employee_role where employeeId=#{employeeId} and roleId=2;
+    </delete>
+
+    <update id="updateDriver" parameterType="DriverPo">
+        update driver
+    <set>
+        <if test="driverNum!=null and driverNum!=''" > driverNum = #{driverNum},</if>
+        <if test="type!=null and type!=''" > type = #{type},</if>
+        <if test="status!=null " > status = #{status},</if>
+        <if test="employeeId!=null and employeeId!=''" > employeeId = #{employeeId},</if>
+    </set>
+            where id = #{id}
+    </update>
+
+   <select id="getEmployee" resultType="EmployeePo">
+       select * from employee e,employee_role er where e.id=er.employeeId and e.name=#{name} and er.roleId not in(2)
+   </select>
+
+    <update id="updateRole" >
+        update employee_role set roleId=#{roleId} where employeeId=#{employeeId}
+    </update>
+
+
+
+    <resultMap type="DriverPo" id="driverPoAllResultMap">
+        <id column="id" property="id" />
+        <result column="employeeName" property="employeeName"/>
+<!--        <association property="employeePo" javaType="EmployeePo">-->
+<!--            <id column="employeeId" property="id"/>-->
+<!--            <result column="name" property="name"/>-->
+<!--        </association>-->
+
+    </resultMap>
+    <select id="getAll" resultMap="driverPoAllResultMap" >
+        select d.*,e.name employeeName from driver d,employee e where d.employeeId=e.id
+    </select>
+
+
+
+    <select id="count" parameterType="int" resultType="int">
+        select count(0) from driver d,employee e
+        <where>
+            d.employeeId = e.id
+            <if test="searchText!=null and searchText!='' ">
+               and e.name like concat('%',#{searchText},'%')
+            </if>
+        </where>
+    </select>
+
+
+    <select id="getOne" resultType="EmployeePo">
+        <!--select d.* from driver d,employee e where e.id=d.employeeId and e.name=#{name}-->
+        select * from employee where employee.name=#{name}
+    </select>
+
+    <select id="getDriver" resultType="DriverPo">
+        select * from employee e,employee_role er where e.id=er.employeeId and e.name=#{name} and er.roleId=2
+    </select>
+</mapper>

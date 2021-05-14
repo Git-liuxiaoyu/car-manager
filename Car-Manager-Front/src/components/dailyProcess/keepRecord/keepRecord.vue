@@ -111,7 +111,7 @@
               <el-select v-model="keepadds.carId" placeholder="请选择">
                 <el-option label="请选择" value="0"></el-option>
                 <el-option :label="cars.carNum" :value="cars.id"
-                           v-for="cars in cars" :key="cars.id">
+                           v-for="cars in cars" :key="cars.id"  :disabled="cars.disabled">
                 </el-option>
               </el-select>
             </el-form-item>
@@ -141,7 +141,7 @@
               <el-select v-model="keepadds.oppositeCompanyId" placeholder="请选择">
                 <el-option label="请选择" value="0"></el-option>
                 <el-option :label="opposites.name" :value="opposites.id"
-                           v-for="opposites in opposites" :key="opposites.id">
+                           v-for="opposites in opposites" :key="opposites.id" :disabled="opposites.disabled">
                 </el-option>
               </el-select>
             </el-form-item>
@@ -164,7 +164,7 @@
               <el-select v-model="keepadds.driverId" placeholder="请选择">
                 <el-option label="请选择" value="0"></el-option>
                 <el-option :label="driver.employeeName" :value="driver.id"
-                           v-for="driver in drivers" :key="driver.id">
+                           v-for="driver in drivers" :key="driver.id" :disabled="driver.disabled">
                 </el-option>
               </el-select>
             </el-form-item>
@@ -255,7 +255,7 @@
               <el-select v-model="updates.oppositeCompanyId" placeholder="请选择">
                 <el-option label="请选择" value="0"></el-option>
                 <el-option :label="opposites.name" :value="opposites.id"
-                           v-for="opposites in opposites" :key="opposites.id">
+                           v-for="opposites in opposites" :key="opposites.id" :disabled="opposites.disabled">
                 </el-option>
               </el-select>
             </el-form-item>
@@ -280,7 +280,7 @@
               <el-select v-model="updates.driverId" placeholder="请选择">
                 <el-option label="请选择" value="0"></el-option>
                 <el-option :label="driver.employeeName" :value="driver.id"
-                           v-for="driver in drivers" :key="driver.index">
+                           v-for="driver in drivers" :key="driver.index" :disabled="driver.disabled">
                 </el-option>
               </el-select>
             </el-form-item>
@@ -567,20 +567,40 @@ export default {
     showEditkeep() {
       this.keepVisible = true;
       //查询车牌号下拉框
-      this.$axios.post("oilrecord/carlist").then(r => {
-        this.cars = r.data
-        
+      this.$axios.post("car/getAll").then(r => {
+        this.cars = r.data.data
+        this.cars.forEach(e=>{
+          if (e.status===0){
+            e.disabled = true
+          }else{
+            e.disabled = false
+          }
+        })
       })
 
-      //查询往来单位下拉框
+       //保险下拉框
       this.$axios.post("opposite/getoppolist?type=32").then(r => {
         this.opposites = r.data
-        
+        this.opposites.forEach(e=>{
+          if (e.status===0){
+            e.disabled = true
+          }else{
+            e.disabled = false
+          }
+        })
       })
 
-      //查询加油人员下拉框
-      this.$axios.post("feerecord/getDriverName").then(r => {
-        this.drivers = r.data.data;
+
+      //查询人员下拉框
+      this.$axios.post("driver/getAll").then(r => {
+        this.drivers=r.data.data;
+        this.drivers.forEach(e=>{
+          if (e.status===0){
+            e.disabled = true
+          }else{
+            e.disabled = false
+          }
+        })
       })
       //保养类别
       this.$axios.post("dictionary/menu").then(r => {
@@ -636,15 +656,31 @@ export default {
         this.cars = r.data
       })
 
-      //查询往来单位下拉框
+      //保险下拉框
       this.$axios.post("opposite/getoppolist?type=32").then(r => {
         this.opposites = r.data
+        this.opposites.forEach(e=>{
+          if (e.status===0){
+            e.disabled = true
+          }else{
+            e.disabled = false
+          }
+        })
       })
 
-      //查询加油人员下拉框
-      this.$axios.post("feerecord/getDriverName").then(r => {
-        this.drivers = r.data.data;
+      //查询人员下拉框
+      this.$axios.post("driver/getAll").then(r => {
+        this.drivers=r.data.data;
+        this.drivers.forEach(e=>{
+          if (e.status===0){
+            e.disabled = true
+          }else{
+            e.disabled = false
+          }
+        })
       })
+
+
       //保养类别
       this.$axios.post("dictionary/menu").then(r => {
         this.keepTypes = r.data.data[6].children
