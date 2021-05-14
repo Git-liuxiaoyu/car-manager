@@ -340,7 +340,7 @@ export default {
           ],
         linkName: [
             { required: true, message: '请输入联系人', trigger: 'blur' },
-            { min: 5, max: 10, message: '长度在 2 到 10个字符', trigger: 'blur' }
+            { min: 2, max: 10, message: '长度在 2 到 10个字符', trigger: 'blur' }
           ],
 
       },
@@ -361,7 +361,7 @@ export default {
           ],
         linkName: [
             { required: true, message: '请输入联系人', trigger: 'blur' },
-            { min: 5, max: 10, message: '长度在 2 到 10个字符', trigger: 'blur' }
+            { min: 2, max: 10, message: '长度在 2 到 10个字符', trigger: 'blur' }
           ],
 
       },

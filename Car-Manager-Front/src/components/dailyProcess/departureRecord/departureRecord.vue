@@ -61,10 +61,10 @@
 
 
     <el-dialog title="出车记录登记" :visible.sync="addDialogFormVisible" center width="50%">
-      <el-form :model="addData" label-width="120px">
+      <el-form :model="addData" label-width="120px" :rules="addrules" ref="addForm">
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="车牌号码:">
+            <el-form-item label="车牌号码:"  prop="carId">
               <el-select v-model="addData.carId" placeholder="请选择" @focus="addressdow()">
                 <el-option v-for="item in availableCar" :key="item.id"
                            :label="item.carNum" :value="item.id">
@@ -74,7 +74,7 @@
           </el-col>
 
           <el-col :span="12">
-            <el-form-item label="部门:">
+            <el-form-item label="部门:"  prop="deptId">
               <el-select v-model="addData.deptId" placeholder="请选择" @focus="addressdow()">
                 <el-option v-for="item in dept" :key="item.id"
                            :label="item.text" :value="item.id">
@@ -84,7 +84,7 @@
           </el-col>
 
           <el-col :span="12">
-            <el-form-item label="出车时间:">
+            <el-form-item label="出车时间:"  prop="outTime">
               <el-date-picker v-model="addData.outTime" type="datetime"
                               placeholder="选择日期时间" align="right" value-format="yyyy-MM-dd HH:mm:SS" @focus="addressdow()">
               </el-date-picker>
@@ -92,7 +92,7 @@
           </el-col>
 
           <el-col :span="12">
-            <el-form-item label="预计回车时间:">
+            <el-form-item label="预计回车时间:"  prop="preInTime">
               <el-date-picker v-model="addData.preInTime" type="datetime"
                               placeholder="选择日期时间" align="right" value-format="yyyy-MM-dd HH:mm:SS" @focus="addressdow()">
               </el-date-picker>
@@ -100,13 +100,13 @@
           </el-col>
 
           <el-col :span="12">
-            <el-form-item label="随行人员:">
+            <el-form-item label="随行人员:"  prop="followPerson">
               <el-input v-model="addData.followPerson" @focus="addressdow()"></el-input>
             </el-form-item>
           </el-col>
 
           <el-col :span="12">
-            <el-form-item label="驾驶员:">
+            <el-form-item label="驾驶员:"  prop="driverId">
               <el-select v-model="addData.driverId" placeholder="请选择" @focus="addressdow()">
                 <el-option v-for="item in driverName" :key="item.id"
                            :label="item.employeeName" :value="item.id">
@@ -116,7 +116,7 @@
           </el-col>
 
           <el-col :span="12">
-            <el-form-item label="目的地:">
+            <el-form-item label="目的地:"  prop="destination">
               <el-input v-model="addData.destination"  @focus="addressshow()"  id='address'></el-input>
             </el-form-item>
           </el-col>
@@ -134,21 +134,21 @@
         </div>
 
           <el-col :span="12">
-            <el-form-item label="开始里程(公里):">
+            <el-form-item label="开始里程(公里):"  prop="mileage">
               <el-input v-model="addData.mileage"  @focus="addressdow()"></el-input>
             </el-form-item>
           </el-col>
 
           <el-col :span="24">
-            <el-form-item label="出车原因:">
+            <el-form-item label="出车原因:"  prop="outCarReason">
               <el-input v-model="addData.outCarReason" type="textarea"  @focus="addressdow()"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="outcardow()">取 消</el-button>
-        <el-button type="primary" @click="doOutCar()">确 定</el-button>
+        <el-button @click="outcardow('addForm')">取 消</el-button>
+        <el-button type="primary" @click="doOutCar('addForm')">确 定</el-button>
       </span>
     </el-dialog>
 
@@ -291,22 +291,22 @@
 
 
     <el-dialog title="回车记录登记" :visible.sync="addInCarFormVisible" center width="50%">
-      <el-form :model="subInCar" label-width="120px">
+      <el-form :model="subInCar" label-width="120px" :rules="returnrules" ref="returnForm">
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="车牌号码:">
+            <el-form-item label="车牌号码:"  prop="carId">
               <el-input v-model="subInCar.carName" disabled></el-input>
             </el-form-item>
           </el-col>
 
           <el-col :span="12">
-            <el-form-item label="驾驶员:">
+            <el-form-item label="驾驶员:"  prop="driverName">
               <el-input v-model="subInCar.driverName" disabled></el-input>
             </el-form-item>
           </el-col>
 
           <el-col :span="12">
-            <el-form-item label="出车时间:">
+            <el-form-item label="出车时间:"  prop="outTime">
               <el-date-picker v-model="subInCar.outTime" type="datetime" disabled
                               value-format="yyyy-MM-dd HH:mm:ss" placeholder="选择日期时间" align="right">
               </el-date-picker>
@@ -314,7 +314,7 @@
           </el-col>
 
           <el-col :span="12">
-            <el-form-item label="回车时间:">
+            <el-form-item label="回车时间:"  prop="inCarTime">
               <el-date-picker v-model="subInCar.inCarTime" type="datetime"
                               value-format="yyyy-MM-dd HH:mm:ss" placeholder="选择日期时间" align="right"  @focus="stopdow()">
               </el-date-picker>
@@ -322,19 +322,19 @@
           </el-col>
 
           <el-col :span="12">
-            <el-form-item label="开始里程(公里):">
+            <el-form-item label="开始里程(公里):"  prop="mileage">
               <el-input v-model="subInCar.mileage" disabled></el-input>
             </el-form-item>
           </el-col>
 
           <el-col :span="12">
-            <el-form-item label="回车里程(公里):">
+            <el-form-item label="回车里程(公里):"  prop="returnMileage">
               <el-input v-model="subInCar.returnMileage"  @focus="stopdow()"></el-input>
             </el-form-item>
           </el-col>
 
           <el-col :span="12">
-            <el-form-item label="停放位置:">
+            <el-form-item label="停放位置:"  prop="stopPosition">
               <el-input v-model="subInCar.stopPosition"  @focus="stopshow()"  id='address2'></el-input>
             </el-form-item>
           </el-col>
@@ -356,7 +356,7 @@
 
 
           <el-col :span="12">
-            <el-form-item label="备注:">
+            <el-form-item label="备注:"  prop="remarks">
               <el-input v-model="subInCar.remarks" @focus="stopdow()"></el-input>
             </el-form-item>
           </el-col>
@@ -364,8 +364,8 @@
         </el-row>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="incardow()">取 消</el-button>
-        <el-button type="primary" @click="doInCar()">确 定</el-button>
+        <el-button @click="incardow('returnForm')">取 消</el-button>
+        <el-button type="primary" @click="doInCar('returnForm')">确 定</el-button>
       </span>
     </el-dialog>
 
@@ -380,10 +380,10 @@
       direction="ltr"
       size="50%">
       <hr/>
-      <el-form :model="outCarData" label-width="120px">
+      <el-form :model="outCarData" label-width="120px"  :rules="updaterules" ref="updateForm">
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item label="车牌号码:">
+            <el-form-item label="车牌号码:" prop="carId">
               <el-select v-model="outCarData.carId" placeholder="请选择" disabled>
                 <el-option v-for="item in carNum" :key="item.id"
                            :label="item.carNum" :value="item.id">
@@ -393,7 +393,7 @@
           </el-col>
 
           <el-col :span="12">
-            <el-form-item label="部门:">
+            <el-form-item label="部门:" prop="deptId">
               <el-select v-model="outCarData.deptId" placeholder="请选择" @focus="updateressdow()">
                 <el-option v-for="item in dept" :key="item.id"
                            :label="item.text" :value="item.id">
@@ -403,7 +403,7 @@
           </el-col>
 
           <el-col :span="12">
-            <el-form-item label="出车时间:">
+            <el-form-item label="出车时间:" prop="outTime">
               <el-date-picker v-model="outCarData.outTime" type="datetime"
                               placeholder="选择日期时间" align="right" value-format="yyyy-MM-dd HH:mm:SS" @focus="updateressdow()">
               </el-date-picker>
@@ -411,7 +411,7 @@
           </el-col>
 
           <el-col :span="12">
-            <el-form-item label="预计回车时间:">
+            <el-form-item label="预计回车时间:" prop="preInTime">
               <el-date-picker v-model="outCarData.preInTime" type="datetime"
                               placeholder="选择日期时间" align="right" value-format="yyyy-MM-dd HH:mm:SS" @focus="updateressdow()">
               </el-date-picker>
@@ -419,13 +419,13 @@
           </el-col>
 
           <el-col :span="12">
-            <el-form-item label="随行人员:">
+            <el-form-item label="随行人员:" prop="followPerson">
               <el-input v-model="outCarData.followPerson" @focus="updateressdow()"></el-input>
             </el-form-item>
           </el-col>
 
           <el-col :span="12">
-            <el-form-item label="驾驶员:">
+            <el-form-item label="驾驶员:" prop="driverId">
               <el-select v-model="outCarData.driverId" placeholder="请选择" disabled>
                 <el-option v-for="item in driverName" :key="item.id"
                            :label="item.employeeName" :value="item.id">
@@ -435,7 +435,7 @@
           </el-col>
 
           <el-col :span="12">
-            <el-form-item label="目的地:">
+            <el-form-item label="目的地:" prop="destination">
               <el-input v-model="outCarData.destination"  @focus="updateressshow()"  id='address1'></el-input>
               
             </el-form-item>
@@ -457,21 +457,21 @@
 
 
           <el-col :span="12">
-            <el-form-item label="开始里程(公里):">
+            <el-form-item label="开始里程(公里):" prop="mileage">
               <el-input v-model="outCarData.mileage" @focus="updateressdow()"></el-input>
             </el-form-item>
           </el-col>
 
           <el-col :span="24">
-            <el-form-item label="出车原因:">
+            <el-form-item label="出车原因:" prop="outCarReason">
               <el-input v-model="outCarData.outCarReason" type="textarea" @focus="updateressdow()"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
       </el-form>
       <div class="demo-drawer">
-        <el-button @click="updateoutcardow()">取 消</el-button>
-        <el-button type="primary" @click="doUpdateOutCar()">确 定</el-button>
+        <el-button @click="updateoutcardow('updateForm')">取 消</el-button>
+        <el-button type="primary" @click="doUpdateOutCar('updateForm')">确 定</el-button>
       </div>
     </el-drawer>
   </div>
@@ -482,6 +482,84 @@ export default {
   name: "departureRecord",
   data() {
     return {
+      //添加出车记录表单验证
+      addrules:{
+        carId: [
+            { required: true, message: '请选择车牌', trigger: 'change' }
+          ],
+        deptId: [
+            { required: true, message: '请选择部门', trigger: 'change' }
+          ],
+        outTime:[
+            { required: true, message: '请输入出车时间', trigger: 'blur' },          
+          ], 
+        preInTime:[
+          { required: true, message: '请输入预计回车时间', trigger: 'blur' },          
+        ], 
+        followPerson: [
+            { required: true, message: '请输入随行人员', trigger: 'blur' },
+          ],
+        driverId : [
+          { required: true, message: '请选择驾驶员', trigger: 'change' }
+        ],
+        mileage: [
+            { required: true, message: '请输入开始里程', trigger: 'blur' },
+            {
+                  required: true,
+                  pattern: /^(0|[1-9][0-9]*)(\.\d+)?$/,
+                  message: '请输入正确的格式',
+                  trigger: 'blur'
+              }
+          ],
+        outCarReason: [
+            { required: true, message: '请输入出车原因', trigger: 'blur' },
+          ],
+
+      },
+      updaterules:{
+        deptId: [
+            { required: true, message: '请选择部门', trigger: 'change' }
+          ],
+        outTime:[
+            { required: true, message: '请输入出车时间', trigger: 'blur' },          
+          ], 
+        preInTime:[
+          { required: true, message: '请输入预计回车时间', trigger: 'blur' },          
+        ], 
+        followPerson: [
+            { required: true, message: '请输入随行人员', trigger: 'blur' },
+          ],
+        mileage: [
+            { required: true, message: '请输入开始里程', trigger: 'blur' },
+            {
+                  required: true,
+                  pattern: /^(0|[1-9][0-9]*)(\.\d+)?$/,
+                  message: '请输入正确的格式',
+                  trigger: 'blur'
+              }
+          ],
+        outCarReason: [
+            { required: true, message: '请输入出车原因', trigger: 'blur' },
+          ],
+      },
+      //回车
+      returnrules:{
+        inCarTime:[
+          { required: true, message: '请输入回车时间', trigger: 'blur' },          
+        ], 
+        returnMileage: [
+            { required: true, message: '请输入回车里程', trigger: 'blur' },
+            {
+                  required: true,
+                  pattern: /^(0|[1-9][0-9]*)(\.\d+)?$/,
+                  message: '请输入正确的格式',
+                  trigger: 'blur'
+              }
+          ],
+        remarks:[{required: true, message: '备注为空请填‘无’', trigger: 'blur' }
+        ],
+      },
+
       //地图要的东西
       map:null,//添加用的
       updatemap:null,//修改用的
@@ -536,26 +614,35 @@ export default {
   },
   methods: {
     //修改出车信息确定
-    doUpdateOutCar() {
-      if (this.outCarData.preInTime < this.outCarData.outTime) {
-        this.$message.error("预计回车时间不能小于出车时间");
-        return;
-      }
-      //获得焦点关闭地图div
-        document.getElementById('container1').style.display="none";
-         //关闭规划路线按钮
-        document.getElementById('updatebutton').style.display="none";
+    doUpdateOutCar(updateForm) {
+      this.$refs[updateForm].validate((valid) => {
+          if (valid) {
+            if (this.outCarData.preInTime < this.outCarData.outTime) {
+                this.$message.error("预计回车时间不能小于出车时间");
+                return;
+              }
+              //获得焦点关闭地图div
+                document.getElementById('container1').style.display="none";
+                //关闭规划路线按钮
+                document.getElementById('updatebutton').style.display="none";
 
-        document.getElementById('updatemapbutton').style.display="none";
-      this.outCarData.destination = document.getElementById('address1').value
-      this.$axios.post("departureRecord/update", this.outCarData).then(r => {
-        if (r.data.code = 200) {
-          this.outCarFormVisible = false;
-          this.$message.success("修改成功");
-          this.p = 1;
-          this.findOutCar();
-        }
-      })
+                document.getElementById('updatemapbutton').style.display="none";
+              this.outCarData.destination = document.getElementById('address1').value
+              this.$axios.post("departureRecord/update", this.outCarData).then(r => {
+                if (r.data.code = 200) {
+                  this.outCarFormVisible = false;
+                  this.$message.success("修改成功");
+                  this.p = 1;
+                  this.findOutCar();
+                  this.$router.go(0);
+                }
+              })
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
+      
     },
     //修改出车的信息
     updateOutCar(row) {
@@ -725,8 +812,9 @@ export default {
 
     },
     //关闭修改出车记录框
-    updateoutcardow(){
+    updateoutcardow(updateForm){
         this.outCarFormVisible = false
+        this.$refs[updateForm].resetFields();
 
         //获得焦点关闭地图div
         document.getElementById('container1').style.display="none";
@@ -961,31 +1049,39 @@ export default {
       }, 100);
     },
     //添加回车记录确定
-    doInCar() {
-      if (this.subInCar.inCarTime < this.subInCar.outTime) {
-        this.$message.error("回车不能小于出车时间");
-        return;
-      }
+    doInCar(returnForm) {
+      this.$refs[returnForm].validate((valid) => {
+          if (valid) {
+             if (this.subInCar.inCarTime < this.subInCar.outTime) {
+                  this.$message.error("回车不能小于出车时间");
+                  return;
+                }
 
-      //获得焦点关闭地图div
-        document.getElementById('container2').style.display="none";
-         //关闭规划路线按钮
-        document.getElementById('stopbutton').style.display="none";
+                //获得焦点关闭地图div
+                  document.getElementById('container2').style.display="none";
+                  //关闭规划路线按钮
+                  document.getElementById('stopbutton').style.display="none";
 
-        document.getElementById('stopmapbutton').style.display="none";
+                  document.getElementById('stopmapbutton').style.display="none";
 
-      this.subInCar.stopPosition = document.getElementById('address2').value
-      
+                this.subInCar.stopPosition = document.getElementById('address2').value
+                
 
-      this.$axios.post("returnRecord/add", this.subInCar).then(r => {
-        if (r.data.code = 200) {
-          this.addInCarFormVisible = false;
-          this.$message.success("回车成功");
-          setTimeout(() => {
-            this.$router.go(0);
-          }, 1000);
-        }
-      })
+                this.$axios.post("returnRecord/add", this.subInCar).then(r => {
+                  if (r.data.code = 200) {
+                    this.addInCarFormVisible = false;
+                    this.$message.success("回车成功");
+                    setTimeout(() => {
+                      this.$router.go(0);
+                    }, 1000);
+                  }
+                })
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
+     
     },
 //分页的出车记录列表
     findOutCar() {
@@ -1276,31 +1372,41 @@ export default {
       this.subInCar = row;
     },
     //出车记录填写确定
-    doOutCar() {
-      if (this.addData.preInTime < this.addData.outTime) {
-        this.$message.error("预计回车时间不能小于出车时间");
-        return;
-      }
-      this.addData.employeeId = this.employeeId;
-      this.addData.destination = document.getElementById('address').value
-      //获得焦点关闭地图div
-        document.getElementById('container').style.display="none";
-         //关闭规划路线按钮
-        document.getElementById('addbutton').style.display="none";
-        //关闭关闭按钮
-        document.getElementById('addmapbutton').style.display="none";
+    doOutCar(addForm) {
 
-      this.$axios.post("departureRecord/add", this.addData).then(r => {
-        if (r.data.code = 200) {
-          this.addDialogFormVisible = false;
-          this.$message.success("添加成功");
-          this.p = 1;
-          this.findOutCar();
-        }
-      })
+      this.$refs[addForm].validate((valid) => {
+          if (valid) {
+            if (this.addData.preInTime < this.addData.outTime) {
+                this.$message.error("预计回车时间不能小于出车时间");
+                return;
+              }
+              this.addData.employeeId = this.employeeId;
+              this.addData.destination = document.getElementById('address').value
+              //获得焦点关闭地图div
+                document.getElementById('container').style.display="none";
+                //关闭规划路线按钮
+                document.getElementById('addbutton').style.display="none";
+                //关闭关闭按钮
+                document.getElementById('addmapbutton').style.display="none";
+
+              this.$axios.post("departureRecord/add", this.addData).then(r => {
+                if (r.data.code = 200) {
+                  this.addDialogFormVisible = false;
+                  this.$message.success("添加成功");
+                  this.p = 1;
+                  this.findOutCar();
+                }
+              })
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
+      
     },
     //添加出车记录取消
-    outcardow(){
+    outcardow(addForm){
+      this.$refs[addForm].resetFields();
         this.addDialogFormVisible = false
        //获得焦点关闭地图div
         document.getElementById('container').style.display="none";
@@ -1310,7 +1416,8 @@ export default {
         document.getElementById('addmapbutton').style.display="none";
     },
     //添加回车记录取消
-    incardow(){
+    incardow(returnForm){
+        this.$refs[returnForm].resetFields();
         this.addInCarFormVisible = false
         //获得焦点关闭地图div
         document.getElementById('container2').style.display="none";

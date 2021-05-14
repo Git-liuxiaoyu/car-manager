@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
+/**
+ * 违章记录
+ */
 @RestController
 @RequestMapping("/violationRecord")
 @CrossOrigin
@@ -40,12 +43,20 @@ public class ViolationRecordController {
 
     @RequestMapping("/add")
     public ResponseResult add(@RequestBody ViolationRecord violationRecord){
+        //判断是否输入备注，如果没有自动添加备注
+        if(violationRecord.getRemarks().equals(null) || violationRecord.getRemarks().equals("")){
+            violationRecord.setRemarks("这个人很懒，还没有备注");
+        }
         violationRecordService.add(violationRecord);
         return ResponseResult.SUCCESS;
     }
 
     @RequestMapping("/update")
     public ResponseResult updated(@RequestBody ViolationRecord violationRecord){
+        //判断是否输入备注，如果没有自动添加备注
+        if(violationRecord.getRemarks().equals(null) || violationRecord.getRemarks().equals("")){
+            violationRecord.setRemarks("这个人很懒，还没有备注");
+        }
         violationRecordService.update(violationRecord);
         return ResponseResult.SUCCESS;
     }

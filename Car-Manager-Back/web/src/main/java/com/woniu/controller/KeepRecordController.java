@@ -21,6 +21,9 @@ import java.math.BigDecimal;
 import java.util.List;
 
 
+/**
+ * 保养记录
+ */
 @RestController
 @CrossOrigin
 @RequestMapping("/keeprecord/")
@@ -52,7 +55,7 @@ public class KeepRecordController {
         List<KeepRecord> keepList = keepRecordService.keepList(searchText,pageIndex,pageSize);
         PageInfo<KeepRecord> pageInfo = new PageInfo<>(keepList);
         pageInfo.setTotal(total);
-        //System.out.println(pageInfo);
+
 
         return new ResponseResult<>(pageInfo);
     }
@@ -80,10 +83,13 @@ public class KeepRecordController {
         orpo.setCarId(keepRecordPo.getCarId());
         orpo.setOutDate(keepRecordPo.getNextKeepTime());
         orpo.setType(keepRecordPo.getType());
-        System.out.println("要添加的保养到期数据"+orpo);
-
         //添加到期提醒
         outimeRemindService.add(orpo);
+
+        //判断是否输入备注，如果没有自动添加备注
+        if(keepRecordPo.getRemarks().equals(null) || keepRecordPo.getRemarks().equals("")){
+            keepRecordPo.setRemarks("这个人很懒，还没有备注");
+        }
 
         int i = keepRecordService.add(keepRecordPo);
         if(i > 0){return new ResponseResult(200,"添加成功");}
@@ -98,13 +104,16 @@ public class KeepRecordController {
      */
     @RequestMapping("update")
     public ResponseResult update(@RequestBody KeepRecordPo krpo){
-        System.out.println("要修改的数据"+krpo);
+        //判断是否输入备注，如果没有自动添加备注
+        if(krpo.getRemarks().equals(null) || krpo.getRemarks().equals("")){
+            krpo.setRemarks("这个人很懒，还没有备注");
+        }
         //查询对应id的原属性
         KeepRecordPo findbyid = keepRecordService.findbyid(krpo);
 
         int i = keepRecordService.update(krpo);//修改
 
-        System.out.println("修改原属性"+findbyid);
+
 
         OutimeRemindPo orpo = new OutimeRemindPo();
         orpo.setCarId(krpo.getCarId());//要修改的车牌id
@@ -113,7 +122,7 @@ public class KeepRecordController {
         orpo.setOutDate(krpo.getNextKeepTime());//要修改的到期时间
         orpo.setType(krpo.getType());//要修改的到期类别
         orpo.setStarttype(findbyid.getType());//设置原到期类别
-        System.out.println("要修改的保养到期数据"+orpo);
+
 
         outimeRemindService.update(orpo);
 

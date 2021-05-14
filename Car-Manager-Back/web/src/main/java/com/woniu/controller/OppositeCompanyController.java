@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * 往来单位
+ */
 @CrossOrigin
 @RestController
 @RequestMapping("/opposite/")
@@ -46,7 +49,7 @@ public class OppositeCompanyController {
         List<OppositeCompany> insurelist = oppositeCompanyService.List(searchText,pageIndex,pageSize);
         PageInfo<OppositeCompany> pageInfo = new PageInfo<>(insurelist);
         pageInfo.setTotal(total);
-        //System.out.println(pageInfo);
+
 
         return new ResponseResult<>(pageInfo);
     }
@@ -60,6 +63,7 @@ public class OppositeCompanyController {
      */
     @RequestMapping("add")
     public ResponseResult add(@RequestBody OppositeCompanyPo ocpo) {
+        //判断是否输入备注，如果没有自动添加备注
         if(ocpo.getRemarks().equals(null) || ocpo.getRemarks().equals("")){
             ocpo.setRemarks("这个人很懒，还没有备注");
         }
@@ -91,9 +95,11 @@ public class OppositeCompanyController {
      */
     @RequestMapping("update")
     public ResponseResult update(@RequestBody OppositeCompanyPo ocpo) {
-        System.out.println("修改");
+        //判断是否输入备注，如果没有自动添加备注
+        if(ocpo.getRemarks().equals(null) || ocpo.getRemarks().equals("")){
+            ocpo.setRemarks("这个人很懒，还没有备注");
+        }
 
-        System.out.println(ocpo.getStatus());
         int i = oppositeCompanyService.update(ocpo);
 
         if (i > 0) {
@@ -128,7 +134,7 @@ public class OppositeCompanyController {
     @RequestMapping("getoppolist")
     public List<OppositeCompanyPo> oppolist(Integer type){
         List<OppositeCompanyPo> oppolist = oilRecordService.oppolist(type);
-        System.out.println("查询到的往来单位"+oppolist);
+
         return oppolist;
     }
 

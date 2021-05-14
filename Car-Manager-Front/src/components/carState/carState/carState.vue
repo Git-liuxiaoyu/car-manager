@@ -10,10 +10,12 @@
     <br/>
 <div>
    <div class="demo-image">
-        <div class="block" v-for="fit in outtimelist" :key="fit.id">
+        <div class="block" v-for="fit in carstatelist" :key="fit.id">
             <img src="@/assets/image/chuche.jpg" alt="123" style="width:210px;height:130px"  v-if="fit.carStatus==36">
             <img src="@/assets/image/weixiu.jpg" alt="123" style="width:210px;height:130px" v-if="fit.carStatus==37"> 
             <img src="@/assets/image/keyong.png" alt="123" style="width:210px;height:130px" v-if="fit.carStatus==38">
+            <img src="@/assets/image/qita.png" alt="123" style="width:210px;height:130px" v-if="fit.carStatus==81">
+
             <br/>
             <br/>
             <br/>
@@ -49,7 +51,7 @@ export default {
     return {
         dialogStatus: "",
 
-        outtimelist:[
+        carstatelist:[
             {
                 id: "",
                 carNum: "",//车牌号外键  
@@ -75,16 +77,18 @@ export default {
           size: this.size
         }
       }).then(r => {
-        this.outtimelist = r.data.data.list
+        this.carstatelist = r.data.data.list
         this.total = r.data.data.total
-        for(var i = 0;i<this.outtimelist.size;i++){
-            if(this.outtimelist[i].carStatus == 36){
-                this.outtimelist[i].carStatus = '出车';
-            }else if(this.outtimelist[i].carStatus == 37){
-               this.outtimelist[i].carStatus = '维修';
-            }else if(this.outtimelist[i].carStatus == 38){
-                this.outtimelist[i].carStatus = '可用';
-            }    
+        for(var i = 0;i<this.carstatelist.size;i++){
+            if(this.carstatelist[i].carStatus == 36){
+                this.carstatelist[i].carStatus = '出车';
+            }else if(this.carstatelist[i].carStatus == 37){
+               this.carstatelist[i].carStatus = '维修';
+            }else if(this.carstatelist[i].carStatus == 38){
+                this.carstatelist[i].carStatus = '可用';
+            }else if(this.carstatelist[i].carStatus == 81){
+                this.carstatelist[i].carStatus = '其他';
+            } 
         }
 
       })

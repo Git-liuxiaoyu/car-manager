@@ -23,6 +23,9 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 加油记录
+ */
 @CrossOrigin
 @RestController
 @RequestMapping("/oilrecord")
@@ -83,7 +86,10 @@ public class OilRecordController {
 
     @RequestMapping("/add")
     public ResponseResult add(@RequestBody OilRecord oilRecord){
-        System.out.println("添加："+oilRecord);
+        //判断是否输入备注，如果没有自动添加备注
+        if(oilRecord.getRemarks().equals(null) || oilRecord.getRemarks().equals("")){
+            oilRecord.setRemarks("这个人很懒，还没有备注");
+        }
         oilRecordService.add(oilRecord);
         return ResponseResult.SUCCESS;
 
@@ -97,7 +103,10 @@ public class OilRecordController {
     @RequestMapping("/update")
     public ResponseResult updated(@RequestBody OilRecord oilRecord){
 
-        System.out.println("要修改的数据："+oilRecord);
+        //判断是否输入备注，如果没有自动添加备注
+        if(oilRecord.getRemarks().equals(null) || oilRecord.getRemarks().equals("")){
+            oilRecord.setRemarks("这个人很懒，还没有备注");
+        }
         int i = oilRecordService.update(oilRecord);
         if (i > 0) {
             return new ResponseResult(200, "修改成功");
@@ -111,7 +120,7 @@ public class OilRecordController {
 
         int i = oilRecordService.delete(id);
         if(i > 0){return new ResponseResult(200,"删除成功");}
-        else{return new ResponseResult(500,"删除失败");}
+             else{return new ResponseResult(500,"删除失败");}
     }
 
 

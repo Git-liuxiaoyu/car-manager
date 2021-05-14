@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/**
+ * 保险
+ */
 @RestController
 @CrossOrigin
 public class InsureRecordController {
@@ -31,14 +34,17 @@ public class InsureRecordController {
 
     @RequestMapping("/insureRecord/add")
     public int add(@RequestBody InsureRecordPo insureRecordPo){
-        System.out.println("要添加的数据"+insureRecordPo);
+
 
         OutimeRemindPo orpo = new OutimeRemindPo();
         orpo.setCarId(insureRecordPo.getCardId());
         orpo.setOutDate(insureRecordPo.getOutDate());
         orpo.setType(insureRecordPo.getType());
-        System.out.println("要添加的保养到期数据"+orpo);
 
+        //判断是否输入备注，如果没有自动添加备注
+        if(insureRecordPo.getRemarks().equals(null) || insureRecordPo.getRemarks().equals("")){
+            insureRecordPo.setRemarks("这个人很懒，还没有备注");
+        }
         //添加到期提醒
         outimeRemindService.add(orpo);
 
@@ -58,7 +64,7 @@ public class InsureRecordController {
     public int update(@RequestBody InsureRecordPo insureRecordPo){
         //查询对应id的原属性
         InsureRecordPo findbyid = insureRecordService.findById(insureRecordPo);
-        System.out.println("修改原属性"+findbyid);
+
 
         OutimeRemindPo orpo = new OutimeRemindPo();
         orpo.setCarId(insureRecordPo.getCardId());//要修改的车牌id
@@ -67,9 +73,13 @@ public class InsureRecordController {
         orpo.setOutDate(insureRecordPo.getOutDate());//要修改的到期时间
         orpo.setType(insureRecordPo.getType());//要修改的到期类别
         orpo.setStarttype(findbyid.getType());//设置原到期类别
-        System.out.println("要修改的保养到期数据"+orpo);
 
         outimeRemindService.update(orpo);//修改到期提醒
+        //判断是否输入备注，如果没有自动添加备注
+        if(insureRecordPo.getRemarks().equals(null) || insureRecordPo.getRemarks().equals("")){
+            insureRecordPo.setRemarks("这个人很懒，还没有备注");
+        }
+
 
         return insureRecordService.update(insureRecordPo);
 
@@ -90,7 +100,7 @@ public class InsureRecordController {
         List<InsureRecordPo> insurelist = insureRecordService.insureRecordList(searchText,pageIndex,pageSize);
         PageInfo<InsureRecordPo> pageInfo = new PageInfo<>(insurelist);
         pageInfo.setTotal(total);
-        //System.out.println(pageInfo);
+
 
         return new ResponseResult<>(pageInfo);
     }
@@ -107,7 +117,7 @@ public class InsureRecordController {
         InsureRecordPo inpo = new InsureRecordPo();
         inpo.setId(id);
         InsureRecordPo findbyid = insureRecordService.findById(inpo);
-        System.out.println("查询到的修改数据"+findbyid);
+
         return new ResponseResult<>(findbyid);
     }
 

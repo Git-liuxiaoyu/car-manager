@@ -102,7 +102,7 @@
     :visible 是否显示对话框，如果 dialogFormVisible：true 就显示  否则就不显示
     rules 就是表单每项的数据校验  ref  就是将来可以通过 this.$ref.addCar
     el-form-item :就是el-form表单里面的每项-->
-    <el-dialog title="新增加油记录" :visible.sync="keepVisible"
+    <el-dialog title="新增保养记录" :visible.sync="keepVisible"
                ref="keepadds" center width="80%">
       <el-form :model="keepadds" label-width="150px" :rules="addrules" ref="addForm">
         <el-row :gutter="20">

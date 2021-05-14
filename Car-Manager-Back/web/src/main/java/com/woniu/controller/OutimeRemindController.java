@@ -17,6 +17,9 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+/**
+ * 到期提醒
+ */
 @RestController
 @CrossOrigin
 public class OutimeRemindController {
@@ -58,15 +61,16 @@ public class OutimeRemindController {
         Calendar calendar = new GregorianCalendar();//加日期对象
 
         Date date = new Date();//当前系统时间
-        String thistime = df.format(date);// new Date()为获取当前系统时间
-        System.out.println("当前时间="+thistime);
+        String thistime = df.format(date);// thistime为当前时间
+
 
 
         calendar.setTime(date);
         calendar.add(calendar.DATE,7);//把当前系统时间往后加7天
         date = calendar.getTime();
-        String nexttime = df.format(date);//格式化日期格式把日期作为查询条件
-        System.out.println("加七天之后="+nexttime);
+        //格式化日期格式把日期作为查询条件
+        String nexttime = df.format(date);//nexttime为距离当前时间七天后
+
 
 
         Integer total=outimeRemindService.count(nexttime,thistime);
