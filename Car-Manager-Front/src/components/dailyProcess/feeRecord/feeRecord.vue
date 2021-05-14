@@ -100,8 +100,8 @@
                 v-model="fees.payTime"
                 type="datetime"
                 placeholder="选择日期时间"
-                value-format="yyyy-MM-dd HH-mm-SS"
-              >
+                value-format="yyyy-MM-dd HH-mm-ss"
+                >
               </el-date-picker>
             </el-form-item>
           </el-col>
@@ -153,7 +153,7 @@
 
 
     <!-- 修改 -->
-    <el-dialog title="编辑用户" :visible.sync="dialogEditFeeVisible" center width="80%">
+    <el-dialog title="编辑规费信息" :visible.sync="dialogEditFeeVisible" center width="80%">
       <el-form :model="editFee" label-width="100px" :rules="rules" ref="editForm">
         <el-row :gutter="20">
 
@@ -181,7 +181,7 @@
                 v-model="editFee.payTime"
                 type="datetime"
                 placeholder="选择日期时间"
-                value-format="yyyy-MM-dd HH:mm:SS"
+                value-format="yyyy-MM-dd HH:mm:ss"
               >
               </el-date-picker>
             </el-form-item>
@@ -290,7 +290,7 @@ export default {
           }
         ],
         payTime:[
-          {type: 'date', required: true, message: '请选择日期', trigger: 'change'}
+          { required: true, message: '请选择日期', trigger: 'change'}
         ],
         fee:[
           { required: true, message: "金额不能为空", trigger: "blur"},
@@ -382,6 +382,7 @@ export default {
               if (r.data.code == 200) {
                 this.$message({type: 'success', message: "添加成功", duration: 800});
                 this.addDialogFormVisible = false;
+                this.$refs[formName].resetFields();
                 this.findFee();
               } else {
                 this.$message({type: 'error', message: "添加失败", duration: 800});
