@@ -80,7 +80,7 @@
               <el-select v-model="fees.carId" placeholder="请选择">
                 <!-- <el-option label="请选择" value="0"></el-option> -->
                 <el-option :label="car.carNum" :value="car.id"
-                           v-for="car in cars" :key="car.id">
+                           v-for="car in cars" :key="car.id" :disabled="car.disabled">
                 </el-option>
               </el-select>
             </el-form-item>
@@ -100,8 +100,8 @@
                 v-model="fees.payTime"
                 type="datetime"
                 placeholder="选择日期时间"
-                value-format="yyyy-MM-dd HH-mm-ss"
-                >
+                value-format="yyyy-MM-dd HH-mm-SS"
+              >
               </el-date-picker>
             </el-form-item>
           </el-col>
@@ -129,7 +129,7 @@
               <el-select v-model="fees.driverId" placeholder="请选择">
                 <!-- <el-option label="请选择" value="0"></el-option> -->
                 <el-option :label="driver.employeeName" :value="driver.id"
-                           v-for="driver in drivers" :key="driver.id">
+                           v-for="driver in drivers" :key="driver.id" :disabled="driver.disabled">
                 </el-option>
               </el-select>
             </el-form-item>
@@ -153,7 +153,7 @@
 
 
     <!-- 修改 -->
-    <el-dialog title="编辑规费信息" :visible.sync="dialogEditFeeVisible" center width="80%">
+    <el-dialog title="编辑规费记录" :visible.sync="dialogEditFeeVisible" center width="80%">
       <el-form :model="editFee" label-width="100px" :rules="rules" ref="editForm">
         <el-row :gutter="20">
 
@@ -332,27 +332,40 @@ export default {
     getCarList() {
       this.$axios.get("car/getAll").then(r => {
         this.cars = r.data.data
-        console.log(this.cars)
+          this.cars.forEach(e=>{
+          if (e.status===0){
+            e.disabled = true
+          }else{
+            e.disabled = false
+          }
+        })
+
       })
     },
     // 获取驾驶员信息
     loadDriverName() {
       this.$axios.get("feerecord/getDriverName").then(r => {
-        console.log(r);
         this.drivers = r.data.data;
+         this.drivers.forEach(e=>{
+          if (e.status===0){
+            e.disabled = true
+          }else{
+            e.disabled = false
+          }
+        })
       })
     },
     getOpposite() {
       //查询往来单位下拉框
       this.$axios.post("opposite/getoppolist?type=" + 104).then(r => {
         this.opposites = r.data
-        console.log(r)
+
         for (let i; i < this.feeData.length; i++) {
           if (this.feeData.oppositeCompanyId === r.data.id) {
             this.feeData.oppositeName = r.data.name;
           }
         }
-        // this.feeData.oppositeName=r.data.name;
+
       })
 
     },
@@ -370,8 +383,7 @@ export default {
     // 打开添加框
     addFees() {
       this.addDialogFormVisible = true;
-      // this.getCarList();
-      // this.loadDriverName();
+
     },
     //调用添加方法
     toAddFees(formName) {
@@ -382,12 +394,11 @@ export default {
               if (r.data.code == 200) {
                 this.$message({type: 'success', message: "添加成功", duration: 800});
                 this.addDialogFormVisible = false;
-                this.$refs[formName].resetFields();
                 this.findFee();
               } else {
                 this.$message({type: 'error', message: "添加失败", duration: 800});
               }
-              //   this.feeData=r.data;
+
             })
         } else {
               return false;
@@ -402,14 +413,7 @@ export default {
     updateFee(row) {
       this.dialogEditFeeVisible = true;
       this.findFee();
-      // console.log(this.feeData); 
-      // console.log(row.id)
 
-      // for(let fee in this.feeData){
-      //   if(fee.id==row.id){
-      //     this.editFee=fee
-      //   }
-      // }
 
       this.editFee = row;
     },
@@ -419,7 +423,7 @@ export default {
           if (valid) {
               this.getCarList()
             this.$axios.post("feerecord/update", this.editFee).then(r => {
-              console.log(r);
+
               if (r.data.code == 200) {
                 this.$message({type: 'success', message: "修改成功", duration: 800});
                 this.dialogEditFeeVisible = false;
@@ -427,7 +431,7 @@ export default {
               } else {
                 this.$message({type: 'error', message: "修改失败", duration: 800});
               }
-              //   this.feeData=r.data;
+
             })
       } else {
             return false;

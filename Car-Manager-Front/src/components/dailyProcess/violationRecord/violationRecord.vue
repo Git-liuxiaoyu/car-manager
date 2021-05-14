@@ -56,7 +56,7 @@
     <br/>
 <!--违章信息登记-->
 <el-dialog title="违章信息登记" :visible.sync="addDialogFormVisible" center width="80%">
-      <el-form :model="addData" label-width="100px" :rules='checkRules' ref="addForm">
+      <el-form :model="addData" label-width="120px" :rules='checkRules' ref="addForm">
         <el-row :gutter="20">
 
           <el-col :span="6">
@@ -105,7 +105,7 @@
             <el-form-item label="驾驶员" prop="driverId">
                 <el-select v-model="addData.driverId" placeholder="请选择">
                   <el-option v-for="driver in driverList" :key="driver.id"
-                            :label="driver.employeeName" :value="driver.id">
+                            :label="driver.employeeName" :value="driver.id" :disabled="driver.disabled">
                   </el-option>
                 </el-select>
             </el-form-item>
@@ -293,6 +293,13 @@ export default {
     loadList(){
       this.$axios.get("driver/getAll").then(r => {
         this.driverList = r.data.data
+        this.driverList.forEach(e=>{
+          if (e.status===0){
+            e.disabled = true
+          }else{
+            e.disabled = false
+          }
+        })
         this.$axios.get("dictionary/menu").then(r => {
         let totalTree = r.data.data;
         for (let i = 0; i < totalTree.length; i++) {
