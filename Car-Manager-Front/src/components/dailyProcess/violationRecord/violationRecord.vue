@@ -60,17 +60,17 @@
         <el-row :gutter="20">
 
           <el-col :span="6">
-            <el-form-item label="车牌号码:">
+            <el-form-item label="车牌号码:" prop="carId">
                 <el-select v-model="addData.carId" placeholder="请选择">
                   <el-option v-for="car in carList" :key="car.id"
-                            :label="car.carNum" :value="car.id">
+                            :label="car.carNum" :value="car.id" :disabled="car.disabled">
                   </el-option>
                 </el-select>
             </el-form-item>
           </el-col>
 
           <el-col :span="6">
-            <el-form-item label="违章项目:">
+            <el-form-item label="违章项目:" prop="type">
               <el-select v-model="addData.type" placeholder="请选择">
                 <el-option v-for="item in violationType" :key="item.id" :label="item.text" :value="item.id">
                 </el-option>
@@ -79,12 +79,12 @@
           </el-col>
 
           <el-col :span="6">
-            <el-form-item label="违章时间:">
+            <el-form-item label="违章时间:" prop="time">
                   <el-date-picker
                     v-model="addData.time"
                     type="datetime"
                     placeholder="选择日期时间"
-                    value-format="yyyy-MM-dd HH:mm:SS">
+                    value-format="yyyy-MM-dd HH:mm:ss">
                   </el-date-picker>
             </el-form-item>
           </el-col>
@@ -102,7 +102,7 @@
           </el-col>
 
           <el-col :span="6">
-            <el-form-item label="驾驶员">
+            <el-form-item label="驾驶员" prop="driverId">
                 <el-select v-model="addData.driverId" placeholder="请选择">
                   <el-option v-for="driver in driverList" :key="driver.id"
                             :label="driver.employeeName" :value="driver.id">
@@ -138,7 +138,7 @@
       <el-form :model="updateData" label-width="100px" :rules='checkRules' ref="updateForm">
          <el-row :gutter="20">
           <el-col :span="6">
-            <el-form-item label="车牌号码:">
+            <el-form-item label="车牌号码:" prop="carId">
                 <el-select v-model="updateData.carId" disabled placeholder="请选择">
                     <el-option v-for="car in carList" :key="car.id" :label="car.carNum" :value="car.id">
                     </el-option>
@@ -147,7 +147,7 @@
           </el-col>
 
           <el-col :span="6">
-            <el-form-item label="违章项目:">
+            <el-form-item label="违章项目:" prop="type">
               <el-select v-model="updateData.type" placeholder="请选择">
                 <el-option v-for="item in violationType" :key="item.id" :label="item.text" :value="item.id">
                 </el-option>
@@ -156,12 +156,12 @@
           </el-col>
 
           <el-col :span="6">
-            <el-form-item label="违章时间:">
+            <el-form-item label="违章时间:" prop="time">
                   <el-date-picker
                     v-model="updateData.time"
                     type="datetime"
                     placeholder="选择日期时间"
-                    value-format="yyyy-MM-dd HH:mm:SS"
+                    value-format="yyyy-MM-dd HH:mm:ss"
                   >
                   </el-date-picker>
             </el-form-item>
@@ -180,7 +180,7 @@
           </el-col>
 
           <el-col :span="6">
-            <el-form-item label="驾驶员">
+            <el-form-item label="驾驶员" prop="driverId">
                 <el-select v-model="updateData.driverId" placeholder="请选择">
                   <el-option v-for="driver in driverList" :key="driver.id"
                             :label="driver.employeeName" :value="driver.id">
@@ -262,10 +262,8 @@ export default {
         reduceScore:[
           { required: true, message: "扣分不能为空", trigger: "blur"},
           { 
-            type: 'number',
-            min: 0,
-            message: '扣分为正整数',
-            trigger: 'change'
+            pattern: /^[1-9][0-9]{0,1}$/,
+            message: "请输入合法数字",
           }
         ],
         remarks:[
@@ -274,14 +272,44 @@ export default {
         fee:[
           { required: true, message: "金额不能为空", trigger: "blur"},
           { pattern: /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/, message: '请输入正确额格式,可保留两位小数' },
-        ]
+        ],
+        driverId:[
+          { required: true, message: "请选择", trigger: "change"},
+        ],
+        carId:[
+          { required: true, message: "请选择", trigger: "change"},
+        ],
+        type:[
+          { required: true, message: "请选择", trigger: "change"},
+        ],
+        time:[
+          { required: true, message: "请选择", trigger: "change"},
+        ],
       }
     }
   },
   methods: {
     // 查
     loadList(){
-      this.$axios.get("violationRecord/list", {params: {p: this.p, searchText: this.searchText, size: this.size}}).then(r => {
+      this.$axios.get("driver/getAll").then(r => {
+        this.driverList = r.data.data
+        this.$axios.get("dictionary/menu").then(r => {
+        let totalTree = r.data.data;
+        for (let i = 0; i < totalTree.length; i++) {
+          if (totalTree[i].id == 43) {
+            this.violationType = totalTree[i].children;
+          }
+        }
+        this.$axios.get("car/getAll").then(r => {
+        this.carList = r.data.data
+        this.carList.forEach(e=>{
+          if (e.status===0){
+            e.disabled = true
+          }else{
+            e.disabled = false
+          }
+        })
+        this.$axios.get("violationRecord/list", {params: {p: this.p, searchText: this.searchText, size: this.size}}).then(r => {
         this.tableData = r.data.data.list
         this.tableData.forEach(e1 => {
           this.violationType.forEach(e2=>{
@@ -297,6 +325,11 @@ export default {
         });
         this.total = r.data.data.total
       })
+
+      })
+      })
+      })
+
     },
     //分页方法
     handleCurrentChange(val) {
@@ -316,6 +349,8 @@ export default {
       this.addDialogFormVisible = false;
     },
     doAdd(){
+      this.$refs["addForm"].validate((valid) => {
+        if (valid) {
       this.$axios.post("violationRecord/add", this.addData).then(r => {
         if (r.data.code === 200) {
           this.$message.success("添加成功");
@@ -325,6 +360,11 @@ export default {
           this.loadList();
         }
       })
+      } else {
+        console.log('error submit!!');
+        return false;
+      }
+    });
     },
     // 改
     showUpdateDialog(row){
@@ -342,6 +382,8 @@ export default {
       this.updateDialogFormVisible = false;
     },
     doUpdate(row){
+      this.$refs["updateForm"].validate((valid) => {
+      if (valid) {
       this.$axios.post("violationRecord/update", this.updateData).then(r => {
         if (r.data.code === 200) {
           this.$message.success("修改成功");
@@ -350,6 +392,11 @@ export default {
           this.loadList();
         }
       })
+      } else {
+          console.log('error submit!!');
+          return false;
+        }
+      });
     },
     // 删
     del(row){
@@ -392,9 +439,6 @@ export default {
   }
   ,
   created() {
-    this.getMenu()
-    this.getCarList()
-    this.getDriverList()
     this.loadList()
   }
 }

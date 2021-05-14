@@ -63,10 +63,10 @@
       <el-form :model="addData" label-width="100px" :rules='checkRules' ref="addForm">
         <el-row :gutter="20">
           <el-col :span="8">
-            <el-form-item label="车牌号码:">
+            <el-form-item label="车牌号码:" prop="carId">
                 <el-select v-model="addData.carId" placeholder="请选择">
                   <el-option v-for="car in carList" :key="car.id"
-                            :label="car.carNum" :value="car.id">
+                            :label="car.carNum" :value="car.id" :disabled="car.disabled">
                   </el-option>
                 </el-select>
             </el-form-item>
@@ -78,7 +78,7 @@
           </el-col>
 
           <el-col :span="8">
-            <el-form-item label="年检日期:">
+            <el-form-item label="年检日期:" prop="checkDate">
                <el-date-picker
                     v-model="addData.checkDate"
                     type="date"
@@ -93,7 +93,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="年检单位">
+            <el-form-item label="年检单位" prop="oppositeCompanyId">
                 <el-select v-model="addData.oppositeCompanyId" placeholder="请选择">
                     <el-option v-for="opposite in oppositeList" :key="opposite.id"
                                 :label="opposite.name" :value="opposite.id">
@@ -112,7 +112,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="经办人">
+            <el-form-item label="经办人" prop="driverId">
                 <el-select v-model="addData.driverId" placeholder="请选择">
                     <el-option v-for="driver in driverList" :key="driver.id"
                                 :label="driver.employeeName" :value="driver.id">
@@ -141,7 +141,7 @@
         <el-row :gutter="20">
 
           <el-col :span="8">
-            <el-form-item label="车牌号码:" >
+            <el-form-item label="车牌号码:" prop="carId">
                 <el-select v-model="updateData.carId" disabled placeholder="请选择">
                     <el-option v-for="car in carList" :key="car.id"
                               :label="car.carNum" :value="car.id">
@@ -155,7 +155,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="年检日期:">
+            <el-form-item label="年检日期:" prop="checkDate">
                <el-date-picker
                     v-model="updateData.checkDate"
                     type="date"
@@ -170,7 +170,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="年检单位:">
+            <el-form-item label="年检单位:" prop="oppositeCompanyId">
                  <el-select v-model="updateData.oppositeCompanyId" placeholder="请选择">
                     <el-option v-for="opposite in oppositeList" :key="opposite.id"
                                 :label="opposite.name" :value="opposite.id">
@@ -179,7 +179,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="下次年检日期">
+            <el-form-item label="下次年检日期" prop="nextCheckDate">
                <el-date-picker
                     v-model="updateData.nextCheckDate"
                     type="date"
@@ -189,7 +189,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="经办人">
+            <el-form-item label="经办人" prop="driverId">
                 <el-select v-model="updateData.driverId" placeholder="请选择">
                   <el-option v-for="driver in driverList" :key="driver.id"
                             :label="driver.employeeName" :value="driver.id">
@@ -261,14 +261,46 @@ export default {
         cost:[
           { required: true, message: "金额不能为空", trigger: "blur"},
           { pattern: /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/, message: '请输入正确额格式,可保留两位小数' },
-        ]
+        ],
+        carId:[
+          { required: true, message: "请选择", trigger: "change"},
+        ],
+        driverId:[
+          { required: true, message: "请选择", trigger: "change"},
+        ],
+        checkDate:[
+          { required: true, message: "请选择", trigger: "change"},
+        ],
+        oppositeCompanyId:[
+          { required: true, message: "请选择", trigger: "change"},
+        ],
       }
     }
   },
   methods: {
     // 查
     loadList() {
-      this.$axios.get("yearCheckRecord/list", {params: {p: this.p, searchText: this.searchText, size: this.size}}).then(r => {
+        this.$axios.get("dictionary/menu").then(r => {
+        let totalTree = r.data.data;
+        for (let i = 0; i < totalTree.length; i++) {
+          if (totalTree[i].id == 39) {
+            this.repairItemType = totalTree[i].children;
+          }
+        }
+        this.$axios.get("car/getAll").then(r => {
+        this.carList = r.data.data
+        this.carList.forEach(e=>{
+          if (e.status===0){
+            e.disabled = true
+          }else{
+            e.disabled = false
+          }
+        })
+        this.$axios.get("driver/getAll").then(r => {
+        this.driverList = r.data.data
+        this.$axios.get("opposite/getoppolist?type=92").then(r => {
+        this.oppositeList = r.data
+        this.$axios.get("yearCheckRecord/list", {params: {p: this.p, searchText: this.searchText, size: this.size}}).then(r => {
         this.tableData = r.data.data.list
         this.tableData.forEach(e1 => {
           this.driverList.forEach(e2=>{
@@ -284,6 +316,11 @@ export default {
         });
         this.total = r.data.data.total
       })
+      })
+      })
+      })
+      })
+
     },
     //分页方法
     handleCurrentChange(val) {
@@ -307,15 +344,22 @@ export default {
       this.updateData = row;
     },
     doAdd(){
-      this.$axios.post("yearCheckRecord/add",this.addData).then(r=>{
-        if (r.data.code === 200) {
-          this.$message.success("添加成功");
-          this.$refs['addForm'].resetFields();
-          this.addDialogFormVisible = false;
-          this.p = 1;
-          this.loadList();
+      this.$refs["addForm"].validate((valid) => {
+        if (valid) {
+          this.$axios.post("yearCheckRecord/add",this.addData).then(r=>{
+            if (r.data.code === 200) {
+              this.$message.success("添加成功");
+              this.$refs['addForm'].resetFields();
+              this.addDialogFormVisible = false;
+              this.p = 1;
+              this.loadList();
+            }
+          })
+        } else {
+          console.log('error submit!!');
+          return false;
         }
-      })
+      });
     },
     // 改
     showUpdateDialog(row){
@@ -333,6 +377,8 @@ export default {
       this.updateDialogFormVisible = false;
     },
     doUpdate(){
+     this.$refs["updateForm"].validate((valid) => {
+      if (valid) {
       this.$axios.post("yearCheckRecord/update",this.updateData).then(r=>{
         if (r.data.code === 200) {
           this.$message.success("修改成功");
@@ -341,6 +387,11 @@ export default {
           this.loadList();
         }
       })
+      } else {
+          console.log('error submit!!');
+          return false;
+        }
+      });
     },
     // 删
     del(row){
@@ -382,16 +433,11 @@ export default {
     getOppositeList(){
         this.$axios.get("opposite/getoppolist?type=92").then(r => {
         this.oppositeList = r.data
-        console.log(this.oppositeList)
       })
     }
   }
   ,
   created() {
-    this.getMenu()
-    this.getOppositeList()
-    this.getCarList()
-    this.getDriverList()
     this.loadList()
   }
 }

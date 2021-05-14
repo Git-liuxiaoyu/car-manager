@@ -86,12 +86,10 @@
             <if test="searchText!=null and searchText!='' ">and carNum like concat('%',#{searchText},'%')</if>
         </where>
     </select>
-    <!--删除修理信息-->
-    <delete id="delete" parameterType="Integer">
-        delete
-        from car
-        where id = #{id}
-    </delete>
+    <!--删除,状态变更-->
+    <update id="delete" parameterType="Integer">
+        update car set status = 0,carStatus=81 where id =#{id}
+    </update>
     <!--查询所有-->
     <select id="getAll" resultType="CarPo">
         select *

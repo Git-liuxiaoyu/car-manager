@@ -10,7 +10,7 @@
 
     <el-row :gutter="20">
       <el-col :span="6">
-        <el-input placeholder="请输入车牌号码,支持模糊查询" v-model="searchText" class="input-with-select">
+        <el-input placeholder="请输入车牌号码,可查历史记录" v-model="searchText" class="input-with-select">
           <el-button slot="append" icon="el-icon-search" @click="loadList"></el-button>
         </el-input>
       </el-col>
@@ -84,14 +84,14 @@
             <el-form-item label="车牌号码:" prop="carId">
                 <el-select v-model="addData.carId" placeholder="请选择">
                   <el-option v-for="car in carList" :key="car.id"
-                            :label="car.carNum" :value="car.id">
+                            :label="car.carNum" :value="car.id" :disabled="car.disabled">
                   </el-option>
                 </el-select>
             </el-form-item>
           </el-col>
 
           <el-col :span="8">
-            <el-form-item label="修理厂:">
+            <el-form-item label="修理厂:" prop="oppositeCompanyId">
                 <el-select v-model="addData.oppositeCompanyId" placeholder="请选择">
                     <el-option v-for="opposite in oppositeList" :key="opposite.id"
                                 :label="opposite.name" :value="opposite.id">
@@ -101,23 +101,23 @@
           </el-col>
 
           <el-col :span="8">
-            <el-form-item label="送修时间:">
+            <el-form-item label="送修时间:" prop="sendTime">
                <el-date-picker
                     v-model="addData.sendTime"
                     type="datetime"
                     placeholder="选择日期时间"
-                    value-format="yyyy-MM-dd HH:mm:SS">
+                    value-format="yyyy-MM-dd HH:mm:ss">
                 </el-date-picker>
             </el-form-item>
           </el-col>
 
           <el-col :span="8">
-            <el-form-item label="预计取车时间">
+            <el-form-item label="预计取车时间" prop="preGetTime">
                <el-date-picker
                     v-model="addData.preGetTime"
                     type="datetime"
                     placeholder="选择日期时间"
-                    value-format="yyyy-MM-dd HH:mm:SS">
+                    value-format="yyyy-MM-dd HH:mm:ss">
                 </el-date-picker>
             </el-form-item>
           </el-col>
@@ -134,7 +134,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="经办人">
+            <el-form-item label="经办人" prop="driverId">
                 <el-select v-model="addData.driverId" placeholder="请选择">
                   <el-option v-for="driver in driverList" :key="driver.id"
                             :label="driver.employeeName" :value="driver.id">
@@ -165,7 +165,7 @@
           </el-col>
 
           <el-col :span="8">
-            <el-form-item label="修理厂:">
+            <el-form-item label="修理厂:" prop="oppositeCompanyId">
                 <el-select v-model="updateData.oppositeCompanyId" placeholder="请选择">
                     <el-option v-for="opposite in oppositeList" :key="opposite.id"
                                 :label="opposite.name" :value="opposite.id">
@@ -175,23 +175,23 @@
           </el-col>
 
           <el-col :span="8">
-            <el-form-item label="送修时间:">
+            <el-form-item label="送修时间:" prop="sendTime">
                <el-date-picker
                     v-model="updateData.sendTime"
                     type="datetime"
                     placeholder="选择日期时间"
-                    value-format="yyyy-MM-dd HH:mm:SS">
+                    value-format="yyyy-MM-dd HH:mm:ss">
                 </el-date-picker>
             </el-form-item>
           </el-col>
 
           <el-col :span="8">
-            <el-form-item label="预计取车时间">
+            <el-form-item label="预计取车时间" prop="preGetTime">
                <el-date-picker
                     v-model="updateData.preGetTime"
                     type="datetime"
                     placeholder="选择日期时间"
-                    value-format="yyyy-MM-dd HH:mm:SS">
+                    value-format="yyyy-MM-dd HH:mm:ss">
                 </el-date-picker>
             </el-form-item>
           </el-col>
@@ -238,7 +238,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="修理厂:">
+            <el-form-item label="修理厂:" prop="oppositeCompanyId">
                 <el-select v-model="updateData.oppositeCompanyId" disabled placeholder="请选择">
                     <el-option v-for="opposite in oppositeList" :key="opposite.id"
                                 :label="opposite.name" :value="opposite.id">
@@ -247,7 +247,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="维修类别:">
+            <el-form-item label="维修类别:" prop="repairType">
               <el-select v-model="updateData.repairType" placeholder="请选择">
                 <el-option v-for="item in repairItemType" :key="item.id" :label="item.text" :value="item.id">
                 </el-option>
@@ -256,13 +256,13 @@
           </el-col>
 
           <el-col :span="8">
-            <el-form-item label="送修时间:">
+            <el-form-item label="送修时间:" prop="sendTime">
                <el-date-picker
                     disabled
                     v-model="updateData.sendTime"
                     type="datetime"
                     placeholder="选择日期时间"
-                    value-format="yyyy-MM-dd HH:mm:SS">
+                    value-format="yyyy-MM-dd HH:mm:ss">
                 </el-date-picker>
             </el-form-item>
           </el-col>
@@ -352,7 +352,7 @@
               {{updateData.repairItem}}
             </el-form-item>
           </el-col>
-                    <el-col :span="8">
+              <el-col :span="8">
             <el-form-item label="使用材料">
               {{updateData.useGoods}}
             </el-form-item>
@@ -428,14 +428,56 @@ export default {
         repairFee:[
           { required: true, message: "金额不能为空", trigger: "blur"},
           { pattern: /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/, message: '请输入正确额格式,可保留两位小数' },
-        ]
+        ],
+        oppositeCompanyId:[
+          { required: true, message: "请选择", trigger: "change"},
+        ],
+        repairType:[
+          { required: true, message: "请选择", trigger: "change"},
+        ],
+        sendTime:[
+          { required: true, message: "请选择", trigger: "change"},
+        ],
+        preGetTime:[
+          { required: true, message: "请选择", trigger: "change"},
+        ],
+        driverId:[
+          { required: true, message: "请选择", trigger: "change"},
+        ],
+        carId:[
+          { required: true, message: "请选择", trigger: "change"},
+        ],
       }
     }
   },
   methods: {
     // 查
     loadList() {
-      this.$axios.get("repairRecord/list", {params: {p: this.p, searchText: this.searchText, size: this.size}}).then(r => {
+      this.$axios.get("opposite/getoppolist?type=" + 34).then(r => {
+        this.oppositeList = r.data
+        this.$axios.get("driver/getAll").then(r => {
+        this.driverList = r.data.data
+              this.$axios.get("dictionary/menu").then(r => {
+        let totalTree = r.data.data;
+        for (let i = 0; i < totalTree.length; i++) {
+          if (totalTree[i].id == 43) {
+            this.violationType = totalTree[i].children;
+          }
+          if (totalTree[i].id == 39) {
+            this.repairItemType = totalTree[i].children;
+            
+          }
+        }
+        this.$axios.get("car/getAll").then(r => {
+        this.carList = r.data.data
+        this.carList.forEach(e=>{
+          if (e.status===0){
+            e.disabled = true
+          }else{
+            e.disabled = false
+          }
+        })
+        this.$axios.get("repairRecord/list", {params: {p: this.p, searchText: this.searchText, size: this.size}}).then(r => {
         this.tableData = r.data.data.list
         this.tableData.forEach(e1 => {
           this.repairItemType.forEach(e3=>{
@@ -455,6 +497,11 @@ export default {
           })
         });
         this.total = r.data.data.total
+
+      })
+      })
+      })
+      })
       })
     },
     //分页方法
@@ -479,6 +526,8 @@ export default {
       this.updateData = row;
     },
     doAdd(){
+            this.$refs["addForm"].validate((valid) => {
+        if (valid) {
       this.addData.repairFee = 0;
       this.addData.getTime = "未取车"
       this.$axios.post("repairRecord/add",this.addData).then(r=>{
@@ -488,8 +537,15 @@ export default {
           this.addDialogFormVisible = false;
           this.p = 1;
           this.loadList();
+        }else{
+            this.$message.warning("该车辆不可用无法送修");
         }
-      })
+         })
+       } else {
+          console.log('error submit!!');
+          return false;
+        }
+      });
     },
     // 改
     showUpdateDialog(row){
@@ -517,6 +573,8 @@ export default {
       this.updateDialogFormVisible = false;
     },
     doUpdate(){
+      this.$refs["updateForm"].validate((valid) => {
+      if (valid) {
       this.$axios.post("repairRecord/update",this.updateData).then(r=>{
         if (r.data.code === 200) {
           this.$message.success("修改成功");
@@ -525,6 +583,10 @@ export default {
           this.loadList();
         }
       })
+      } else {
+          return false;
+        }
+      });
     },
     getCarRigister(){
         this.$axios.post("repairRecord/getCar",this.updateData).then(r=>{
@@ -570,6 +632,13 @@ export default {
      getCarList(){
         this.$axios.get("car/getAll").then(r => {
         this.carList = r.data.data
+        this.carList.forEach(e=>{
+          if (e.status===0){
+            e.disabled = true
+          }else{
+            e.disabled = false
+          }
+        })
       })
     },
      getDriverList(){
@@ -587,9 +656,7 @@ export default {
   ,
   created() {
     this.getMenu()
-    this.getOppositeList()
     this.getCarList()
-    this.getDriverList()
     this.loadList()
   }
 }

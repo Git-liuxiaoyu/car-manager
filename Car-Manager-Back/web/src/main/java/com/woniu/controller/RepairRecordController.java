@@ -53,6 +53,13 @@ public class RepairRecordController {
 
     @RequestMapping("/add")
     public ResponseResult add(@RequestBody RepairRecord repairRecord){
+        // 获取要维修车辆状态
+        Car toRepairCar = carService.getById(repairRecord.getCarId());
+        Integer carStatus = toRepairCar.getCarStatus();
+        Integer status = toRepairCar.getStatus();
+        if (carStatus!=38|status==0){
+            return ResponseResult.FORBIDDEN;
+        }
         repairRecordService.add(repairRecord);
         //修改车辆状态为维修
         Car car = new Car();
