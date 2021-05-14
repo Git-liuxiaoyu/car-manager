@@ -2,8 +2,13 @@
   <div class="wrapper">
     <!-- 头部 -->
     <el-row class="l-head">
-      <el-col :span="10" class="l-head-zj">
-        <i class="glyphicon glyphicon-leaf"></i>
+      <el-col :span="10" :push="2" class="l-head-zj">
+        <!-- <i class="glyphicon glyphicon-leaf"></i> -->
+        <img
+          @click="goHome()"
+          src="@/assets/image/car1.png"
+          style="width: 150px;position:absolute;top:-40px;left: -140px;"
+        />
         <span style="line-height: 60px;">小蜗牛车辆管理系统</span>
       </el-col>
 
@@ -14,11 +19,21 @@
             <i class="el-icon-arrow-down el-icon--right"></i>
           </el-button>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item icon="el-icon-user" disabled>{{ userNamer }}</el-dropdown-item>
-            <el-dropdown-item icon="el-icon-user-solid" command="a">个人信息</el-dropdown-item>
-            <el-dropdown-item icon="glyphicon glyphicon-cog" command="b">修改密码</el-dropdown-item>
-            <el-dropdown-item icon="el-icon-loading" command="d">刷新界面</el-dropdown-item>
-            <el-dropdown-item icon="glyphicon glyphicon-share" command="c">退出系统</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-user" disabled>{{
+              userNamer
+            }}</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-user-solid" command="a"
+              >个人信息</el-dropdown-item
+            >
+            <el-dropdown-item icon="glyphicon glyphicon-cog" command="b"
+              >修改密码</el-dropdown-item
+            >
+            <el-dropdown-item icon="el-icon-loading" command="d"
+              >刷新界面</el-dropdown-item
+            >
+            <el-dropdown-item icon="glyphicon glyphicon-share" command="c"
+              >退出系统</el-dropdown-item
+            >
           </el-dropdown-menu>
         </el-dropdown>
       </el-col>
@@ -47,8 +62,11 @@
             </template>
 
             <el-menu-item-group>
-              <el-menu-item :index="son.href"
-                            v-for="son in item.children" :key="son.id">
+              <el-menu-item
+                :index="son.href"
+                v-for="son in item.children"
+                :key="son.id"
+              >
                 <i class="glyphicon glyphicon-align-left"></i>
                 <span>{{ son.name }}</span>
               </el-menu-item>
@@ -59,7 +77,7 @@
 
       <!-- 中右 -->
       <el-main class="main1">
-        <router-view/>
+        <router-view />
       </el-main>
     </el-container>
   </div>
@@ -70,10 +88,13 @@ export default {
   data() {
     return {
       menu: [],
-      userNamer: "",
+      userNamer: ""
     };
   },
   methods: {
+    goHome() {
+      this.$router.push("/index");
+    },
     handleCommand(item) {
       if (item == "a") {
         this.$router.push("/userData");
@@ -89,11 +110,11 @@ export default {
       }
     },
     findPerms() {
-      let account=localStorage.getItem("account");
+      let account = localStorage.getItem("account");
       this.$axios.get("employee/menu?account=" + account).then(r => {
-          this.menu = r.data.data;
-          this.userNamer = this.menu[0].userName;
-        });
+        this.menu = r.data.data;
+        this.userNamer = this.menu[0].userName;
+      });
     },
     logout() {
       this.$confirm("此操作将退出该账户,是否继续?", "提示", {
@@ -125,7 +146,7 @@ export default {
 
 <style scoped>
 .main {
-  background-color: #F5F5F5;
+  background-color: #f5f5f5;
   height: 90vh;
   overflow-y: auto;
 }
@@ -143,7 +164,7 @@ export default {
 }
 
 .l-head {
-  background-color: #438EB9;
+  background-color: #438eb9;
 }
 
 .logo {

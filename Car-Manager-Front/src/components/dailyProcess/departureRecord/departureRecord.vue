@@ -638,7 +638,7 @@ export default {
                 }
               })
           } else {
-            console.log('error submit!!');
+            // console.log('error submit!!');
             return false;
           }
         });
@@ -715,7 +715,7 @@ export default {
 
            
 
-      console.log(this.outCarData)
+      // console.log(this.outCarData)
     },
 
      //修改路线失去焦点触发
@@ -1003,7 +1003,7 @@ export default {
                 
                 var thisaddress = document.getElementById('address2').value
                 var lastaddress = this.subInCar.destination
-                alert(lastaddress)
+                // alert(lastaddress)
                 var points = [//路线规划起点终点
                    {keyword: lastaddress,city:'武汉'},
                     {keyword: thisaddress,city:'武汉'}
@@ -1037,8 +1037,8 @@ export default {
     showCar(row) {
       this.showData = row;
       this.$axios.post("returnRecord/getByDictionaryId?id=" + row.id).then(r => {
-        console.log("回车记录")
-        console.log(r)
+        // console.log("回车记录")
+        // console.log(r)
         this.showData.stopPosition = r.data.data.stopPosition;
         this.showData.returnMileage = r.data.data.returnMileage;
         this.showData.remarks = r.data.data.remarks;
@@ -1077,7 +1077,7 @@ export default {
                   }
                 })
           } else {
-            console.log('error submit!!');
+            // console.log('error submit!!');
             return false;
           }
         });
@@ -1398,7 +1398,7 @@ export default {
                 }
               })
           } else {
-            console.log('error submit!!');
+            // console.log('error submit!!');
             return false;
           }
         });
