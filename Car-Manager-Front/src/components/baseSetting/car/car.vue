@@ -33,7 +33,7 @@
         <el-table-column  prop="deptName" label="部门" min-width></el-table-column>
         <el-table-column  prop="carStatusName" label="车辆状态" min-width> </el-table-column>
         <el-table-column  prop="status" label="是否启用" width="80">
-          <template slot-scope="scope">{{ scope.row.status == '0' ? '不启用' : '启用' }}</template>
+          <template slot-scope="scope">{{ scope.row.status == '0' ? '禁用' : '启用' }}</template>
         </el-table-column>
         <el-table-column  label="操作" width="230">
           <template slot-scope="scope">
@@ -59,7 +59,7 @@
     <br/>
 
     <!--添加-->
-    <el-dialog title="新增车辆" :visible.sync="addDialogFormVisible" center width="80%" >
+    <el-dialog title="新增车辆" :visible.sync="addDialogFormVisible" center width="80%">
       <el-form :model="addData" label-width="150px" :rules='checkRules' ref="addForm">
         <el-row :gutter="20">
           <el-col :span="6">
@@ -68,23 +68,23 @@
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-form-item label="品牌:">
-                <el-select v-model="oneId" placeholder="请选择"  @change="oneMenu">
+            <el-form-item label="品牌:" prop="brandId">
+                <el-select v-model="addData.brandId" placeholder="请选择"  @change="oneMenu">
                 <el-option v-for="item in brandType" :key="item.id" :label="item.text" :value="item.id">
                 </el-option>
                 </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-form-item label="型号:">
-                <el-select v-model="twoId" placeholder="请选择">
+            <el-form-item label="型号:" prop="type">
+                <el-select v-model="addData.type" placeholder="请选择">
                 <el-option v-for="item in typeType" :key="item.id" :label="item.text" :value="item.id">
                 </el-option>
                 </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-form-item label="颜色:">
+            <el-form-item label="颜色:" prop="color">
                 <el-select v-model="addData.color" placeholder="请选择">
                     <el-option v-for="color in colorType" :key="color.id"
                                 :label="color.text" :value="color.id">
@@ -134,7 +134,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-form-item label="供应商:">
+            <el-form-item label="供应商:" prop="oppositeCompanyId">
                 <el-select v-model="addData.oppositeCompanyId" placeholder="请选择">
                     <el-option v-for="opposite in oppositeList" :key="opposite.id"
                                 :label="opposite.name" :value="opposite.id">
@@ -148,7 +148,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-form-item label="购买日期:">
+            <el-form-item label="购买日期:" prop="boughtDate">
               <el-date-picker
                 v-model="addData.boughtDate"
                 type="date"
@@ -158,7 +158,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-form-item label="部   门:">
+            <el-form-item label="部   门:" prop="deptId">
                 <el-select v-model="addData.deptId" placeholder="请选择">
                     <el-option v-for="dept in deptType" :key="dept.id"
                                 :label="dept.text" :value="dept.id">
@@ -167,7 +167,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-form-item label="车辆状态:">
+            <el-form-item label="车辆状态:" prop="carStatus">
                 <el-select v-model="addData.carStatus" placeholder="请选择">
                     <el-option v-for="item in carStatusType" :key="item.id"
                                 :label="item.text" :value="item.id">
@@ -181,7 +181,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="状态:" >
+            <el-form-item label="状态:" prop="status">
               <template>
                 <el-radio v-model="addData.status" label="0">不启用</el-radio>
                 <el-radio v-model="addData.status" label="1">启用</el-radio>
@@ -207,23 +207,23 @@
           </el-col>
 
           <el-col :span="6">
-            <el-form-item label="品牌:">
-                <el-select v-model="oneId" placeholder="请选择"  @change="oneMenu">
+            <el-form-item label="品牌:" prop="brandId">
+                <el-select v-model="updateData.brandId" placeholder="请选择"  @change="oneMenu1">
                   <el-option v-for="item in brandType" :key="item.id" :label="item.text" :value="item.id">
                   </el-option>
                 </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-form-item label="型号:">
-                <el-select v-model="twoId" placeholder="请选择">
+            <el-form-item label="型号:" prop="type">
+                <el-select v-model="updateData.type" placeholder="请选择">
                     <el-option v-for="item in typeType" :key="item.id" :label="item.text" :value="item.id">
                     </el-option>
                 </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-form-item label="颜色:">
+            <el-form-item label="颜色:" prop="color">
                 <el-select v-model="updateData.color" placeholder="请选择">
                     <el-option v-for="color in colorType" :key="color.id"
                                 :label="color.text" :value="color.id">
@@ -257,7 +257,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-form-item label="保养周期（公里）：" prop="curingCycle">
+            <el-form-item label="保养周期（月）：" prop="curingCycle">
               <el-input v-model="updateData.curingCycle"></el-input>
             </el-form-item>
           </el-col>
@@ -273,7 +273,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-form-item label="供应商:">
+            <el-form-item label="供应商:" prop="oppositeCompanyId">
                 <el-select v-model="updateData.oppositeCompanyId" placeholder="请选择">
                     <el-option v-for="opposite in oppositeList" :key="opposite.id"
                                 :label="opposite.name" :value="opposite.id">
@@ -287,7 +287,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-form-item label="购买日期:">
+            <el-form-item label="购买日期:" prop="boughtDate">
               <el-date-picker
                 v-model="updateData.boughtDate"
                 type="date"
@@ -297,7 +297,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-form-item label="部   门:">
+            <el-form-item label="部   门:" prop="deptId">
                 <el-select v-model="updateData.deptId" placeholder="请选择">
                     <el-option v-for="dept in deptType" :key="dept.id"
                                 :label="dept.text" :value="dept.id">
@@ -306,7 +306,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-form-item label="车辆状态:">
+            <el-form-item label="车辆状态:" prop="carStatus">
                 <el-select v-model="updateData.carStatus" placeholder="请选择">
                     <el-option v-for="item in carStatusType" :key="item.id"
                                 :label="item.text" :value="item.id">
@@ -514,8 +514,6 @@ export default {
       updateDialogFormVisible: false,
       manageCarImgVisible: false,
       // 其他
-      oneId: "",
-      twoId: "",
       brandType: [], // 品牌集合
       typeType: [], // 信号集合
       colorType: [], // 颜色集合
@@ -545,52 +543,41 @@ export default {
           { 
             pattern: /^(([1-9]{1}\d*)|(0{1}))(\.\d{1,2})?$/,
             message: "请输入合法的数字",
-            trigger: "change"
           }
         ],
         seatNum:[
           { required: true, message: "座位数不能为空", trigger: "blur"},
           { 
-            type: 'number',
-            min: 1,
-            message: '座位数为正整数',
-            trigger: 'change'
+            pattern: /^[1-9][0-9]{0,1}$/,
+            message: "请输入1到99数字",
           }
         ],
         oilConsume:[
           { required: true, message: "油耗不能为空", trigger: "blur"},
           { 
-            type: 'number',
-            min: 0,
-            message: '请输入大于0的数字',
-            trigger: 'change'
+            pattern: /^(([1-9]{1}\d*)|(0{1}))(\.\d{1,2})?$/,
+            message: "请输入合法的数字",
           }
         ],
         initialMileage:[
           { required: true, message: "初始里程不能为空", trigger: "blur"},
           { 
-            type: 'number',
-            min: 0,
-            message: '请输入大于0的数字',
-            trigger: 'change'
+            pattern: /^(([1-9]{1}\d*)|(0{1}))(\.\d{1,2})?$/,
+            message: "请输入合法的数字",
           }
         ],
         curingMileage:[
           { required: true, message: "保养里程不能为空", trigger: "blur"},
           { 
-            type: 'number',
-            min: 0,
-            message: '请输入大于0的数字',
-            trigger: 'change'
+            pattern: /^(([1-9]{1}\d*)|(0{1}))(\.\d{1,2})?$/,
+            message: "请输入合法的数字",
           }
         ],
         curingCycle:[
           { required: true, message: "保养周期不能为空", trigger: "blur"},
           { 
-            type: 'number',
-            min: 0,
-            message: '请输入大于0的数字',
-            trigger: 'change'
+            pattern: /^[1-9][0-9]{0,1}$/,
+            message: "请输入1到99数字",
           }
         ],
         engineNum:[
@@ -605,7 +592,26 @@ export default {
         price:[
           { required: true, message: "金额不能为空", trigger: "blur"},
           { pattern: /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/, message: '请输入正确额格式,可保留两位小数' },
+        ],
+        brandId:[
+          { required: true, message: "请选择", trigger: "change"},
+        ],
+        oppositeCompanyId:[
+          { required: true, message: "请选择", trigger: "change"},
+        ],
+        color:[
+          { required: true, message: "请选择", trigger: "change"},
+        ],
+        boughtDate:[
+          { required: true, message: "请选择", trigger: "change"},
+        ],
+        deptId:[
+          { required: true, message: "请选择", trigger: "change"},
+        ],
+        carStatus:[
+          { required: true, message: "请选择", trigger: "change"},
         ]
+
       }
 
     };
@@ -613,7 +619,25 @@ export default {
   methods: {
     // 查
     loadList() {
-      this.$axios
+      this.$axios.get("dictionary/menu").then(r => {
+        let totalTree = r.data.data;
+        for (let i = 0; i < totalTree.length; i++) {
+          if (totalTree[i].id == 21) {
+            this.brandType = totalTree[i].children;
+          }
+          if (totalTree[i].id == 27) {
+            this.colorType = totalTree[i].children;
+          }
+          if (totalTree[i].id == 1) {
+            this.deptType = totalTree[i].children;
+          }
+          if (totalTree[i].id == 35) {
+            this.carStatusType = totalTree[i].children;
+          }
+        }
+        this.$axios.get("opposite/getoppolist?type=32").then(r => {
+        this.oppositeList = r.data;
+         this.$axios
         .get("car/list", {
           params: { p: this.p, searchText: this.searchText, size: this.size }
         })
@@ -653,6 +677,9 @@ export default {
           });
           this.total = r.data.data.total;
         });
+      });
+      });
+      
     },
     //分页方法
     handleCurrentChange(val) {
@@ -666,8 +693,6 @@ export default {
     // 增
     showAddDialog() {
       this.addDialogFormVisible = true;
-      this.oneId = "";
-      this.twoId = "";
     },
     closeAddDialog(){
       this.$refs['addForm'].resetFields();
@@ -678,17 +703,22 @@ export default {
       this.updateData = row;
     },
     doAdd() {
-      this.addData.brandId = this.oneId;
-      this.addData.type = this.twoId;
-      this.$axios.post("car/add", this.addData).then(r => {
-        if ((r.data.code === 200)) {
-          this.$message.success("添加成功");
-          this.$refs['addForm'].resetFields();
-          this.addDialogFormVisible = false;
-          this.p = 1;
-          this.loadList();
-        }else{
-          this.$message.warning("该车牌号已被占用无法添加");
+      this.$refs["addForm"].validate((valid) => {
+        if (valid) {
+        this.$axios.post("car/add", this.addData).then(r => {
+          if ((r.data.code === 200)) {
+            this.$message.success("添加成功");
+            this.$refs['addForm'].resetFields();
+            this.addDialogFormVisible = false;
+            this.p = 1;
+            this.loadList();
+          }else{
+            this.$message.warning("该车牌号非空且不能重复");
+          }
+        });
+        } else {
+          console.log('error submit!!');
+          return false;
         }
       });
     },
@@ -702,9 +732,7 @@ export default {
         }
       }
       this.updateData = row;
-      this.oneId = row.brandId;
-      this.twoId = row.type;
-      this.oneMenu(row.brandId);
+      this.oneMenu1(row.brandId);
     },
     closeUpdateDialog(){
       this.$refs['updateForm'].resetFields();
@@ -712,14 +740,18 @@ export default {
     },
 
     doUpdate() {
-      this.updateData.brandId = this.oneId;
-      this.updateData.type = this.twoId;
+      this.$refs["updateForm"].validate((valid) => {
+      if (valid) {
       this.$axios.post("car/update", this.updateData).then(r => {
         if ((r.data.code === 200)) {
           this.$message.success("修改成功");
           this.updateDialogFormVisible = false;
           this.p = 1;
           this.loadList();
+        }
+      });
+      } else {
+          return false;
         }
       });
     },
@@ -772,7 +804,7 @@ export default {
         .then(res => {
           this.$axios.get("car/delete?id=" + row.id).then(r => {
             (this.p = 1), this.loadList();
-            this.$message.success("删除成功");
+            this.$message.success("删除成功,车辆禁用");
           });
         })
         .catch(res => {
@@ -804,7 +836,14 @@ export default {
         if (this.brandType[i].id == id) {
           this.typeType = this.brandType[i].children;
         }
-      this.twoId = this.typeType[0].id;
+      this.addData.type = this.typeType[0].id;
+    },
+    oneMenu1(id) {
+      for (let i = 0; i < this.brandType.length; i++)
+        if (this.brandType[i].id == id) {
+          this.typeType = this.brandType[i].children;
+        }
+      this.updateData.type = this.typeType[0].id;
     },
     getOppositeList() {
       this.$axios.get("opposite/getoppolist?type=32").then(r => {
@@ -825,15 +864,8 @@ export default {
     }
   },
   created() {
-    Promise.all([
-      this.getMenu(),
-      this.getOppositeList(),
-      (this.token = localStorage.getItem("token"))
-    ]).then(res => {
-      setTimeout(() => {
-        this.loadList(); //延时结束loading
-      }, 500);
-    });
+    this.token = localStorage.getItem("token")
+    this.loadList(); //延时结束loading
   },  
 };
 </script>

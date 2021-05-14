@@ -1,9 +1,7 @@
 package com.woniu.controller;
 
-import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.woniu.domain.YearCheckRecord;
-import com.woniu.po.InsureRecordPo;
 import com.woniu.po.OutimeRemindPo;
 import com.woniu.po.YearCheckRecordPo;
 import com.woniu.service.OutimeRemindService;
@@ -14,6 +12,12 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.text.Format;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -46,10 +50,20 @@ public class YearCheckRecordController {
     }
 
     @RequestMapping("/add")
-    public ResponseResult add(@RequestBody YearCheckRecord yearCheckRecord){
-        if(yearCheckRecord.getNextCheckDate().isEmpty()){
+    public ResponseResult add(@RequestBody YearCheckRecord yearCheckRecord) throws ParseException {
+        if(yearCheckRecord.getNextCheckDate()==null){
             String checkDate = yearCheckRecord.getCheckDate();
-            // TODO: 2021/5/13 下次年检时间加一年
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Date sDate = sdf.parse(checkDate);
+            Format f = new SimpleDateFormat("yyyy-MM-dd");
+            System.out.println("Date结束日期:" + f.format(sDate));
+            Calendar c = Calendar.getInstance();
+            c.setTime(sDate);
+            c.add(Calendar.YEAR, 1);
+            sDate = c.getTime();
+            SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+            String nextCheckDate = sdf1.format(sDate);
+            yearCheckRecord.setNextCheckDate(nextCheckDate);
         }
         OutimeRemindPo orpo = new OutimeRemindPo();
         orpo.setCarId(yearCheckRecord.getCarId());
